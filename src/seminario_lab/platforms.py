@@ -43,7 +43,7 @@ class BacktestWorkspace:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, destination)
         specification = json.loads(
-            confined(root, entries[0]["artifacts"]["specification"]).read_text()
+            confined(root, entries[0]["artifacts"]["specification"]).read_text(encoding="utf-8")
         )
         timeframe = specification["market_regime_mtf"]["execution_timeframe"]
         config = confined(self.path, "tester.ini")
@@ -66,7 +66,9 @@ class BacktestWorkspace:
             "native_test": "not_run",
             "numerical_equivalence": "not_verified",
         }
-        (self.path / "preparation.json").write_text(json.dumps(metadata, indent=2) + "\n")
+        (self.path / "preparation.json").write_text(
+            json.dumps(metadata, indent=2) + "\n", encoding="utf-8"
+        )
         return destination
 
     def compile(self, source: Path, editor: Path, version: str) -> dict[str, str]:
@@ -98,7 +100,9 @@ class BacktestWorkspace:
             "editor_version_declared": version,
             "editor_sha256": sha256(editor),
         }
-        (self.path / "compilation.json").write_text(json.dumps(result, indent=2) + "\n")
+        (self.path / "compilation.json").write_text(
+            json.dumps(result, indent=2) + "\n", encoding="utf-8"
+        )
         return result
 
     def test(self, terminal: Path) -> dict[str, str]:
@@ -137,7 +141,7 @@ class BacktestWorkspace:
             "configuration_sha256": hashlib.sha256(text.encode()).hexdigest(),
             "numerical_equivalence": "not_verified",
         }
-        (self.path / "test.json").write_text(json.dumps(result, indent=2) + "\n")
+        (self.path / "test.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         return result
 
 

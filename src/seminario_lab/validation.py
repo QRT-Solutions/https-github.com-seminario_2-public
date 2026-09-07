@@ -25,7 +25,9 @@ def registry(root: Path) -> list[dict[str, Any]]:
 def verify(root: Path, *, deployment: bool = True) -> dict[str, Any]:
     errors: list[str] = []
     swarm = root / "quant_agentic_swarm"
-    schema = json.loads((swarm / "schemas/strategy_specification.schema.json").read_text())
+    schema = json.loads(
+        (swarm / "schemas/strategy_specification.schema.json").read_text(encoding="utf-8")
+    )
     cls = jsonschema.validators.validator_for(schema)
     cls.check_schema(schema)
     validator = cls(schema, format_checker=jsonschema.FormatChecker())

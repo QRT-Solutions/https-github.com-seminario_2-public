@@ -7,6 +7,7 @@ datos privados y contactos insistentes no deseados.
 
 Los mantenedores pueden moderar contenido, pedir correcciones o limitar la
 participación de forma proporcional, explicando la decisión y permitiendo revisión.
-No publiques datos personales al reportar un incidente. Antes del lanzamiento debe
-verificarse un contacto privado de mantenimiento; hasta entonces no se anuncia un
-canal confidencial disponible. Los incidentes de seguridad siguen SECURITY.md.
+No publiques datos personales al reportar un incidente. Utiliza los mecanismos de reporte
+de abuso de GitHub para incidentes de conducta; evita incluir datos privados en
+issues públicos. Las vulnerabilidades técnicas se reportan por el canal privado
+descrito en SECURITY.md.

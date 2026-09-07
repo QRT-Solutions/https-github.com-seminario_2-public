@@ -39,11 +39,16 @@ def test_history_only_secret_is_detected(project):
     git("config", "user.name", "QRT Solutions")
     git("config", "user.email", "fixture@example.invalid")
     file = project / "fixture.txt"
-    file.write_text("Bear" + "er " + "example" * 5)
+    file.write_text("Bear" + "er " + "example" * 5, encoding="utf-8")
     git("add", ".")
     git("commit", "-m", "Synthetic history fixture")
-    file.write_text("clean")
+    file.write_text("clean", encoding="utf-8")
     git("add", ".")
     git("commit", "-m", "Clean working tree")
     assert not scan(project, history=False)
     assert any("history:" in finding for finding in scan(project))
+
+
+def test_windows_personal_home_is_detected():
+    payload = ("C:" + chr(92) + "Users" + chr(92) + "fixture" + chr(92) + "private").encode()
+    assert any("personal-home" in finding for finding in inspect(payload, "fixture"))

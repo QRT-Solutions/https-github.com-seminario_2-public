@@ -23,7 +23,7 @@ def main() -> int:
         failures.append("Candidate must have a clean, identified Git commit.")
     if args.publication:
         raw = (
-            args.attestation.read_text()
+            args.attestation.read_text(encoding="utf-8")
             if args.attestation
             else os.environ.get("QRT_RELEASE_ATTESTATION", "{}")
         )

@@ -9,9 +9,9 @@ from seminario_lab.validation import deploy, verify
 
 def mutate_registry(root, callback):
     p = root / "quant_agentic_swarm/STRATEGY_REGISTRY.json"
-    rows = json.loads(p.read_text())
+    rows = json.loads(p.read_text(encoding="utf-8"))
     callback(rows)
-    p.write_text(json.dumps(rows))
+    p.write_text(json.dumps(rows), encoding="utf-8")
 
 
 def test_seventeen_contracts_and_sources(strategy_project):
@@ -40,13 +40,13 @@ def test_deployer_repairs_copy_and_detects_drift(strategy_project):
 
 def test_deployer_rejects_path_escape(strategy_project, tmp_path):
     outside = tmp_path / "do-not-change.mq5"
-    outside.write_text("untouched")
+    outside.write_text("untouched", encoding="utf-8")
     mutate_registry(
         strategy_project, lambda rows: rows[0]["artifacts"].update(mt5_ea="../do-not-change.mq5")
     )
     with pytest.raises(LabError):
         deploy(strategy_project)
-    assert outside.read_text() == "untouched"
+    assert outside.read_text(encoding="utf-8") == "untouched"
 
 
 def test_schema_donchian_has_no_sentinel(strategy_project):
@@ -55,11 +55,11 @@ def test_schema_donchian_has_no_sentinel(strategy_project):
             "*DONCHIAN_DBL-M30-v1.1_specification.json"
         )
     )
-    spec = json.loads(p.read_text())
+    spec = json.loads(p.read_text(encoding="utf-8"))
     assert spec["profit_exit"] == {"kind": "donchian_trailing", "channel_period": 10}
     assert spec["triple_barrier_exits"]["barrier_1_profit_atr_d1_multiplier"] is None
     spec["triple_barrier_exits"]["barrier_1_profit_atr_d1_multiplier"] = 50
-    p.write_text(json.dumps(spec))
+    p.write_text(json.dumps(spec), encoding="utf-8")
     assert not verify(strategy_project)["ok"]
 
 
@@ -82,20 +82,20 @@ def test_preparation_only_copies_to_isolated_workspace(strategy_project):
         "2024-02-01",
     )
     assert source.is_relative_to(strategy_project / "artifacts/mt5")
-    config = (workspace.path / "tester.ini").read_text()
+    config = (workspace.path / "tester.ini").read_text(encoding="utf-8")
     assert "ShutdownTerminal=1" in config and "Login=" not in config
 
 
 def test_date_time_format_is_actually_validated(strategy_project):
     path = next((strategy_project / "quant_agentic_swarm/strategies").glob("*_specification.json"))
-    document = json.loads(path.read_text())
+    document = json.loads(path.read_text(encoding="utf-8"))
     document["timestamp"] = "not-a-timestamp"
-    path.write_text(json.dumps(document))
+    path.write_text(json.dumps(document), encoding="utf-8")
     assert not verify(strategy_project)["ok"]
 
 
 def test_deferred_masterclass_data_cannot_return(strategy_project):
     directory = strategy_project / "masterclass/data"
     directory.mkdir(parents=True)
-    (directory / "fixture.csv").write_text("synthetic fixture,not market data\n")
+    (directory / "fixture.csv").write_text("synthetic fixture,not market data\n", encoding="utf-8")
     assert not verify(strategy_project)["ok"]

@@ -107,7 +107,7 @@
     {
       "path": "masterclass/app.js",
       "original_sha256": "c382a66c153650492a8dca0fa81e2de61f8785fe6bc972f99d5261fe7dab1071",
-      "candidate_sha256": "69a2f166580c12e73af0c0318327b71feb9a1d5e8b1c94059605a6c9189b666c",
+      "candidate_sha256": "381441a31b8ec28bcb4c233200603f95909b1ca68c6fab5811ae67e5d0980635",
       "decision": "transformed"
     },
     {

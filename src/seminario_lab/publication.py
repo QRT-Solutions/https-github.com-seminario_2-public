@@ -13,7 +13,7 @@ from .config import LabError, project_root
 
 RULES = {
     "personal-home": re.compile(
-        rb"/" + rb"Users/|/home/[A-Za-z][^/\s]+/|[A-Za-z]:\\\\Users\\\\", re.I
+        rb"/" + rb"Users/|/home/[A-Za-z][^/\s]+/|[A-Za-z]:\\Users\\", re.I
     ),
     "literal-authorization": re.compile(
         rb"\b(?:bearer|basic)[ \t]+[A-Za-z0-9._~+/-]{8,}={0,2}", re.I

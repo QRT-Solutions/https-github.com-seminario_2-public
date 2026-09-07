@@ -630,7 +630,7 @@
       },
       3: {
         traderMsg: "«Me gusta la Variante B. Vamos a programarla.»",
-        agentMsg: "«Estrategia aprobada. Generando el código completo en <strong>MQL5</strong> (MetaTrader 5) y <strong>Pine Script v6</strong> (TradingView).<br><br>✔ Código limpio y listo para probar.<br>✔ Entrada al cierre de vela (0 repainting).<br>✔ Listo para ejecutar el backtest.»",
+        agentMsg: "«La hipótesis ya tiene reglas explícitas. El siguiente paso es revisar el contrato, implementar las plataformas elegidas y compilar sus fuentes.<br><br>✔ Reglas identificadas.<br>✔ Barras y parámetros declarados.<br>○ Compilación y paridad requieren pruebas.»",
         lesson: "<strong>Código:</strong> El código se revisa cuando la lógica está clara, con equivalencia numérica pendiente de pruebas independientes."
       }
     };

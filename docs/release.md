@@ -21,7 +21,7 @@ estrategias y las fuentes Pine/MQL5 permanecen en esta distribución.**
 | 2. Alcance y derechos | Solo contenido del seminario, licencias originales y avisos de terceros | Sin históricos ni transcripciones; catálogos conservados |
 | 3. Construcción | Instalación bloqueada, contratos, sincronía, lint, tipos, tests y documentación | Verificación local y evidencia de candidato |
 | 4. Plataformas | Linux x86-64, Windows x86-64 y macOS arm64 sobre el mismo candidato | macOS local; workflows preparados, sin ejecución remota aún |
-| 5. Experiencia | Guía completada por una persona independiente, revisión visual/teclado y contacto privado verificado | Guías y controles estáticos preparados; revisión humana pendiente |
+| 5. Experiencia | Guía completada por una persona independiente, revisión visual/teclado y contacto privado verificado | Canal GitHub habilitado y verificado; guías y controles estáticos preparados; revisión humana pendiente |
 | 6. Publicación | Historial, metadatos, assets y auditoría del SHA final; autorización concreta | Gate bloqueado mientras falten evidencias |
 
 El navegador bloqueó la apertura de la presentación local por su política de URLs;
@@ -54,3 +54,8 @@ Antes de cambiar un remoto, reemplazar `main`, subir assets o modificar visibili
 se revisarán el SHA exacto, sus referencias y manifiestos. Solo entonces se prepara
 la operación concreta para autorización. No se ha hecho push ni se ha sustituido el
 historial remoto durante esta implementación.
+
+[Informe de implementación y evidencia](implementation.md).
+
+El único ajuste remoto realizado fue habilitar el reporte privado de vulnerabilidades
+y comprobarlo mediante la API. No se cambió visibilidad, ramas ni contenido remoto.

@@ -10,7 +10,9 @@ import pytest
 def project(tmp_path):
     root = tmp_path / "project with spaces"
     root.mkdir()
-    (root / "pyproject.toml").write_text('[tool.seminario]\nproject = "qrt-seminario-lab"\n')
+    (root / "pyproject.toml").write_text(
+        '[tool.seminario]\nproject = "qrt-seminario-lab"\n', encoding="utf-8"
+    )
     return root
 
 

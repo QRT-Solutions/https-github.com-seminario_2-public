@@ -40,7 +40,12 @@ def on_pre_build(config, **kwargs):
     for name in ("index.html", "styles.css", "app.js", "guion.md", "QRT-LOGO.png"):
         shutil.copyfile(ROOT / "masterclass" / name, masterclass / name)
     html = masterclass / "index.html"
-    html.write_text(html.read_text().replace("../docs/methodology.md", "../docs/methodology.html"))
+    html.write_text(
+        html.read_text(encoding="utf-8").replace(
+            "../docs/methodology.md", "../docs/methodology.html"
+        ),
+        encoding="utf-8",
+    )
     if (ROOT / "masterclass/vendor").exists():
         shutil.copytree(ROOT / "masterclass/vendor", masterclass / "vendor")
     for page in destination.rglob("*.md"):

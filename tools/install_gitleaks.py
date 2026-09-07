@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> None:
-    metadata = json.loads((ROOT / "tools/gitleaks-manifest.json").read_text())
+    metadata = json.loads((ROOT / "tools/gitleaks-manifest.json").read_text(encoding="utf-8"))
     system = platform.system().lower()
     machine = "arm64" if platform.machine().lower() in {"arm64", "aarch64"} else "x64"
     name = f"gitleaks_{metadata['version']}_{system}_{machine}.tar.gz"
