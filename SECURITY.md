@@ -7,10 +7,10 @@ a la última versión 1.x publicada. El candidato actual todavía no es una rele
 
 ## Reportar una vulnerabilidad
 
-El reporte privado de vulnerabilidades debe habilitarse y verificarse en este
-nuevo repositorio antes de su publicación. Entra en [Security](https://github.com/felipemillar/seminario_2-public/security)
+El reporte privado de vulnerabilidades está habilitado y fue verificado mediante
+la API de GitHub el 2026-09-07. Entra en [Security](https://github.com/felipemillar/seminario_2-public/security)
 y selecciona **Report a vulnerability**. GitHub puede pedirte iniciar sesión.
-No se debe asumir que la configuración del repositorio original se hereda.
+La comprobación corresponde a este repositorio; no se envió un reporte de prueba.
 
 No incluyas vulnerabilidades sin corregir ni datos privados en issues públicos.
 Indica versión o SHA afectado, componente, impacto, pasos mínimos de reproducción

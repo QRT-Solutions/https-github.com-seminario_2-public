@@ -1,5 +1,10 @@
 # Implementación del candidato
 
+**Actualización 2026-09-07:** el código ya está disponible en el repositorio público
+independiente. El [estado de publicación](release.md) recoge la autorización, el CI
+remoto y las revisiones pendientes. El informe siguiente conserva el estado de
+la preparación local anterior.
+
 Autoría: QRT Solutions. La distribución pública se preparó en un árbol independiente
 con historia Git nueva. El original y su historial permanecen en un archivo privado
 verificado. Una segunda copia privada conserva el laboratorio histórico implementado

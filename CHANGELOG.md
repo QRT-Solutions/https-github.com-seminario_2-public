@@ -1,5 +1,13 @@
 # Changelog — QRT Solutions
 
+## 2026-09-07 — Repositorio público independiente
+
+- Publicado el código del candidato en `felipemillar/seminario_2-public`, por
+  autorización del mantenedor tras confirmar el cambio de credenciales anteriores.
+- CI aprobado en Windows, Linux y macOS, con escaneo de secretos y dependencias.
+- Canal privado de vulnerabilidades habilitado y verificado en el nuevo repositorio.
+- Sin release estable ni Pages; revisiones humanas pendientes documentadas.
+
 ## 2026-09-07 — Destino independiente
 
 - Enlaces de clonación, documentación, citación y seguridad dirigidos al nuevo

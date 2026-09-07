@@ -1,4 +1,24 @@
-# Candidato de primera publicación
+# Estado de publicación
+
+Autoría: QRT Solutions.
+
+El 2026-09-07 el mantenedor autorizó publicar el código en el repositorio nuevo
+[seminario_2-public](https://github.com/felipemillar/seminario_2-public) y confirmó
+haber cambiado las credenciales anteriores. El repositorio es público y su canal
+privado de seguridad se verificó mediante la API. La confirmación del mantenedor
+no equivale a una prueba independiente de rechazo de las credenciales antiguas.
+
+El [CI del candidato](https://github.com/felipemillar/seminario_2-public/actions/runs/34132013725)
+aprobó Linux, Windows y macOS, secretos y dependencias. Se publica el código del
+candidato `1.0.0rc1`; no se ha emitido una release estable ni desplegado Pages.
+La revisión humana independiente de la guía y de accesibilidad permanece pendiente.
+No se generó una atestación que declare esas revisiones completadas.
+
+## Registro histórico de preparación, anterior a la publicación
+
+Las condiciones y estados siguientes describen la preparación inicial. El estado
+actual del repositorio se indica arriba; los controles estrictos del script de
+atestación y de Pages se mantienen.
 
 **Dictamen: APROBADO CONDICIONALMENTE para preparación local.
 Publicación todavía no autorizada.** El candidato no equivale a v1.0.0 publicada.
