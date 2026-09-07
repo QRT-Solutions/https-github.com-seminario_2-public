@@ -6,6 +6,8 @@
   de `base_de_conocimientos`, por solicitud y confirmación del mantenedor.
 - Conservados byte a byte los 50 documentos; corregidos enlaces y disponibilidad
   de recursos en los índices. No se incluyen imágenes ausentes en el origen.
+- Habilitadas rutas largas de Git al clonar y en CI Windows para conservar
+  los nombres originales de los documentos.
 - Corregidos falsos positivos de autenticación Basic en prosa y una URL pública
   bibliográfica, con regresiones para conservar la detección de credenciales.
 - Registrados hashes y referencias históricas; el verificador mantiene controles

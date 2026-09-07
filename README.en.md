@@ -13,7 +13,7 @@ Requirements: Git, [uv](https://docs.astral.sh/uv/getting-started/installation/)
 CPython 3.12, which uv can install.
 
 ```sh
-git clone https://github.com/felipemillar/seminario_2-public.git
+git clone --config core.longpaths=true https://github.com/felipemillar/seminario_2-public.git
 uv run --directory seminario_2-public --locked --no-dev seminario doctor
 uv run --directory seminario_2-public --locked --no-dev seminario quickstart
 ```
