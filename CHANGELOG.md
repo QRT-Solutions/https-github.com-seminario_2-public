@@ -5,6 +5,8 @@
 - Enlaces de clonación, documentación, citación y seguridad dirigidos al nuevo
   repositorio `felipemillar/seminario_2-public`.
 - El repositorio original conserva sus ramas, historial y remoto.
+- CI invoca `uv run python` para que Windows utilice el intérprete del entorno
+  instalado al validar el registro y las copias de estrategias.
 
 ## 1.0.0rc1 — 2026-09-06 (candidato local, no publicado)
 

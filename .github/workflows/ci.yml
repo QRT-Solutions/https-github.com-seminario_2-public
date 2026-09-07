@@ -37,8 +37,8 @@ jobs:
       - run: uv run pytest
       - name: Registry and deployment
         run: |
-          uv run python3 quant_agentic_swarm/tools/validate_registry.py
-          uv run python3 quant_agentic_swarm/tools/deploy_strategies.py --check
+          uv run python quant_agentic_swarm/tools/validate_registry.py
+          uv run python quant_agentic_swarm/tools/deploy_strategies.py --check
       - name: Pine v6 only
         run: test "$(grep -rl '@version=5' --include='*.pine' quant_agentic_swarm TradingView | wc -l)" -eq 0
       - name: Private paths, literal authorization and history
