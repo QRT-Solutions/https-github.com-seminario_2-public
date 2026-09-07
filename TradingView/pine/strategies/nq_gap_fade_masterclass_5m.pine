@@ -1,0 +1,290 @@
+//@version=6
+// =============================================================================
+//  NQ GAP FADE QUANT SUITE 5M — INSTITUTIONAL MASTERCLASS EDITION
+//  Autor: QRT Solutions
+//  Plataforma: TradingView / Pine Script v6
+//  Timeframe Recomendado: 5 Minutos (5M)
+//  Activo Recomendado: CME:NQ1! (E-mini Nasdaq 100) / CME:MNQ1! (Micro Nasdaq)
+// =============================================================================
+strategy("NQ Gap Fade Masterclass 5M [QRT]", shorttitle = "NQ_GapFade_5M_QRT",
+     overlay = true,
+     initial_capital = 100000,
+     currency = currency.USD,
+     default_qty_type = strategy.fixed,
+     default_qty_value = 1,
+     commission_type = strategy.commission.cash_per_order,
+     commission_value = 2.0,
+     slippage = 2,
+     margin_long = 5.0,
+     margin_short = 5.0,
+     process_orders_on_close = true,
+     calc_on_every_tick = false)
+
+// -----------------------------------------------------------------------------
+// 1. PARÁMETROS CUANTITATIVOS Y FILTROS DE RÉGIMEN
+// -----------------------------------------------------------------------------
+grp_gap   = "1. Filtros Cuantitativos Ex-Ante (Masterclass A01-A03)"
+minGapAtr       = input.float(0.10, "Filtro 1: Mínimo Gap (|Gap| en ATR)", minval = 0.05, step = 0.05, group = grp_gap,
+     tooltip = "Descarta gaps menores al umbral. Valor óptimo calibrado: >= 0.10 ATR.")
+useVolFilter    = input.bool(true, "Filtro 2: Régimen de Baja Volatilidad (ATR% <= Mediana)", group = grp_gap,
+     tooltip = "Solo opera en días donde el ATR% diario es inferior a su mediana rodante de 250 días.")
+volMedianLen    = input.int(250, "   • Período Mediana Rodante Volatilidad", minval = 50, maxval = 1000, group = grp_gap)
+useNoiseFilter  = input.bool(true, "Filtro 3: Filtro de Ruido Kaufman (ER_10 < Umbral)", group = grp_gap,
+     tooltip = "Identifica mercados en consolidación lateral ruidosa. Descarta días con tendencias explosivas.")
+maxErThreshold  = input.float(0.40, "   • Umbral Máximo Kaufman ER(10)", minval = 0.10, maxval = 1.0, step = 0.05, group = grp_gap)
+
+grp_exits = "2. Calibración Óptima de Salidas (MAE / MFE)"
+slAtrMult       = input.float(0.50, "Stop Loss (Múltiplo ATR Diario)", minval = 0.1, step = 0.1, group = grp_exits,
+     tooltip = "Stop Loss óptimo calibrado en meseta (Notebook A03). Valor base: 0.50 ATR.")
+tpAtrMult       = input.float(0.90, "Take Profit (Múltiplo ATR Diario)", minval = 0.1, step = 0.1, group = grp_exits,
+     tooltip = "Take Profit óptimo calibrado en meseta (Notebook A03). Valor base: 0.90 ATR.")
+sessionRTH      = input.session("0930-1600", "Horario Regular RTH (Hora NY)", group = grp_exits)
+
+grp_size  = "3. Sizing y Gestión de Margen"
+sizingMode      = input.string("Contratos Fijos (Futuros)", "Modo de Sizing", 
+     options = ["Contratos Fijos (Futuros)", "% de Capital"], group = grp_size)
+fixedContracts  = input.int(1, "Número de Contratos", minval = 1, group = grp_size)
+equityPct       = input.float(25.0, "% de Capital por Trade", minval = 1.0, maxval = 100.0, group = grp_size)
+
+grp_ui    = "4. Visualización y Panel de Control"
+showTable       = input.bool(true, "Mostrar Dashboard de Régimen y Rendimiento", group = grp_ui)
+showLevels      = input.bool(true, "Dibujar Niveles de Entrada, SL y TP", group = grp_ui)
+showLabels      = input.bool(true, "Mostrar Etiquetas Informativas", group = grp_ui)
+labelOffsetAtr  = input.float(0.35, "Separación Vertical de Etiquetas (ATR)", minval = 0.05, maxval = 2.0, step = 0.05, group = grp_ui)
+
+// -----------------------------------------------------------------------------
+// 2. EXTRACCIÓN DE DATOS DIARIOS EX-ANTE (Seguridad Anti-Lookahead)
+// -----------------------------------------------------------------------------
+f_daily_metrics() =>
+    d_close     = close
+    d_atr14     = ta.atr(14)
+    d_atrPct    = d_close > 0 ? (d_atr14 / d_close) * 100.0 : 0.0
+    // Mediana exacta mediante el percentil 50 de TradingView
+    d_volMedian = ta.percentile_nearest_rank(d_atrPct, volMedianLen, 50)
+    d_isLowVol  = d_atrPct <= d_volMedian
+    
+    // Kaufman Efficiency Ratio (ER_10) sobre 10 días confirmados
+    d_change10  = math.abs(d_close - d_close[10])
+    d_vol10     = math.sum(math.abs(d_close - d_close[1]), 10)
+    d_er10      = d_vol10 > 0 ? (d_change10 / d_vol10) : 0.0
+    
+    [d_close[0], d_atr14[0], d_isLowVol[0], d_er10[0], d_atrPct[0], d_volMedian[0]]
+
+[prevDayClose, dailyATR, isLowVol, kaufmanER, dailyAtrPct, volMedianVal] = 
+     request.security(syminfo.tickerid, "D", f_daily_metrics(), lookahead = barmerge.lookahead_off)
+
+// -----------------------------------------------------------------------------
+// 3. MOTOR DE SESIÓN RTH (09:30 - 16:00 NY)
+// -----------------------------------------------------------------------------
+int nyHour   = hour(time, "America/New_York")
+int nyMinute = minute(time, "America/New_York")
+
+bool inRTH = not na(time(timeframe.period, sessionRTH + ":23456", "America/New_York"))
+
+// En 5M, la primera barra es 09:30 AM (09:30 a 09:35)
+bool isEntryBar = (nyHour == 9 and nyMinute == 30) or (inRTH and not inRTH[1])
+// En 5M, la última barra RTH es 15:55 PM (15:55 a 16:00)
+bool isExitBar  = (nyHour == 15 and nyMinute >= 55) or (not inRTH and inRTH[1])
+
+var float todayOpen   = na
+var float gapPoints   = na
+var float gapATRmult  = na
+var bool  gapUp        = false
+var bool  passGap      = false
+var bool  passVol      = false
+var bool  passNoise    = false
+var bool  isTradeValid = false
+
+var float entryPrice  = na
+var float slLevel     = na
+var float tpLevel     = na
+
+// Tracking intradía para el motor estadístico On-Chart
+var bool hitTP = false
+var bool hitSL = false
+
+if isEntryBar
+    todayOpen    := open
+    gapPoints    := todayOpen - prevDayClose
+    gapATRmult   := not na(dailyATR) and dailyATR > 0 ? (gapPoints / dailyATR) : 0.0
+    gapUp        := gapPoints > 0
+    
+    // Evaluación de los 3 Filtros Cuantitativos
+    passGap      := math.abs(gapATRmult) >= minGapAtr
+    passVol      := not useVolFilter or isLowVol
+    passNoise    := not useNoiseFilter or (kaufmanER < maxErThreshold)
+    isTradeValid := passGap and passVol and passNoise
+    
+    // Reset tracking de targets
+    hitTP := false
+    hitSL := false
+    
+    // Cálculo de Niveles Dinámicos de Salida (MAE/MFE)
+    if isTradeValid
+        entryPrice := todayOpen
+        if gapUp // Short Fade
+            slLevel := entryPrice + (slAtrMult * dailyATR)
+            tpLevel := entryPrice - (tpAtrMult * dailyATR)
+        else     // Long Fade
+            slLevel := entryPrice - (slAtrMult * dailyATR)
+            tpLevel := entryPrice + (tpAtrMult * dailyATR)
+    else
+        entryPrice := na
+        slLevel    := na
+        tpLevel    := na
+
+else if inRTH and isTradeValid
+    // Tracking de ejecución a lo largo de las velas de 5m
+    if not gapUp // Long Fade
+        if high >= tpLevel
+            hitTP := true
+        if low <= slLevel
+            hitSL := true
+    else // Short Fade
+        if low <= tpLevel
+            hitTP := true
+        if high >= slLevel
+            hitSL := true
+
+// -----------------------------------------------------------------------------
+// 4. MOTOR NATIVO DE ESTRATEGIA (Strategy Tester)
+// -----------------------------------------------------------------------------
+float orderQty = sizingMode == "Contratos Fijos (Futuros)" ? fixedContracts : (strategy.equity * (equityPct / 100.0)) / close
+
+// Entradas y Salidas vinculadas por OCO en el emulador
+if isEntryBar and isTradeValid
+    if not gapUp and strategy.position_size == 0
+        strategy.entry("Long Fade", strategy.long, qty = orderQty)
+        strategy.exit("Salida Long", "Long Fade", stop = slLevel, limit = tpLevel)
+    else if gapUp and strategy.position_size == 0
+        strategy.entry("Short Fade", strategy.short, qty = orderQty)
+        strategy.exit("Salida Short", "Short Fade", stop = slLevel, limit = tpLevel)
+
+// Cierre Forzado por Tiempo (EOD a las 16:00 NY)
+if (isExitBar or not inRTH) and strategy.position_size != 0
+    strategy.close_all(comment = "Cierre EOD 16:00")
+
+// -----------------------------------------------------------------------------
+// 5. MOTOR CUANTITATIVO ON-CHART (Métricas Sin Lag)
+// -----------------------------------------------------------------------------
+var int   totalTrades   = 0
+var int   winTrades     = 0
+var int   lossTrades    = 0
+var float netProfit     = 0.0
+var float grossProfit   = 0.0
+var float grossLoss     = 0.0
+var float peakProfit    = 0.0
+var float maxDrawdown   = 0.0
+var float totalR        = 0.0
+
+if isExitBar and isTradeValid
+    float tradeR = 0.0
+    bool wasLong = not gapUp
+    
+    if hitTP and not hitSL
+        tradeR := tpAtrMult
+    else if hitSL and not hitTP
+        tradeR := -slAtrMult
+    else if hitTP and hitSL
+        tradeR := -slAtrMult // Supuesto conservador pesimista
+    else
+        tradeR := wasLong ? ((close - todayOpen) / dailyATR) : ((todayOpen - close) / dailyATR)
+            
+    float dollarPnL = tradeR * dailyATR * syminfo.pointvalue * fixedContracts
+    totalTrades += 1
+    totalR      += tradeR
+    netProfit   += dollarPnL
+    
+    if dollarPnL > 0
+        winTrades   += 1
+        grossProfit += dollarPnL
+    else
+        lossTrades  += 1
+        grossLoss   += math.abs(dollarPnL)
+        
+    peakProfit  := math.max(peakProfit, netProfit)
+    maxDrawdown := math.max(maxDrawdown, peakProfit - netProfit)
+
+// -----------------------------------------------------------------------------
+// 6. DASHBOARD INSTITUCIONAL DE CONTROL
+// -----------------------------------------------------------------------------
+var table ctrlTable = na
+
+if showTable and barstate.islast
+    ctrlTable := table.new(position.top_right, 2, 10, bgcolor = color.new(color.black, 10), border_color = color.gray, border_width = 1)
+
+    float winRate = totalTrades > 0 ? (winTrades / totalTrades) * 100.0 : 0.0
+    float profitFactor = grossLoss > 0 ? (grossProfit / grossLoss) : (grossProfit > 0 ? 99.9 : 0.0)
+    color pnlColor = netProfit >= 0 ? color.green : color.red
+
+    // Header
+    table.cell(ctrlTable, 0, 0, "NQ Gap Fade 5M [QRT]", bgcolor = color.navy, text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 0, "Estado / Valor",       bgcolor = color.navy, text_color = color.white, text_size = size.small)
+
+    // Filtros Ex-Ante del Día
+    string gapStatus = passGap ? " " + str.tostring(gapATRmult, "#.##") + " ATR" : " " + str.tostring(gapATRmult, "#.##") + " ATR"
+    table.cell(ctrlTable, 0, 1, "Filtro 1: Magnitud Gap", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 1, gapStatus, text_color = passGap ? color.green : color.orange, text_size = size.small)
+
+    string volStatus = isLowVol ? " Baja Vol (" + str.tostring(dailyAtrPct, "#.##") + "%)" : " Alta Vol (" + str.tostring(dailyAtrPct, "#.##") + "%)"
+    table.cell(ctrlTable, 0, 2, "Filtro 2: Régimen Vol", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 2, volStatus, text_color = isLowVol ? color.green : color.red, text_size = size.small)
+
+    string erStatus = kaufmanER < maxErThreshold ? " " + str.tostring(kaufmanER, "#.###") : " " + str.tostring(kaufmanER, "#.###")
+    table.cell(ctrlTable, 0, 3, "Filtro 3: Kaufman ER(10)", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 3, erStatus, text_color = kaufmanER < maxErThreshold ? color.green : color.red, text_size = size.small)
+
+    // Estado Operativo
+    string tradeStatus = isTradeValid ? (gapUp ? " SHORT FADE ACTIVO" : " LONG FADE ACTIVO") : " NO OPERAR (FILTRADO)"
+    color tradeStatusCol = isTradeValid ? (gapUp ? color.red : color.green) : color.gray
+    table.cell(ctrlTable, 0, 4, "Condición del Día", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 4, tradeStatus, bgcolor = tradeStatusCol, text_color = color.white, text_size = size.small)
+
+    // Métricas
+    table.cell(ctrlTable, 0, 5, "Operaciones Validadas", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 5, str.tostring(totalTrades), text_color = color.white, text_size = size.small)
+
+    table.cell(ctrlTable, 0, 6, "Tasa de Acierto (Win Rate)", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 6, str.tostring(winRate, "#.##") + "%", text_color = winRate >= 45 ? color.green : color.orange, text_size = size.small)
+
+    table.cell(ctrlTable, 0, 7, "Factor de Beneficio (PF)", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 7, str.tostring(profitFactor, "#.##"), text_color = profitFactor >= 1.15 ? color.green : color.orange, text_size = size.small)
+
+    table.cell(ctrlTable, 0, 8, "Retorno Acumulado (R)", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 8, str.tostring(totalR, "+#.##") + " R", text_color = totalR >= 0 ? color.green : color.red, text_size = size.small)
+
+    table.cell(ctrlTable, 0, 9, "PnL Neto Acumulado ($)", text_color = color.white, text_size = size.small)
+    table.cell(ctrlTable, 1, 9, "$" + str.tostring(netProfit, "#,###.##"), text_color = pnlColor, text_size = size.small)
+
+// -----------------------------------------------------------------------------
+// 7. VISUALIZACIÓN DE NIVELES Y ETIQUETAS FLOTANTES
+// -----------------------------------------------------------------------------
+plot(showLevels and isTradeValid ? entryPrice : na, "Nivel Entrada", color = color.blue, linewidth = 2, style = plot.style_linebr)
+plot(showLevels and isTradeValid ? tpLevel : na,    "Take Profit (+0.9 ATR)", color = color.green, linewidth = 2, style = plot.style_linebr)
+plot(showLevels and isTradeValid ? slLevel : na,    "Stop Loss (-0.5 ATR)", color = color.red, linewidth = 2, style = plot.style_linebr)
+
+bgcolor(isTradeValid ? color.new(gapUp ? color.red : color.green, 90) : na, title = "Día Operable")
+
+float vBuffer = not na(dailyATR) and dailyATR > 0 ? (dailyATR * labelOffsetAtr) : (ta.atr(14) * labelOffsetAtr)
+
+if showLabels and isEntryBar and isTradeValid
+    string dirText   = gapUp ? " SHORT FADE (NQ)" : " LONG FADE (NQ)"
+    string gapText   = "Gap: " + str.tostring(gapATRmult, "#.##") + " ATR (" + str.tostring(gapPoints, "#.##") + " pts)"
+    string entryText = "Entrada: $" + str.tostring(todayOpen, format.mintick)
+    string tpText    = "TP (+0.9 ATR): $" + str.tostring(tpLevel, format.mintick)
+    string slText    = "SL (-0.5 ATR): $" + str.tostring(slLevel, format.mintick)
+
+    string fullLabel = dirText + "\n" +
+                       "\n" +
+                       gapText + "\n" +
+                       entryText + "\n" +
+                       tpText + "\n" +
+                       slText
+
+    float entryY = gapUp ? (high + vBuffer) : (low - vBuffer)
+    label.new(bar_index, entryY,
+         text = fullLabel,
+         style = gapUp ? label.style_label_down : label.style_label_up,
+         color = gapUp ? color.new(color.maroon, 5) : color.new(color.teal, 5),
+         textcolor = color.white,
+         size = size.small)

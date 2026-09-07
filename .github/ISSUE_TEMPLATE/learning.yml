@@ -1,0 +1,13 @@
+name: Mejora docente
+description: Propón un ejercicio, explicación o mejora de accesibilidad
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Qué aprendizaje o dificultad aborda y en qué notebook
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Cambio propuesto y cómo comprobarlo

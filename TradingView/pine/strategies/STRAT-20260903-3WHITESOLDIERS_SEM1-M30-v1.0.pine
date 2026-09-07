@@ -1,0 +1,101 @@
+//@version=6
+strategy("STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0", overlay = true, initial_capital = 10000, default_qty_type = strategy.percent_of_equity, default_qty_value = 10, currency = currency.USD, margin_long = 5.0, margin_short = 5.0)
+
+// ==============================================================================
+// BLOQUE 0: CABECERA INSTITUCIONAL Y METADATOS
+// Autor: QRT Solutions
+// Estrategia: Seminario 1 — Three White Soldiers Puro (Sin Filtros) en M30
+// UUID: STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0
+// Citas: Steve Nison (1991); Thomas Bulkowski; Marcos Lopez de Prado (2018)
+// ==============================================================================
+
+// ==============================================================================
+// BLOQUE 1: PARAMETROS DE ENTRADA (INPUTS)
+// ==============================================================================
+var string GRP_TRIPLE = "=== Triple Barrera de Lopez de Prado ==="
+float inp_tp_mult   = input.float(2.0, "Multiplicador Take Profit (ATR D1)", group = GRP_TRIPLE, step = 0.1, minval = 0.5, maxval = 6.0)
+float inp_sl_mult   = input.float(1.0, "Multiplicador Stop Loss (ATR D1)", group = GRP_TRIPLE, step = 0.1, minval = 0.2, maxval = 4.0)
+int   inp_max_bars  = input.int(32, "Barrera Temporal Maxima (Barras M30 = 16h)", group = GRP_TRIPLE, minval = 5, maxval = 150)
+
+var string GRP_MTF = "=== Volatilidad MTF Diario (Base Barreras) ==="
+int   inp_atr_d_slow = input.int(14, "ATR Lento Diario (D1)", group = GRP_MTF)
+
+var string GRP_VISUAL = "=== Diagnostico Visual ==="
+bool inp_show_hud    = input.bool(true, "Mostrar Panel HUD Informativo", group = GRP_VISUAL)
+
+// ==============================================================================
+// BLOQUE 2: GUARDA DE CALENTAMIENTO
+// ==============================================================================
+float d_atr_slow = request.security(syminfo.tickerid, "D", ta.atr(inp_atr_d_slow)[1], lookahead = barmerge.lookahead_off)
+bool is_warmed_up = bar_index > 25 and not na(d_atr_slow)
+
+// ==============================================================================
+// BLOQUE 3: CALCULOS LIBRES DE REPAINTING (SHIFT = 1)
+// ==============================================================================
+// Velas de los 3 soldados: [3] primer soldado, [2] segundo soldado, [1] tercer soldado
+bool bull3 = close[3] > open[3]
+bool bull2 = close[2] > open[2]
+bool bull1 = close[1] > open[1]
+
+// Cierres crecientes
+bool closes_increasing = (close[1] > close[2]) and (close[2] > close[3])
+
+// Aperturas dentro del cuerpo de la vela previa
+bool open2_in_body3 = (open[2] >= math.min(open[3], close[3])) and (open[2] <= math.max(open[3], close[3]))
+bool open1_in_body2 = (open[1] >= math.min(open[2], close[2])) and (open[1] <= math.max(open[2], close[2]))
+
+// ==============================================================================
+// BLOQUE 4: SENAL CUANTITATIVA PURA (SIN FILTROS DE TENDENCIA NI REGIMEN)
+// ==============================================================================
+bool pattern_pure = bull3 and bull2 and bull1 and closes_increasing and open2_in_body3 and open1_in_body2
+bool long_signal  = is_warmed_up and pattern_pure and (strategy.position_size == 0)
+
+// ==============================================================================
+// BLOQUE 5: EJECUCION DE ORDENES Y TRIPLE BARRERA
+// ==============================================================================
+var float entry_price = 0.0
+var float tp_price    = 0.0
+var float sl_price    = 0.0
+var int   bars_in_pos = 0
+
+if (long_signal)
+    entry_price := close
+    tp_price    := close + (d_atr_slow * inp_tp_mult)
+    sl_price    := close - (d_atr_slow * inp_sl_mult)
+    bars_in_pos := 0
+    strategy.entry("3WS_SEM1_Long", strategy.long)
+
+// ==============================================================================
+// BLOQUE 6: MOTOR DE SALIDA (TRIPLE BARRERA & LIMITE TEMPORAL)
+// ==============================================================================
+if (strategy.position_size > 0)
+    bars_in_pos += 1
+    
+    // Barrera 3: Limite temporal (Time Stop de 32 barras = 16h)
+    bool time_stop = bars_in_pos >= inp_max_bars
+    
+    if (time_stop)
+        strategy.close_position("Time_Stop_Exit")
+    else
+        strategy.exit("Exit_3WS", from_entry = "3WS_SEM1_Long", limit = tp_price, stop = sl_price)
+
+// ==============================================================================
+// BLOQUE 7: TELEMETRIA GRAFICA Y DASHBOARD HUD
+// ==============================================================================
+plot(strategy.position_size > 0 ? tp_price : na, "Take Profit (2.0x ATR D1)", color = color.green, style = plot.style_linebr, linewidth = 1)
+plot(strategy.position_size > 0 ? sl_price : na, "Stop Loss (1.0x ATR D1)",   color = color.red,   style = plot.style_linebr, linewidth = 1)
+
+plotshape(pattern_pure and (strategy.position_size == 0), "3 White Soldiers Puro", shape = shape.triangleup, location = location.belowbar, color = color.aqua, size = size.small, text = "3WS")
+
+var table dash = table.new(position.top_right, 2, 5, bgcolor = color.new(color.black, 15), border_color = color.gray, border_width = 1)
+if (barstate.islast and inp_show_hud)
+    table.cell(dash, 0, 0, "ESTRATEGIA", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 0, "3WS SEMINARIO 1 (PURO)", text_color = color.aqua, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 1, "Timeframe", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 1, "M30 (Sin Filtros)", text_color = color.yellow, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 2, "ATR D1 (14)", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 2, str.tostring(d_atr_slow, "#.##"), text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 3, "Posicion", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 3, strategy.position_size > 0 ? "LONG" : "FLAT", text_color = strategy.position_size > 0 ? color.green : color.gray, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 4, "Barras en Pos", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 4, str.tostring(bars_in_pos) + " / " + str.tostring(inp_max_bars), text_color = color.white, text_size = size.small, text_font = font.family_monospace)

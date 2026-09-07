@@ -1,0 +1,62 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0",
+  "timestamp": "2026-09-02T20:30:00Z",
+  "hypothesis": {
+    "condition_x": "En vela cerrada de M30, la EMA rapida (9) cruza sobre la EMA lenta (21), condicionado a que el precio de cierre este estrictamente alineado con la tendencia macro dictada por la EMA 200 en M30 (Close > EMA 200 con pendiente no negativa para largos; Close < EMA 200 con pendiente no positiva para cortos).",
+    "expected_outcome_y": "Desplazamiento tendencial asimetrico en la direccion macro del oro (XAUUSD), capturando expansiones de momentum institucional y eliminando mas del 50% de los falsos quiebres (whipsaws) que ocurren contra la tendencia principal.",
+    "structural_reason_z": "El mercado del oro esta dominado por flujos macroeconomicos pasivos y de cobertura (bancos centrales y fondos soberanos). Como postula Alexander Elder en el Sistema de Triple Pantalla, las correcciones intradia hacia el valor medio de largo plazo (EMA 200) ofrecen una asimetria estadistica positiva cuando el impulso de corto plazo (EMA 9/21) reanuda la marea dominante.",
+    "invalidation_criterion": "Cierre de vela M30 que reingrese y vulnere en sentido opuesto la EMA 200, o ejecucion de la Barrera 2 de Stop Loss anclada a volatilidad diaria."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "M30",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.0,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      5,
+      10
+    ]
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "\\text{EMA}_9[1] > \\text{EMA}_{21}[1] \\;\\wedge\\; \\text{EMA}_9[2] \\leq \\text{EMA}_{21}[2] \\;\\wedge\\; C_{M30}[1] > \\text{EMA}_{200}[1] \\;\\wedge\\; \\text{EMA}_{200}[1] \\geq \\text{EMA}_{200}[2]",
+      "pseudocode": "IF (fast_ma[1] > slow_ma[1] AND fast_ma[2] <= slow_ma[2]) AND (Close[1] > filter_ma[1] AND filter_ma[1] >= filter_ma[2]) AND is_warmed_up AND flat THEN BuySignal = TRUE",
+      "canonical_citation": "Alexander Elder (1993, 2014) - The New Trading for a Living (Triple Screen Trading System); Perry J. Kaufman (2013) - Trading Systems and Methods (Trend Identification with Moving Average Filters)."
+    },
+    "entry_short": {
+      "trigger_formula_latex": "\\text{EMA}_9[1] < \\text{EMA}_{21}[1] \\;\\wedge\\; \\text{EMA}_9[2] \\geq \\text{EMA}_{21}[2] \\;\\wedge\\; C_{M30}[1] < \\text{EMA}_{200}[1] \\;\\wedge\\; \\text{EMA}_{200}[1] \\leq \\text{EMA}_{200}[2]",
+      "pseudocode": "IF (fast_ma[1] < slow_ma[1] AND fast_ma[2] >= slow_ma[2]) AND (Close[1] < filter_ma[1] AND filter_ma[1] <= filter_ma[2]) AND is_warmed_up AND flat THEN SellSignal = TRUE",
+      "canonical_citation": "Alexander Elder (1993, 2014) - The New Trading for a Living (Triple Screen Trading System); Perry J. Kaufman (2013) - Trading Systems and Methods (Trend Identification with Moving Average Filters)."
+    },
+    "session_window_utc": {
+      "start_time": "07:00",
+      "end_time": "19:00"
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 1.5,
+    "barrier_2_stop_atr_multiplier": 0.75,
+    "barrier_3_time_stop_max_bars": 32
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 1.5
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0_specification.json",
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0.mq5",
+    "mql5_binary": null,
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0_FACTSHEET.md"
+  }
+}

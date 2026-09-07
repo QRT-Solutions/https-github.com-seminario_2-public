@@ -1,0 +1,52 @@
+[
+  {
+    "strategy_id": "STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0",
+    "timestamp": "2026-09-03T16:25:00Z",
+    "thesis_title": "Seminario 1: Three White Soldiers Puro (Sin Filtros) en M30",
+    "hypothesis": {
+      "condition_x": "Deteccion pura del patron Three White Soldiers en 3 velas consecutivas de M30 al cierre (Close > Open en las velas 3, 2 y 1; cierres crecientes Close[1] > Close[2] > Close[3]; aperturas dentro del cuerpo previo), sin filtros de tendencia, calidad ni regimen MTF.",
+      "expected_outcome_y": "Captura del impulso comprador inmediatamente posterior a las 3 velas alcistas consecutivas, midiendo el rendimiento intrinseco del patron antes de la incorporacion de filtros.",
+      "structural_reason_z": "Tres velas alcistas consecutivas reflejan una sucesion sostenida de demanda (Steve Nison). Esta version canónica sirve como linea base de pureza estadistica para evidenciar empíricamente la necesidad de filtros macro.",
+      "invalidation": "Cierre de barra bajo el minimo del primer soldado (Low[3]) o expiracion de la Barrera 3 (32 barras M30)."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": null,
+      "note": "Documentado pero NO aplicado como filtro bloqueante de entrada (version pura por diseno)."
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 2.0,
+      "b2_stop_loss_atr": 1.0,
+      "b3_max_holding_bars": 32
+    },
+    "target_assets": [
+      "BTCUSD",
+      "XAUUSD",
+      "US500",
+      "EURUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0_specification.json",
+      "pine_script": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.pine",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": true,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 2.0
+    }
+  }
+]

@@ -1,0 +1,516 @@
+{
+  "schema_version": 1,
+  "author": "QRT Solutions",
+  "scope": "Selection from the pre-migration inventory. Deferred masterclass tracks are preserved privately; all canonical platform sources remain byte-identical. Newly authored files are listed by the release manifest.",
+  "retained_original_files": 83,
+  "original_entries_kept_private": 274,
+  "canonical_platform_sources_unchanged": 25,
+  "excluded_categories": [
+    "Credentials and personal service configuration",
+    "Live order and account infrastructure",
+    "Unrelated projects and local research folders",
+    "Unlicensed full book transcripts",
+    "Unverifiable compiled binaries and tool residues",
+    "Historical masterclass notebooks, data and generated research results deferred to next seminar"
+  ],
+  "original_content": [
+    {
+      "path": "MT5/indicadores/Ind_BTC_Trend_Cross_M30.mq5",
+      "original_sha256": "9a8baa4e91de4e8d9883247b0613a101da87739ae2fef30854f4c79bf6625077",
+      "candidate_sha256": "9a8baa4e91de4e8d9883247b0613a101da87739ae2fef30854f4c79bf6625077",
+      "decision": "retained"
+    },
+    {
+      "path": "MT5/indicadores/Ind_Elder_Cross_M30.mq5",
+      "original_sha256": "cfb65225dcb9ed19c739444e8e1257ab6e8c6b1994658f7a8d1022e8082c5594",
+      "candidate_sha256": "cfb65225dcb9ed19c739444e8e1257ab6e8c6b1994658f7a8d1022e8082c5594",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/indicators/mi_primer_indicador.pine",
+      "original_sha256": "90bf3208d4c71d97e8d97b2910c43731ac590dfca5914a6beb944cbe83ed198d",
+      "candidate_sha256": "90bf3208d4c71d97e8d97b2910c43731ac590dfca5914a6beb944cbe83ed198d",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/indicators/mtf_ejemplo.pine",
+      "original_sha256": "532e9863a3a966f38a3762a06889938f769c1c0e199ebb8d98544d5fbf2e75a1",
+      "candidate_sha256": "532e9863a3a966f38a3762a06889938f769c1c0e199ebb8d98544d5fbf2e75a1",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0.pine",
+      "original_sha256": "c2c567d2292e391e98eda13e01192fa7ecf15f54dfae0757c4028d48eac0201c",
+      "candidate_sha256": "c2c567d2292e391e98eda13e01192fa7ecf15f54dfae0757c4028d48eac0201c",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0.pine",
+      "original_sha256": "4487d38454b7251b5ac9b7d8e3a3d7ae19ed30d175222ee1c20647673093ddae",
+      "candidate_sha256": "4487d38454b7251b5ac9b7d8e3a3d7ae19ed30d175222ee1c20647673093ddae",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/STRAT-20260902-USGAP_MOM-M15-v1.0.pine",
+      "original_sha256": "b07e19c857155a7bbe85e8d65255ca254a61f0d14592249981d7babe8d216315",
+      "candidate_sha256": "b07e19c857155a7bbe85e8d65255ca254a61f0d14592249981d7babe8d216315",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.pine",
+      "original_sha256": "1a057fb1a318f98ff1bfd394535e67e5f6778e858e0dd341b2a576c3bea65746",
+      "candidate_sha256": "1a057fb1a318f98ff1bfd394535e67e5f6778e858e0dd341b2a576c3bea65746",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.pine",
+      "original_sha256": "7ba670f9b8391e90277f5afb8de99f4d4bc4b576d82b288b2bb2058cf6907fd0",
+      "candidate_sha256": "7ba670f9b8391e90277f5afb8de99f4d4bc4b576d82b288b2bb2058cf6907fd0",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0.pine",
+      "original_sha256": "1a134bb6e884b4f10e6716dda85f3da12fd968270bf463f647f7dbbb51e829cf",
+      "candidate_sha256": "1a134bb6e884b4f10e6716dda85f3da12fd968270bf463f647f7dbbb51e829cf",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1.pine",
+      "original_sha256": "77069674383a59d4bfe66611391e6ccc4cbbec6bc3d99f968a00244d1a6d00d5",
+      "candidate_sha256": "77069674383a59d4bfe66611391e6ccc4cbbec6bc3d99f968a00244d1a6d00d5",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1.pine",
+      "original_sha256": "679965000b875de00a86142ea0785f7261175e746f6c66bbb094105cf2fe7f9c",
+      "candidate_sha256": "679965000b875de00a86142ea0785f7261175e746f6c66bbb094105cf2fe7f9c",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/gap_fade_simple_30m.pine",
+      "original_sha256": "aa5fb13b267b9a733e40dc57a94fd87206776159db5cf30509829b7a8d4f983d",
+      "candidate_sha256": "aa5fb13b267b9a733e40dc57a94fd87206776159db5cf30509829b7a8d4f983d",
+      "decision": "retained"
+    },
+    {
+      "path": "TradingView/pine/strategies/nq_gap_fade_masterclass_5m.pine",
+      "original_sha256": "76b55448704cca0afe4b4e143d8d99782f3fcb9a7ad9617e02160efae375eba9",
+      "candidate_sha256": "76b55448704cca0afe4b4e143d8d99782f3fcb9a7ad9617e02160efae375eba9",
+      "decision": "retained"
+    },
+    {
+      "path": "masterclass/QRT-LOGO.png",
+      "original_sha256": "797b8e8ab56616521e5a7c1cac32f930807caf0dfef59745b342a152da7624d3",
+      "candidate_sha256": "797b8e8ab56616521e5a7c1cac32f930807caf0dfef59745b342a152da7624d3",
+      "decision": "retained"
+    },
+    {
+      "path": "masterclass/app.js",
+      "original_sha256": "c382a66c153650492a8dca0fa81e2de61f8785fe6bc972f99d5261fe7dab1071",
+      "candidate_sha256": "69a2f166580c12e73af0c0318327b71feb9a1d5e8b1c94059605a6c9189b666c",
+      "decision": "transformed"
+    },
+    {
+      "path": "masterclass/guion.md",
+      "original_sha256": "56be3804d763cf4f6931d5eeb3059c51916bf34aab59aa2680bf9acfe6774555",
+      "candidate_sha256": "4782504db45e3f7bd0fbe4b7352910ecca7aed8298ba5781994d620834d1658b",
+      "decision": "transformed"
+    },
+    {
+      "path": "masterclass/index.html",
+      "original_sha256": "44e03a8b3411d8eeb4e814715dca53777f89f385f7de69b52489ce42285ee208",
+      "candidate_sha256": "3e652521e16b6a35df369a7a489c5b2a8343c365e8e52264fc0e513cb59fcbba",
+      "decision": "transformed"
+    },
+    {
+      "path": "masterclass/styles.css",
+      "original_sha256": "4c22c2fb59e9c5f7915fbf9ce9a9a17498f19b13f594f787389490f9f5665322",
+      "candidate_sha256": "76a960d7a44a0c2ec5949bef193e5b08d4aeb7206be0832631aa0408ef96fd9f",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/STRATEGY_REGISTRY.json",
+      "original_sha256": "f7672067aaaaa95daaddd1921b3761a573ca1f41a87209e45ca2fa3cec7ed1a7",
+      "candidate_sha256": "1c2ac36e4b5a479be7f072b783dda1c8e29231afa25c0635cc87a2b5863dec8f",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/docs/ARCHITECTURE.md",
+      "original_sha256": "64e43b83e311060c3e78f21520bd64a367d71009c04b2d0059a5936fe4f0132b",
+      "candidate_sha256": "99d567b32c8b88d614eb674dffceb439d64f0bec00164c6ee49c77d844abfcaf",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/docs/CODE_SKELETON_STANDARD.md",
+      "original_sha256": "4fbb2f80a4f98361c705e60ae596b8c72a1d8ea9dec90c39e05d701c1283f21f",
+      "candidate_sha256": "543714482e051837917964962e0c50bf7c8a6089fbde004406c1e3c142f89426",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/docs/INTERACTION_GUIDE.md",
+      "original_sha256": "601abb692865bad03028e9a1d66676e56de8ce20b4d25624ec83e0206e2f8132",
+      "candidate_sha256": "69432c476850c74cc74650f60b7f5ab7d76e9b77795b6551c488170564a53acd",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/docs/METHODOLOGY.md",
+      "original_sha256": "f71c6c65eb590c8997693263cdad800b3c8315880afc48ebdd4be4eb205e6361",
+      "candidate_sha256": "c9af9e96fcb9de61ae94c0e36deb9c47e0d85c04718f0a58eacdb76ac35de9ce",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/docs/OPTIMIZATION_PROTOCOL.md",
+      "original_sha256": "ec8a43d53a71350409d878523a2bafa0b0627fe7029e0331b4d0dd4a9ead2075",
+      "candidate_sha256": "e988863e455e440a04846f723d140207971e2e8c63ec73148acae89697c7128f",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/schemas/strategy_specification.schema.json",
+      "original_sha256": "18bc5015aac0614490d882751c0b56c3e0b8969def8a0abfa16c34e3f25309a5",
+      "candidate_sha256": "e0916f63bc46f62e71589aa3cb01ab997bbe0808d6b46205f3115ccbc8d2f3a9",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0.mq5",
+      "original_sha256": "85ef6d11390a4c5cfcd963df75e295109d23cfc24c27a52831032b819d5c56de",
+      "candidate_sha256": "85ef6d11390a4c5cfcd963df75e295109d23cfc24c27a52831032b819d5c56de",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0_FACTSHEET.md",
+      "original_sha256": "cf2f36ea646e139827fa47645758a2a989b81e210ebaac59f8033bb0295d4e79",
+      "candidate_sha256": "8bb1eec7e493fece9ba13b97cce5172da9a43a8e6605686aa5f31e67a4624822",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0_specification.json",
+      "original_sha256": "eded0603a93536e0d98e6dacace10314517b93d2da5a74d6502716dee49e03a0",
+      "candidate_sha256": "012456cec8504b7997ab743004445442eba9c33f9d3e8599cf65f2676f5a95c8",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0.mq5",
+      "original_sha256": "fdfb1eda7ecad9adc67cd7fba0d339595f66d645653d76ee4cbeccbdabf1eb36",
+      "candidate_sha256": "fdfb1eda7ecad9adc67cd7fba0d339595f66d645653d76ee4cbeccbdabf1eb36",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0.pine",
+      "original_sha256": "c2c567d2292e391e98eda13e01192fa7ecf15f54dfae0757c4028d48eac0201c",
+      "candidate_sha256": "c2c567d2292e391e98eda13e01192fa7ecf15f54dfae0757c4028d48eac0201c",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0_FACTSHEET.md",
+      "original_sha256": "66998a691a3bdee337f985ad51d6ec3e211d7e1f57052aab355375ff3d9da637",
+      "candidate_sha256": "4a711bce6ff371af9e4f464ff57a7900f21b69a6ea60c4440dabf17772011213",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0_specification.json",
+      "original_sha256": "90c841e8e101726202d0b8ee5d03d3bd35ac7bfcc4e697cb4430c5d9e271b884",
+      "candidate_sha256": "c5e0a9b600a83924748e4d5b3a476a5dcfc3e7e052e831c7a781312b65eec7c0",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0.mq5",
+      "original_sha256": "8c5ff31b3f27f2b3d946f0fcd6a28d4367c9f633e48591378a2ff40f4c345493",
+      "candidate_sha256": "8c5ff31b3f27f2b3d946f0fcd6a28d4367c9f633e48591378a2ff40f4c345493",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0.pine",
+      "original_sha256": "4487d38454b7251b5ac9b7d8e3a3d7ae19ed30d175222ee1c20647673093ddae",
+      "candidate_sha256": "4487d38454b7251b5ac9b7d8e3a3d7ae19ed30d175222ee1c20647673093ddae",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0_FACTSHEET.md",
+      "original_sha256": "4661776c410309d19934d72e0f09a7a92bb7c0f81074aa758475d6dfd0787d8b",
+      "candidate_sha256": "17a53194f981b7b92df91b16c700440d0bb627f719fe012d477e1e717086659e",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0_specification.json",
+      "original_sha256": "182c05ffc3e0c4ed38ec21d205ab38f878720e56109a60709599881b9fc55e72",
+      "candidate_sha256": "03fc8bd5f0e0ef62836e8171d87aa62c8fbbd8e5d72f5dcf3fc653d975d03992",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.0.mq5",
+      "original_sha256": "7ba4d66a9f2a6b2ece531f0f6e8cd304b5c790d7e0d44f581c8b84312c5b8798",
+      "candidate_sha256": "7ba4d66a9f2a6b2ece531f0f6e8cd304b5c790d7e0d44f581c8b84312c5b8798",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.0_specification.json",
+      "original_sha256": "3e3b5429e3eb44b8f9aa0cb515ce4898c823970577ab85b0ee723c8fd1902c25",
+      "candidate_sha256": "863f354ffaf8843c93ac374b7b26d4ce51ceccb0408dbcfd930f592d15bbd11b",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.1.mq5",
+      "original_sha256": "c89a5089cb7c8efc9be8bcd1589cb627cc0f927ccf896cdbd0192fc1435100b1",
+      "candidate_sha256": "c89a5089cb7c8efc9be8bcd1589cb627cc0f927ccf896cdbd0192fc1435100b1",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.1_specification.json",
+      "original_sha256": "0cf72419c673a4f3124986d1fe42ae514e29a3c9896ee944a9f0394bc71ad34c",
+      "candidate_sha256": "e28e155a04e58f39d5553c07c57234e50e390916b64fda8a6f7bcd9b612b433c",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.0.mq5",
+      "original_sha256": "e83578155dc0ad0d1261bffc82a60946224084c396d0719c6e9ee8b305db28eb",
+      "candidate_sha256": "e83578155dc0ad0d1261bffc82a60946224084c396d0719c6e9ee8b305db28eb",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.0.pine",
+      "original_sha256": "b07e19c857155a7bbe85e8d65255ca254a61f0d14592249981d7babe8d216315",
+      "candidate_sha256": "b07e19c857155a7bbe85e8d65255ca254a61f0d14592249981d7babe8d216315",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.0_FACTSHEET.md",
+      "original_sha256": "577663ae70e9c1d1ede6d57841fe0b02f1dffad7d3165f15eba6278f8285251c",
+      "candidate_sha256": "772db7abbc418f1301437b6a28f0dab5fb9bcd29002c8c7d798071a115578b60",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.0_specification.json",
+      "original_sha256": "f742e56ce520ee0644c0b31a35aa1ade0ea34e4705714193608b654b0544b67e",
+      "candidate_sha256": "d47b02cbc48873416a77c82a5facd0f22fe0435adad0ec7ed86c15d145937d12",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1.mq5",
+      "original_sha256": "73069c6d25df95177e241e4c5a2e680a00e5aee90e1cd4a5a6d098ca9f0c6fd0",
+      "candidate_sha256": "73069c6d25df95177e241e4c5a2e680a00e5aee90e1cd4a5a6d098ca9f0c6fd0",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1_FACTSHEET.md",
+      "original_sha256": "4664a0f9808eb51cc293bb17e8f5374e8ea8256d6bb81373593761335749cd62",
+      "candidate_sha256": "978b49314adc8362e2bc766b7cf6865f721b70fa758720cbf20dd7840332410c",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1_specification.json",
+      "original_sha256": "9cf74d629ec63cf41a1a7158a35803874ed260c9b9e9c53c4c3c074c484d3f9a",
+      "candidate_sha256": "fc65852e1a90d7cc7683b11e9981400ff13d15e32618e17ecd86ab40b27859fa",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.0.mq5",
+      "original_sha256": "b12505ab1b470b099405f2ba0cf5f6710b483a8454c791f5ed612431923c0aaa",
+      "candidate_sha256": "b12505ab1b470b099405f2ba0cf5f6710b483a8454c791f5ed612431923c0aaa",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.0_specification.json",
+      "original_sha256": "d2654a432bb5042c4479f4c9bbf7bca329b3ed35f327b96faaa9eda04f820ed6",
+      "candidate_sha256": "963f2d39f40e100d071327258560db11ccee69a9ad0645bcad59c33b0d9bc21f",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.1.mq5",
+      "original_sha256": "3317153781c2593069726f382a95ddf3aed4e61401e321c19d479336516306b2",
+      "candidate_sha256": "3317153781c2593069726f382a95ddf3aed4e61401e321c19d479336516306b2",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.1_specification.json",
+      "original_sha256": "93aa6e403fc21eeb49dfd6a20b5e6cc8d57fabf076a471ae108ddedf04ac8afd",
+      "candidate_sha256": "ac12631f8407d6b1ec8c903ddcdcd3db875d012be8bf59cd9b879ca68494daab",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.mq5",
+      "original_sha256": "d19a27958bc77b55a658f05416a380742b5f541df165a162f82e42f767dd9507",
+      "candidate_sha256": "d19a27958bc77b55a658f05416a380742b5f541df165a162f82e42f767dd9507",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.pine",
+      "original_sha256": "1a057fb1a318f98ff1bfd394535e67e5f6778e858e0dd341b2a576c3bea65746",
+      "candidate_sha256": "1a057fb1a318f98ff1bfd394535e67e5f6778e858e0dd341b2a576c3bea65746",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0_FACTSHEET.md",
+      "original_sha256": "7afa368d60ba89a56b48adad74546a6129fa5706b4207150a5c342fec48d7c49",
+      "candidate_sha256": "02de139dcd957cfc409f7d2217984c39d0a5a29915f31ccfe1a2e351e7048a4e",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0_specification.json",
+      "original_sha256": "77b58e97b97b9b6e617cbf48c5bf81ac70d7ee8a94031ac0c57740a8a8be6e04",
+      "candidate_sha256": "0ea948da6b407d3742dd2a7854158de63be256caacb76005a7c1a38ae4e7934f",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.0.mq5",
+      "original_sha256": "874032f7c46891eae7ae51db4bd0a433ad63035897ba7b48af343e02ec2e9ef6",
+      "candidate_sha256": "874032f7c46891eae7ae51db4bd0a433ad63035897ba7b48af343e02ec2e9ef6",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.0_specification.json",
+      "original_sha256": "b716dd97f08970e11f8e88e31b8dbbd5f0896e0d4f324cfaffad2db4d4fbb659",
+      "candidate_sha256": "bd7f05ee7ea45f04ebcae3acf8b8c2e4eea2ab06a393a61b5851a10e8d9ed864",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.1.mq5",
+      "original_sha256": "695fae22e83a7c5d4c942852699f913d139aa47c57d8ebfcfd4f553f6c159d52",
+      "candidate_sha256": "695fae22e83a7c5d4c942852699f913d139aa47c57d8ebfcfd4f553f6c159d52",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.1_specification.json",
+      "original_sha256": "86d8efe8ba7616977d10bd573f9e7113fc954eb0bc45b382e1ea68df6105fcbc",
+      "candidate_sha256": "7a8a71fc76c7492a777491343c1ed4931239270fc17b622bc1acb7f80c0dcc06",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.mq5",
+      "original_sha256": "63e64af5be8c34a4319471cb668126787b1ca82c68ad459818ae52df8fdfdf20",
+      "candidate_sha256": "63e64af5be8c34a4319471cb668126787b1ca82c68ad459818ae52df8fdfdf20",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.pine",
+      "original_sha256": "7ba670f9b8391e90277f5afb8de99f4d4bc4b576d82b288b2bb2058cf6907fd0",
+      "candidate_sha256": "7ba670f9b8391e90277f5afb8de99f4d4bc4b576d82b288b2bb2058cf6907fd0",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0_FACTSHEET.md",
+      "original_sha256": "3f608fdabd405bdf9a8b006cd4631ef2e839a13471b66e95279f9c5a919d0ba3",
+      "candidate_sha256": "4eb378b8d26e7d0384a793c5ea623a22cdca070c8ac219b2a1eab2962b6783d8",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0_specification.json",
+      "original_sha256": "b20fd22769e2d539c893a54d1895e446b9ccae7baacfbe5cea5435559f4c8fa3",
+      "candidate_sha256": "ca6be5548a2b11e35e29f9239a751d90ded619eff0e1ebb23da4a5dec037cf38",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0.mq5",
+      "original_sha256": "9a4b760d88e9a5f1f61979578d75cd61f29596e41486bb08e25874bea75152cf",
+      "candidate_sha256": "9a4b760d88e9a5f1f61979578d75cd61f29596e41486bb08e25874bea75152cf",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0.pine",
+      "original_sha256": "1a134bb6e884b4f10e6716dda85f3da12fd968270bf463f647f7dbbb51e829cf",
+      "candidate_sha256": "1a134bb6e884b4f10e6716dda85f3da12fd968270bf463f647f7dbbb51e829cf",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0_FACTSHEET.md",
+      "original_sha256": "0626b25562bbd85a6a57091ba4c362c8fe98ab749f7a5337d574d23e73ca29cb",
+      "candidate_sha256": "8a72d9a49c4a4bb11ee24ba467ecf293b2e334521d8db1634dda65a24b434d36",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0_specification.json",
+      "original_sha256": "19e04d701ad600a1ad951353915e3c61a5b8cf715512da503050c73301931f65",
+      "candidate_sha256": "8ec2721b0263a97b6de3f2f398686225efd4dce5743db050164f628d416b918d",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1.mq5",
+      "original_sha256": "d8a7049629a097c905dabbf655c7a549656a0c64d77d806046f4f16a3c0c12ba",
+      "candidate_sha256": "d8a7049629a097c905dabbf655c7a549656a0c64d77d806046f4f16a3c0c12ba",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1.pine",
+      "original_sha256": "77069674383a59d4bfe66611391e6ccc4cbbec6bc3d99f968a00244d1a6d00d5",
+      "candidate_sha256": "77069674383a59d4bfe66611391e6ccc4cbbec6bc3d99f968a00244d1a6d00d5",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1_FACTSHEET.md",
+      "original_sha256": "2ed0b0dceb0172853c81d07b2efe9ce648a74ff2466ec0c552de5718b5d6634e",
+      "candidate_sha256": "b0b3209fba54d9c42951a18bdacc77c76d7f511d56f8e6d9de07f879eb67776a",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1_specification.json",
+      "original_sha256": "a9b08eab24ffe10b8e4c8eeac59e70fbeaa0f5ab3243cfe4d76e8f78a225d5f6",
+      "candidate_sha256": "f50aecd7c7ffb13cc6778ca6fc74c6a64cfb100336f6d996c9fc24075763d7e5",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0.mq5",
+      "original_sha256": "170014e48ba352796f998d0ff870babcb41791b6e0eccee39522ca4198419e18",
+      "candidate_sha256": "170014e48ba352796f998d0ff870babcb41791b6e0eccee39522ca4198419e18",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0_FACTSHEET.md",
+      "original_sha256": "aac4ac999cd56f520aa95eab1172bf1bde5851cd7ddfb92945fa892b8a01e15c",
+      "candidate_sha256": "23a01e77dbf2993390ca59a240f54b871f0c7f76324697f2d1e39720e5cc66d7",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0_specification.json",
+      "original_sha256": "344939f075432c3456546c78df4faa8e984a56335ec437bb1d527e99a46c0042",
+      "candidate_sha256": "64cdfc5eccf71da9b9068574dcabba2adfc2626439686c72b8e0370b9cfbd9b5",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1.mq5",
+      "original_sha256": "31f805cccceaceecd0b6ecda4d224f66662005b28eb98dd7a9c95514d8ff2e33",
+      "candidate_sha256": "31f805cccceaceecd0b6ecda4d224f66662005b28eb98dd7a9c95514d8ff2e33",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1.pine",
+      "original_sha256": "679965000b875de00a86142ea0785f7261175e746f6c66bbb094105cf2fe7f9c",
+      "candidate_sha256": "679965000b875de00a86142ea0785f7261175e746f6c66bbb094105cf2fe7f9c",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1_FACTSHEET.md",
+      "original_sha256": "902ec6116a8ef10597c89fa0d7fe9221972b0568ec646ef5e57fc93c1801212d",
+      "candidate_sha256": "445919303689dbe25fe84ccfe094a2a783fa14eb42946ee06d35a5dee304ca06",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1_specification.json",
+      "original_sha256": "d72910cc426e79fbced690239b2f052126dccb692748d5762cd414f151c6f6ee",
+      "candidate_sha256": "1501ad54584facf02bc90c7d00ac570f08159714d5cad18a28212ce991051593",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/templates/STRATEGY_FACTSHEET_TEMPLATE.md",
+      "original_sha256": "46bf8c7c8d22d160d57426529fcd013d8befd48444fa4ce338adc9066e9bd5ae",
+      "candidate_sha256": "c6dbde21cb909a22fe7121cc59ebcbf2d3cca9211e2923054c31b8b7501fd970",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/templates/STRATEGY_REGISTRY_SAMPLE.json",
+      "original_sha256": "8134dd3b4ac7ceb28509bce8a2405b513f9c267d506d6f99518b2609fc3bc49b",
+      "candidate_sha256": "61434ff294f81be2dd173927561819fba828b12973f971c367fa7181ca5be7f7",
+      "decision": "transformed"
+    },
+    {
+      "path": "quant_agentic_swarm/templates/mql5_ea_template.mq5",
+      "original_sha256": "c5332eaa2ab8d2d50be8eeacfaf242d13e9ab2d1bf7cb3f29cf9d967d6219dc6",
+      "candidate_sha256": "c5332eaa2ab8d2d50be8eeacfaf242d13e9ab2d1bf7cb3f29cf9d967d6219dc6",
+      "decision": "retained"
+    },
+    {
+      "path": "quant_agentic_swarm/templates/tradingview_v6_template.pine",
+      "original_sha256": "3305922569956fb5e1f1731e4743993d158666c3b5fdfc4d9cd681340498f54b",
+      "candidate_sha256": "3305922569956fb5e1f1731e4743993d158666c3b5fdfc4d9cd681340498f54b",
+      "decision": "retained"
+    }
+  ]
+}

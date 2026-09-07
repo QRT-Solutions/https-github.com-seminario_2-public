@@ -1,0 +1,54 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260903-3WHITESOLDIERS-H4-v1.1",
+  "timestamp": "2026-09-03T16:00:00Z",
+  "hypothesis": {
+    "condition_x": "Se identifican 3 velas H4 consecutivas alcistas (Close > Open) con cierres crecientes (Close[1] > Close[2] > Close[3]). Version simplificada de diagnostico cuantitativo donde los filtros secundarios de mechas, tendencia previa EMA 50 y regimen de volatilidad Z-Score estan desactivados por defecto para aislar la geometria pura del patron.",
+    "expected_outcome_y": "Expansion alcista posterior al cierre de los tres soldados, extendiendose hasta la Barrera de Take Profit (2.5x ATR D1) o cierre por tiempo (24 barras H4 = 96 horas).",
+    "structural_reason_z": "Aislar la ventaja estadistica de la inercia compradora de tres cierres alcistas consecutivos sin fricciones artificiales ni sobreajuste de filtros secundarios (Nison, Japanese Candlestick Charting Techniques; Perry Kaufman, Trading Systems and Methods).",
+    "invalidation_criterion": "El precio cierra por debajo del Stop Loss de 0.75x ATR D1 o expira la barrera temporal maxima de 24 barras H4."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "H4",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.67,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      5,
+      10
+    ]
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "\\text{Alcista}_i: C_i > O_i; \\quad C_1 > C_2 > C_3; \\quad O_2 \\in [O_3, C_3]; \\; O_1 \\in [O_2, C_2]",
+      "pseudocode": "ON each H4 bar confirmed: IF Close[1]>Open[1] AND Close[2]>Open[2] AND Close[3]>Open[3] AND Close[1]>Close[2]>Close[3] AND Open[2] within body of bar[3] AND Open[1] within body of bar[2] THEN BuySignal = TRUE",
+      "canonical_citation": "Steve Nison - Japanese Candlestick Charting Techniques; Perry Kaufman - Trading Systems and Methods; Marcos Lopez de Prado - Triple Barrier Method."
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 2.5,
+    "barrier_2_stop_atr_multiplier": 0.75,
+    "barrier_3_time_stop_max_bars": 24
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 2.5
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.1_specification.json",
+    "pine_script": null,
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.1.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260903-3WHITESOLDIERS-H4-v1.1.mq5",
+    "mql5_binary": null,
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.1_FACTSHEET.md"
+  }
+}

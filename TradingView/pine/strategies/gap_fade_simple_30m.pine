@@ -1,0 +1,224 @@
+//@version=6
+// =============================================================================
+//  GAP FADE QUANT SUITE (NQ FUTURES & STOCKS 30M) — EDICIÓN INSTITUCIONAL
+//  Autor: QRT Solutions
+//  Plataforma: TradingView / Pine Script v6
+// =============================================================================
+strategy("Gap Fade Simple 30M [QRT]", shorttitle = "GapFade_30M_QRT",
+     overlay = true,
+     initial_capital = 100000,
+     currency = currency.USD,
+     default_qty_type = strategy.fixed,
+     default_qty_value = 1,
+     commission_type = strategy.commission.cash_per_order,
+     commission_value = 2.0,
+     slippage = 2,
+     margin_long = 5.0,
+     margin_short = 5.0,
+     process_orders_on_close = true,
+     calc_on_every_tick = false)
+
+// -----------------------------------------------------------------------------
+// 1. INPUTS Y CONFIGURACIÓN DE SESIÓN Y SIZING
+// -----------------------------------------------------------------------------
+grp_gap   = "1. Parámetros del Gap y Horario"
+atrLen          = input.int(14, "ATR Diario (períodos)", minval = 2, group = grp_gap)
+gapThresholdPct = input.float(50.0, "Umbral de Gap (% del ATR diario)", minval = 1.0, step = 5.0, group = grp_gap)
+allowLong       = input.bool(true, "Permitir Long (Fade de Gap Bajista)", group = grp_gap)
+allowShort      = input.bool(true, "Permitir Short (Fade de Gap Alcista)", group = grp_gap)
+sessionRTH      = input.session("0930-1600", "Horario Sesión RTH (Hora NY)", group = grp_gap,
+     tooltip = "Define la ventana de sesión regular en Nueva York para Futuros CME y Acciones.")
+
+grp_size  = "2. Dimensionamiento de Posición (Sizing)"
+sizingMode      = input.string("Contratos Fijos (Futuros)", "Modo de Sizing", 
+     options = ["Contratos Fijos (Futuros)", "% de Capital (Acciones)"], group = grp_size)
+fixedContracts  = input.int(1, "Número de Contratos Fijos", minval = 1, group = grp_size)
+equityPct       = input.float(25.0, "% de Capital por Trade", minval = 1.0, maxval = 100.0, group = grp_size)
+
+grp_ui    = "3. Visualización y Panel Cuantitativo"
+showTable       = input.bool(true, "Mostrar Dashboard de Rendimiento Puro", group = grp_ui)
+showLabels      = input.bool(true, "Mostrar Etiquetas de Entrada y Salida", group = grp_ui)
+labelOffsetAtr  = input.float(0.35, "Separación Vertical de Etiquetas (múltiplo ATR)", minval = 0.05, maxval = 2.0, step = 0.05, group = grp_ui)
+tablePos        = input.string("Top Right", "Posición del Dashboard",
+     options = ["Top Right", "Bottom Right", "Top Left", "Bottom Left"], group = grp_ui)
+
+gapThresholdATR = gapThresholdPct / 100.0
+
+// -----------------------------------------------------------------------------
+// 2. DATOS DIARIOS CONFIRMADOS (Lookahead Seguro)
+// -----------------------------------------------------------------------------
+dailyATR     = request.security(syminfo.tickerid, "D", ta.atr(atrLen), lookahead = barmerge.lookahead_off)
+prevDayClose = request.security(syminfo.tickerid, "D", close, lookahead = barmerge.lookahead_off)
+
+// -----------------------------------------------------------------------------
+// 3. MOTOR DE SESIÓN TEMPORAL ROBUSTO (NEW YORK TIME 09:30 - 16:00)
+// -----------------------------------------------------------------------------
+int nyHour   = hour(time, "America/New_York")
+int nyMinute = minute(time, "America/New_York")
+
+bool inRTH = not na(time(timeframe.period, sessionRTH + ":23456", "America/New_York"))
+
+bool isNewDay = (nyHour == 9 and nyMinute == 30) or (inRTH and not inRTH[1])
+bool isLastBar = (nyHour == 15 and nyMinute >= 30) or (not inRTH and inRTH[1])
+
+var float todayOpen  = na
+var float gapPoints  = na
+var float gapATRmult = na
+var bool  gapUp       = false
+var bool  isSetup     = false
+
+if isNewDay
+    todayOpen  := open
+    gapPoints  := todayOpen - prevDayClose
+    gapATRmult := not na(dailyATR) and dailyATR > 0 ? (gapPoints / dailyATR) : 0.0
+    gapUp      := gapPoints > 0
+    isSetup    := math.abs(gapATRmult) >= gapThresholdATR
+
+// -----------------------------------------------------------------------------
+// 4. MOTOR NATIVO DE ESTRATEGIA (Strategy Tester)
+// -----------------------------------------------------------------------------
+longSignal  = isNewDay and isSetup and not gapUp and allowLong
+shortSignal = isNewDay and isSetup and gapUp and allowShort
+
+float orderQty = sizingMode == "Contratos Fijos (Futuros)" ? fixedContracts : (strategy.equity * (equityPct / 100.0)) / close
+
+if longSignal and strategy.position_size == 0
+    strategy.entry("Long Fade", strategy.long, qty = orderQty)
+
+if shortSignal and strategy.position_size == 0
+    strategy.entry("Short Fade", strategy.short, qty = orderQty)
+
+if (isLastBar or not inRTH) and strategy.position_size != 0
+    strategy.close_all(comment = "Cierre EOD")
+
+// -----------------------------------------------------------------------------
+// 5. MOTOR CUANTITATIVO ON-CHART (Open-to-Close Puro)
+// -----------------------------------------------------------------------------
+var int   totalTrades   = 0
+var int   winTrades     = 0
+var int   lossTrades    = 0
+var float grossProfit   = 0.0
+var float grossLoss     = 0.0
+var float netProfit     = 0.0
+var float peakProfit    = 0.0
+var float maxDrawdown   = 0.0
+
+if isLastBar and isSetup
+    float dayClose = close
+    float tradeReturnPts = 0.0
+    bool  isLongTrade = not gapUp and allowLong
+    bool  isShortTrade = gapUp and allowShort
+
+    if isLongTrade
+        tradeReturnPts := dayClose - todayOpen
+    else if isShortTrade
+        tradeReturnPts := todayOpen - dayClose
+
+    if isLongTrade or isShortTrade
+        float tradeDollarPnL = 0.0
+        if sizingMode == "Contratos Fijos (Futuros)"
+            tradeDollarPnL := tradeReturnPts * syminfo.pointvalue * fixedContracts
+        else
+            float tradeReturnPct = todayOpen > 0 ? (tradeReturnPts / todayOpen) : 0.0
+            tradeDollarPnL := (strategy.initial_capital * (equityPct / 100.0)) * tradeReturnPct
+
+        totalTrades += 1
+        netProfit   += tradeDollarPnL
+
+        if tradeDollarPnL > 0
+            winTrades   += 1
+            grossProfit += tradeDollarPnL
+        else
+            lossTrades  += 1
+            grossLoss   += math.abs(tradeDollarPnL)
+
+        peakProfit  := math.max(peakProfit, netProfit)
+        maxDrawdown := math.max(maxDrawdown, peakProfit - netProfit)
+
+// -----------------------------------------------------------------------------
+// 6. DASHBOARD VISUAL
+// -----------------------------------------------------------------------------
+var table perfTable = na
+
+if showTable and barstate.islast
+    string pos = tablePos == "Top Right" ? position.top_right :
+                 tablePos == "Bottom Right" ? position.bottom_right :
+                 tablePos == "Top Left" ? position.top_left : position.bottom_left
+
+    perfTable := table.new(pos, 2, 8, bgcolor = color.new(color.black, 15), border_color = color.gray, border_width = 1)
+
+    float winRate = totalTrades > 0 ? (winTrades / totalTrades) * 100.0 : 0.0
+    float profitFactor = grossLoss > 0 ? (grossProfit / grossLoss) : (grossProfit > 0 ? 99.9 : 0.0)
+    color pnlColor = netProfit >= 0 ? color.green : color.red
+
+    table.cell(perfTable, 0, 0, "Métrica Open-to-Close Puro", bgcolor = color.navy, text_color = color.white, text_size = size.small)
+    table.cell(perfTable, 1, 0, "Valor (30M / Sin Lag)",    bgcolor = color.navy, text_color = color.white, text_size = size.small)
+
+    table.cell(perfTable, 0, 1, "Trades Totales",       text_color = color.white, text_size = size.small)
+    table.cell(perfTable, 1, 1, str.tostring(totalTrades), text_color = color.white, text_size = size.small)
+
+    table.cell(perfTable, 0, 2, "Tasa de Acierto (Win Rate)", text_color = color.white, text_size = size.small)
+    table.cell(perfTable, 1, 2, str.tostring(winRate, "#.##") + "%", text_color = winRate >= 50 ? color.green : color.orange, text_size = size.small)
+
+    table.cell(perfTable, 0, 3, "Profit Factor",        text_color = color.white, text_size = size.small)
+    table.cell(perfTable, 1, 3, str.tostring(profitFactor, "#.##"), text_color = profitFactor >= 1.2 ? color.green : color.orange, text_size = size.small)
+
+    table.cell(perfTable, 0, 4, "PnL Neto Acumulado",   text_color = color.white, text_size = size.small)
+    table.cell(perfTable, 1, 4, "$" + str.tostring(netProfit, "#,###.##"), text_color = pnlColor, text_size = size.small)
+
+    table.cell(perfTable, 0, 5, "Ganancia Bruta",       text_color = color.white, text_size = size.small)
+    table.cell(perfTable, 1, 5, "$" + str.tostring(grossProfit, "#,###.##"), text_color = color.green, text_size = size.small)
+
+    table.cell(perfTable, 0, 6, "Pérdida Bruta",        text_color = color.white, text_size = size.small)
+    table.cell(perfTable, 1, 6, "-$" + str.tostring(grossLoss, "#,###.##"), text_color = color.red, text_size = size.small)
+
+    table.cell(perfTable, 0, 7, "Max Drawdown ($)",     text_color = color.white, text_size = size.small)
+    table.cell(perfTable, 1, 7, "$" + str.tostring(maxDrawdown, "#,###.##"), text_color = color.red, text_size = size.small)
+
+// -----------------------------------------------------------------------------
+// 7. ETIQUETAS FLOTANTES
+// -----------------------------------------------------------------------------
+plot(prevDayClose, "Cierre Anterior", color = color.new(color.gray, 30), style = plot.style_linebr, linewidth = 2)
+bgcolor(isSetup ? color.new(gapUp ? color.red : color.green, 90) : na, title = "Día con Gap Operable")
+
+float vBuffer = not na(dailyATR) and dailyATR > 0 ? (dailyATR * labelOffsetAtr) : (ta.atr(14) * labelOffsetAtr)
+
+if showLabels and isNewDay and isSetup
+    string dirTitle  = gapUp ? "GAP UP (" : "GAP DOWN ("
+    string gapPctStr = str.tostring(gapATRmult * 100, "#.#") + "% ATR)"
+    string actionStr = gapUp ? " SHORT FADE" : " LONG FADE"
+    string priceStr  = "Precio Entrada: $" + str.tostring(todayOpen, format.mintick)
+    string prevClStr = "Cierre Ayer: $" + str.tostring(prevDayClose, format.mintick)
+
+    string labelText = dirTitle + gapPctStr + "\n" +
+                       actionStr + "\n" +
+                       "\n" +
+                       priceStr + "\n" +
+                       prevClStr
+
+    float entryY = gapUp ? (high + vBuffer) : (low - vBuffer)
+    label.new(bar_index, entryY,
+         text = labelText,
+         style = gapUp ? label.style_label_down : label.style_label_up,
+         color = gapUp ? color.new(color.red, 5) : color.new(color.green, 5),
+         textcolor = color.white,
+         size = size.small)
+
+if showLabels and isLastBar and isSetup
+    float  dayClose     = close
+    float  pnlPts       = gapUp ? (todayOpen - dayClose) : (dayClose - todayOpen)
+    float  pnlPct       = todayOpen > 0 ? (pnlPts / todayOpen) * 100.0 : 0.0
+    bool   isWinner     = pnlPts >= 0
+    string pnlSign      = isWinner ? "+" : ""
+    string outcomeText  = "SALIDA EOD\n" +
+                          "\n" +
+                          "Precio Salida: $" + str.tostring(dayClose, format.mintick) + "\n" +
+                          "Resultado: " + pnlSign + str.tostring(pnlPts, format.mintick) + " pts (" + pnlSign + str.tostring(pnlPct, "#.##") + "%)"
+
+    float exitY = isWinner ? (low - vBuffer) : (high + vBuffer)
+    label.new(bar_index, exitY,
+         text = outcomeText,
+         style = isWinner ? label.style_label_up : label.style_label_down,
+         color = isWinner ? color.new(color.teal, 10) : color.new(color.maroon, 10),
+         textcolor = color.white,
+         size = size.small)

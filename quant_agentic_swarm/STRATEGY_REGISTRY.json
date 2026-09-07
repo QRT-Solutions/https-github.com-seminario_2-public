@@ -1,0 +1,842 @@
+[
+  {
+    "strategy_id": "STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0",
+    "timestamp": "2026-09-03T16:25:00Z",
+    "thesis_title": "Seminario 1: Three White Soldiers Puro (Sin Filtros) en M30",
+    "hypothesis": {
+      "condition_x": "Deteccion pura del patron Three White Soldiers en 3 velas consecutivas de M30 al cierre (Close > Open en las velas 3, 2 y 1; cierres crecientes Close[1] > Close[2] > Close[3]; aperturas dentro del cuerpo previo), sin filtros de tendencia, calidad ni regimen MTF.",
+      "expected_outcome_y": "Captura del impulso comprador inmediatamente posterior a las 3 velas alcistas consecutivas, midiendo el rendimiento intrinseco del patron antes de la incorporacion de filtros.",
+      "structural_reason_z": "Tres velas alcistas consecutivas reflejan una sucesion sostenida de demanda (Steve Nison). Esta version canónica sirve como linea base de pureza estadistica para evidenciar empíricamente la necesidad de filtros macro.",
+      "invalidation": "Cierre de barra bajo el minimo del primer soldado (Low[3]) o expiracion de la Barrera 3 (32 barras M30)."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": null,
+      "note": "Documentado pero NO aplicado como filtro bloqueante de entrada (version pura por diseno)."
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 2.0,
+      "b2_stop_loss_atr": 1.0,
+      "b3_max_holding_bars": 32
+    },
+    "target_assets": [
+      "BTCUSD",
+      "XAUUSD",
+      "US500",
+      "EURUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0_specification.json",
+      "pine_script": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.pine",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS_SEM1-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": true,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 2.0
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0",
+    "timestamp": "2026-09-03T16:15:00Z",
+    "thesis_title": "Ruptura de Canal Donchian (20) con Filtro Estructural EMA 200 y Triple Barrera",
+    "hypothesis": {
+      "condition_x": "Cierre de vela M30 que supera el maximo de las 20 barras previas (Long) o cae bajo el minimo de las 20 barras previas (Short), con el precio de cierre alineado con la EMA 200 estructural (Close > EMA 200 para Longs, Close < EMA 200 para Shorts).",
+      "expected_outcome_y": "Expansion direccional sostenida e impulso con un ratio beneficio/riesgo de 2.0 a 1, mitigando falsos quiebres en consolidaciones laterales.",
+      "structural_reason_z": "La ruptura del extremo de 20 periodos marca el colapso del rango de equilibrio local (Donchian), mientras que la EMA 200 garantiza convergencia con el flujo institucional de fondo (Kaufman & Elder).",
+      "invalidation": "Cierre de barra en direccion contraria a la EMA 200, ejecucion de Stop Loss (0.75x ATR D1) o expiracion de la Barrera 3 (32 barras M30)."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 32
+    },
+    "target_assets": [
+      "BTCUSD",
+      "XAUUSD",
+      "US500",
+      "EURUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0_specification.json",
+      "pine_script": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.pine",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": true,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0",
+    "timestamp": "2026-09-03T18:00:00Z",
+    "thesis_title": "Cruce Puro de SMA 20/50 (Bidireccional, sin filtros de tendencia ni volatilidad)",
+    "hypothesis": {
+      "condition_x": "Cruce de SMA 20 sobre/bajo SMA 50 en vela cerrada de M30, sin filtros de tendencia macro ni de regimen de volatilidad adicionales.",
+      "expected_outcome_y": "Captura del impulso direccional inmediatamente posterior al cruce, en ambas direcciones (largo y corto).",
+      "structural_reason_z": "El cruce de SMA 20/50 marca un cambio de regimen de momentum de corto plazo que realinea el flujo de ordenes con la nueva pendiente.",
+      "invalidation": "Cruce opuesto de SMA 20/50, ejecucion de Stop Loss (0.75x ATR D1) o expiracion de la Barrera 3 (48 barras)."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": null,
+      "note": "Documentado pero NO aplicado como filtro de entrada (cruce puro por diseno)."
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 48
+    },
+    "target_assets": [
+      "XAUUSD",
+      "GOLD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0_specification.json",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1",
+    "timestamp": "2026-09-03T21:50:00Z",
+    "thesis_title": "Cruce SMA 20/50 con Filtro de Tendencia Macro EMA 200, Breakeven y Circuit Breaker",
+    "hypothesis": {
+      "condition_x": "Cruce de SMA 20 sobre/bajo SMA 50 en vela cerrada de M30, condicionado a filtro de tendencia EMA 200 (Close > EMA 200 en compras, Close < EMA 200 en ventas) y Circuit Breaker mensual inactivo.",
+      "expected_outcome_y": "Elevacion de Profit Factor (> 1.50) y reduccion de caidas intermedias mediante la eliminacion de senales contra-tendencia, blindaje con Breakeven (+0.75x ATR D1) y freno mensual tras 4 perdidas continuas.",
+      "structural_reason_z": "La EMA 200 define la marea institucional macro. Operar en favor de la inercia dominante elimina whipsaws, y el Breakeven elástico retiene la ganancia latente frente a reversas antes del Time-Stop.",
+      "invalidation": "Cruce opuesto de SMA 20/50, activacion de Breakeven, Stop Loss (0.75x ATR D1) o expiracion de la Barrera 3 (48 barras = 24h)."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": null,
+      "note": "Documentado por estandar institucional; filtro operativo activo: EMA 200 en M30."
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 48
+    },
+    "capital_protection": {
+      "breakeven_trigger_atr": 0.75,
+      "circuit_breaker_max_losses": 4
+    },
+    "target_assets": [
+      "XAUUSD",
+      "GOLD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1_specification.json",
+      "pine_script": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1.pine",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": true,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1",
+    "timestamp": "2026-09-03T13:40:00Z",
+    "thesis_title": "Cruce Intermedio Direccional (SMA 20/50 + EMA 200) — Version Optimizada (Long-Only, TP MFE, Breakeven)",
+    "hypothesis": {
+      "condition_x": "Cruce de SMA 20 sobre SMA 50 en vela cerrada de M30 con Close > EMA 200, operando exclusivamente en compras (Long-Only) para capturar el sesgo macro del Oro.",
+      "expected_outcome_y": "Elevacion del Profit Factor (> 1.40) y de la esperanza matematica (+2.81 USD/trade) erradicando la friccion negativa de los cortos, asegurando ganancias con TP MFE (1.10x ATR D1) y Breakeven.",
+      "structural_reason_z": "Alineacion pura con la marea secular alcista del Oro y proteccion contra devoluciones de beneficios por cruces inversos tardios.",
+      "invalidation": "Cruce opuesto de SMA 20/50, activacion de Breakeven o ejecucion del Stop Loss de 0.75x ATR D1."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.1,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 48,
+      "breakeven_trigger_atr": 0.5,
+      "circuit_breaker_max_losses": 3
+    },
+    "target_assets": [
+      "XAUUSD",
+      "GOLD",
+      "XAUAUD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1_specification.json",
+      "pine_script": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1.pine",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.1_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": true,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.1
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0",
+    "timestamp": "2026-09-03T13:25:00Z",
+    "thesis_title": "Cruce Intermedio Direccional con Filtro Tendencial Macro (SMA 20/50 + EMA 200)",
+    "hypothesis": {
+      "condition_x": "Cruce de SMA 20 sobre SMA 50 en vela cerrada de M30 alineado con EMA 200 (Close > EMA 200 para largos; Close < EMA 200 para cortos).",
+      "expected_outcome_y": "Captura del impulso inercial direccional con ratio 2.0 a 1 y filtrado de whipsaws.",
+      "structural_reason_z": "Alineacion del flujo de volumen intermedio con la marea institucional dominante (Kaufman & Elder).",
+      "invalidation": "Cruce opuesto de SMA 20/50 o ejecucion de Stop Loss empírico (0.75x ATR D1)."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 48
+    },
+    "target_assets": [
+      "XAUUSD",
+      "GOLD",
+      "US100",
+      "EURUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0_specification.json",
+      "pine_script": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0.pine",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": true,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260902-USGAP_MOM-M15-v1.1",
+    "timestamp": "2026-09-03T11:50:00Z",
+    "thesis_title": "US Opening Gap Momentum Continuation (Gap and Go) — Version Optimizada",
+    "hypothesis": {
+      "condition_x": "Gap de apertura US >= 1.0x ATR_D(14)[shift 1] respecto al cierre previo, confirmado por la 1ra vela M15 de sesion en la direccion del gap sin retroceder mas del 50% de su rango.",
+      "expected_outcome_y": "Aceleracion direccional sostenida, captura de picos favorables con Take Profit calibrado (1.25x ATR D1) y blindaje con Breakeven (+0.75x ATR M15).",
+      "structural_reason_z": "Desequilibrio de order flow por catalizador overnight, explotado por volumen institucional al open.",
+      "invalidation": "Cierre de vela M15 mas alla del 50% del gap en los primeros 30 min, Stop Loss o activacion de Breakeven."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_ZScore_D1",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": 0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.25,
+      "b2_stop_loss_atr": 1.0,
+      "b3_max_holding_bars": 26,
+      "breakeven_trigger_atr": 0.75,
+      "circuit_breaker_max_losses": 3
+    },
+    "target_assets": [
+      "SPY",
+      "QQQ",
+      "DIA",
+      "ES1!",
+      "NQ1!",
+      "CUSTOM_NQ_M5"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1_specification.json",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260902-USGAP_MOM-M15-v1.1.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.25
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260902-USGAP_MOM-M15-v1.0",
+    "timestamp": "2026-09-02T19:37:17Z",
+    "thesis_title": "US Opening Gap Momentum Continuation (Gap and Go)",
+    "hypothesis": {
+      "condition_x": "Gap de apertura US >= 1.0x ATR_D(14)[shift 1] respecto al cierre previo, confirmado por la 1ra vela M15 de sesion en la direccion del gap sin retroceder mas del 50% de su rango.",
+      "expected_outcome_y": "Aceleracion direccional sostenida durante la sesion regular de EEUU.",
+      "structural_reason_z": "Desequilibrio de order flow por catalizador overnight, explotado por volumen institucional al open.",
+      "invalidation": "Cierre de vela M15 mas alla del 50% del gap dentro de los primeros 30 minutos de sesion."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_ZScore_D1",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": 0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 2.0,
+      "b2_stop_loss_atr": 1.0,
+      "b3_max_holding_bars": 26
+    },
+    "target_assets": [
+      "SPY",
+      "QQQ",
+      "DIA",
+      "ES1!",
+      "NQ1!"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.0_specification.json",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260902-USGAP_MOM-M15-v1.0.mq5",
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 2.0
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0",
+    "timestamp": "2026-09-02T20:30:00Z",
+    "thesis_title": "Gold Trend-Aligned Pullback EMA Cross with Macro Filter (Elder Triple Screen)",
+    "hypothesis": {
+      "condition_x": "Cruce EMA 9 / 21 en M30 condicionado a que el precio de cierre este estrictamente alineado con la EMA 200 en M30 con pendiente favorable (Close > EMA 200 para largos; Close < EMA 200 para cortos).",
+      "expected_outcome_y": "Desplazamiento tendencial asimetrico en la direccion macro del oro, eliminando whipsaws y falsas rupturas de consolidacion.",
+      "structural_reason_z": "Flujo macroeconomico institucional y de cobertura en oro. Las correcciones intradia hacia el valor medio (EMA 200) ofrecen alta asimetria cuando el impulso (EMA 9/21) reanuda la marea mayor.",
+      "invalidation": "Cierre de vela M30 que cruce y vulnere la EMA 200 en sentido opuesto, o ejecucion de Stop Loss ATR."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_ZScore_D1",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 32
+    },
+    "target_assets": [
+      "XAUUSD",
+      "GC1!",
+      "GLD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0_specification.json",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0",
+    "timestamp": "2026-09-02T21:15:00Z",
+    "thesis_title": "Gold Fibonacci EMA Trend Pullback with Value Zone Rejection (Chande & Kroll)",
+    "hypothesis": {
+      "condition_x": "Cascada de Fibonacci EMA 13 > EMA 34 > EMA 89 en M30 con retroceso a la zona de valor (Low <= EMA 13 sin perder EMA 34) y cierre de vela confirmando rechazo (Close > EMA 13 en largos; simetrico inverso en cortos).",
+      "expected_outcome_y": "Entrada asimetrica de alta probabilidad con bajo Drawdown inicial y Payoff Ratio > 1.8x al capturar la continuacion del impulso.",
+      "structural_reason_z": "Acumulacion institucional de liquidez en las pausas de tendencia antes de defender el valor medio y reanudar el flujo direccional.",
+      "invalidation": "Cierre de vela M30 que perfore la EMA 34 en contra de la tendencia, o activacion de la Barrera 2 de Stop Loss ATR."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_ZScore_D1",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 32
+    },
+    "target_assets": [
+      "XAUUSD",
+      "GC1!",
+      "GLD"
+    ],
+    "historical_depth_target": "3 a 5 Años M30/D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0_specification.json",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260902-BTC_TREND_CROSS-M30-v1.0",
+    "timestamp": "2026-09-02T22:33:00Z",
+    "thesis_title": "Bitcoin Macro Trend-Filtered EMA Cross with Daily ATR Triple Barrier",
+    "hypothesis": {
+      "condition_x": "Cruce alcista EMA 12 > 26 con precio de cierre estrictamente superior a EMA 200 en M30 (para largos), o cruce bajista EMA 12 < 26 con precio inferior a EMA 200 (para cortos), evaluado al cierre de barra (shift 1).",
+      "expected_outcome_y": "Hipótesis de continuación; TP 1.0 ATR D1 y SL 0.75 ATR D1 (relación nominal 4:3 antes de costes).",
+      "structural_reason_z": "Se estudia si el filtro de tendencia EMA200 y su pendiente evita cruces contra tendencia; eficacia no verificada.",
+      "invalidation": "Cruce inverso de EMA 12/26, toque de Stop Loss (0.75x ATR D1) o expiracion de 32 barras M30 (16 horas).",
+      "invalidation_criterion": "Stop Loss 0.75 ATR D1 o 32 barras M30; salida preventiva por cruce desactivada por defecto."
+    },
+    "regime_filter": {
+      "model": "EMA_Trend",
+      "execution_timeframe": "M30",
+      "ema_period": 200,
+      "slope_bars": 5
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 32
+    },
+    "target_assets": [
+      "BTCUSD",
+      "BTCUSD.",
+      "XBTUSD"
+    ],
+    "historical_depth_target": "3 a 5 Años M30/D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0_specification.json",
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.0
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-3WHITESOLDIERS-H4-v1.0",
+    "timestamp": "2026-09-03T15:00:00Z",
+    "thesis_title": "Patrón Three White Soldiers con Filtro EMA 50 y Régimen Z-Score en H4",
+    "hypothesis": {
+      "condition_x": "Se identifican 3 velas H4 consecutivas alcistas (Close > Open) con cierres crecientes (Close[1] > Close[2] > Close[3], siendo [1] la mas reciente). Cada vela abre dentro del cuerpo real de la vela anterior (Open[2] entre Open[3] y Close[3]; Open[1] entre Open[2] y Close[2]). Cada vela tiene cuerpo real >= 60% de su rango total (Close-Open >= 0.6*(High-Low)) y mecha superior pequeña (High-Close <= 0.25*(Close-Open)). El patron solo es valido si en las 5 velas H4 previas al primer soldado el precio cerraba consistentemente por debajo de la EMA 50 (tendencia bajista confirmada).",
+      "expected_outcome_y": "Reversion de la tendencia bajista previa hacia una fase alcista sostenida, con el precio extendiendose en la direccion de la ruptura hasta tocar la Barrera de Take Profit o el limite de tiempo.",
+      "structural_reason_z": "Tres cierres alcistas consecutivos con cuerpos reales dominantes y mechas superiores minimas evidencian que la presion compradora supero de forma sostenida a la vendedora sesion tras sesion, sin señales de agotamiento (Nison, Japanese Candlestick Charting Techniques). El filtro de tendencia previa es indispensable: el mismo patron geometrico en medio de un rally ya alcista no constituye una reversion genuina, solo continuacion (distincion explicita de Nison entre reversion y continuacion).",
+      "invalidation": "El precio cierra una vela H4 por debajo del minimo de la primera vela del patron (el 'primer soldado') antes de tocar el Take Profit, o la vela inmediatamente posterior al patron cierra bajista con un cuerpo mayor al 50% del rango combinado de los tres soldados (evidencia de absorcion inmediata de la demanda y fallo del patron)."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 2.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 24
+    },
+    "target_assets": [
+      "BTCUSD",
+      "XAUUSD",
+      "US500",
+      "EURUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.0_specification.json",
+      "pine_script": null,
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-3WHITESOLDIERS-H4-v1.0.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 2.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-3WHITESOLDIERS-H4-v1.1",
+    "timestamp": "2026-09-03T16:00:00Z",
+    "thesis_title": "Three White Soldiers H4 Diagnóstico: Geometría Pura sin Filtros Secundarios",
+    "hypothesis": {
+      "condition_x": "Se identifican 3 velas H4 consecutivas alcistas (Close > Open) con cierres crecientes (Close[1] > Close[2] > Close[3]). Version simplificada de diagnostico cuantitativo donde los filtros secundarios de mechas, tendencia previa EMA 50 y regimen de volatilidad Z-Score estan desactivados por defecto para aislar la geometria pura del patron.",
+      "expected_outcome_y": "Expansion alcista posterior al cierre de los tres soldados, extendiendose hasta la Barrera de Take Profit (2.5x ATR D1) o cierre por tiempo (24 barras H4 = 96 horas).",
+      "structural_reason_z": "Aislar la ventaja estadistica de la inercia compradora de tres cierres alcistas consecutivos sin fricciones artificiales ni sobreajuste de filtros secundarios (Nison, Japanese Candlestick Charting Techniques; Perry Kaufman, Trading Systems and Methods).",
+      "invalidation": "El precio cierra por debajo del Stop Loss de 0.75x ATR D1 o expira la barrera temporal maxima de 24 barras H4."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 2.5,
+      "b2_stop_loss_atr": 0.75,
+      "b3_max_holding_bars": 24
+    },
+    "target_assets": [
+      "BTCUSD",
+      "XAUUSD",
+      "US500",
+      "EURUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.1_specification.json",
+      "pine_script": null,
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.1.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-3WHITESOLDIERS-H4-v1.1.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.1_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 2.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-DONCHIAN_DBL-M30-v1.0",
+    "timestamp": "2026-09-03T16:30:00Z",
+    "thesis_title": "Doble Canal de Donchian con Triple Barrera en M30",
+    "hypothesis": {
+      "condition_x": "Se define un Canal de Donchian de N=20 velas M30, calculado con el maximo y minimo de las velas en shift 3 a shift 22 (excluyendo las 2 velas de confirmacion mas recientes). Señal larga: dos cierres consecutivos (shift 2 y shift 1) por encima del maximo del canal. Señal corta: dos cierres consecutivos por debajo del minimo del canal.",
+      "expected_outcome_y": "Continuacion direccional sostenida tras la ruptura confirmada, capturando el inicio de una tendencia nueva de mediano plazo.",
+      "structural_reason_z": "Las rupturas de un rango de N periodos señalan que la oferta y demanda que mantenian el precio contenido fueron superadas de forma decisiva (Donchian, sistema Turtle Trading de Dennis & Eckhardt). Exigir dos cierres consecutivos fuera del canal, en vez de uno solo, filtra rupturas de un unico pico de mecha sin sacrificar la simplicidad del sistema original.",
+      "invalidation": "El precio retorna dentro del canal con el cierre de una vela M30 nuevamente entre el maximo y el minimo del canal, antes de tocar la Barrera de Take Profit."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 2.0,
+      "b2_stop_loss_atr": 1.0,
+      "b3_max_holding_bars": 96
+    },
+    "target_assets": [
+      "BTCUSD",
+      "XAUUSD",
+      "US500",
+      "EURUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.0_specification.json",
+      "pine_script": null,
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-DONCHIAN_DBL-M30-v1.0.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 2.0
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260903-DONCHIAN_DBL-M30-v1.1",
+    "timestamp": "2026-09-03T18:00:00Z",
+    "thesis_title": "Doble Canal de Donchian Optimizado con Filtro de Volatilidad en M30",
+    "hypothesis": {
+      "condition_x": "Version LONG-ONLY. Se define un Canal de Donchian de N=20 velas M30, calculado con el maximo de las velas en shift 3 a shift 22. Señal larga: dos cierres consecutivos (shift 2 y shift 1) por encima del maximo del canal. No se opera el lado corto.",
+      "expected_outcome_y": "Captura de tendencias alcistas sostenidas, dejando correr la ganancia mediante un canal de salida mas corto (N_exit=10) en vez de un Take Profit fijo, tal como el sistema Turtle Trading original.",
+      "structural_reason_z": "El reporte cuantitativo del backtest v1.0 (REPORT_BACKTEST_DONCHIAN_DBL_XAUUSD_M30.md) demostro que el lado corto concentraba el 76% del drawdown maximo del sistema en un periodo de tendencia secular alcista del oro, mientras el lado largo aislado logro +37.76% de retorno puro con Profit Factor 1.55. Ademas, el sistema Turtle Trading original de Dennis & Eckhardt nunca uso un Take Profit fijo: la ganancia se deja correr hasta que el precio rompe un canal de salida mas corto (N/2), maximizando la captura de tendencias largas en vez de cortarlas prematuramente con una barrera fija de 2x ATR.",
+      "invalidation": "El precio cierra una vela M30 por debajo del minimo de las ultimas N_exit=10 velas (canal de salida corto), o se activa el Stop Loss inicial de proteccion (1.0x ATR Diario) antes de que el canal de salida se active."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": null,
+      "b2_stop_loss_atr": 1.0,
+      "b3_max_holding_bars": 200
+    },
+    "target_assets": [
+      "BTCUSD",
+      "XAUUSD",
+      "US500",
+      "EURUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.1_specification.json",
+      "pine_script": null,
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.1.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260903-DONCHIAN_DBL-M30-v1.1.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.1_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "donchian_trailing",
+      "channel_period": 10
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260902-ORB_MOM-M5-v1.0",
+    "timestamp": "2026-09-02T21:45:00Z",
+    "thesis_title": "Opening Range Breakout (ORB) con Triple Barrera en M5",
+    "hypothesis": {
+      "condition_x": "Se define el Rango de Apertura (OR) como el maximo y minimo de las primeras N_or=3 velas M5 (15 minutos) tras la apertura de la sesion regular de EEUU (13:30 UTC). En cada vela M5 posterior al OR, se calcula ROC_i = (Close_i - Close_i-1) / Close_i-1. Si tres valores consecutivos de ROC son crecientes y del mismo signo (ROC_i > ROC_i-1 > ROC_i-2, con ROC_i > 0 para largos o ROC_i < 0 para cortos) Y el Close de la vela actual rompe el extremo del OR (Close > OR_high para largos, Close < OR_low para cortos), se genera la señal de entrada.",
+      "expected_outcome_y": "Continuacion direccional del precio durante el resto de la sesion regular, extendiendo el rango en la direccion de la ruptura hasta tocar la Barrera de Take Profit o el cierre de sesion.",
+      "structural_reason_z": "La subasta de apertura (opening auction) concentra el descubrimiento de precio institucional del dia. Una secuencia de ROC creciente en las barras iniciales evidencia agresion direccional sostenida de order flow -a diferencia de un simple gap aislado sin continuidad-, lo cual precede historicamente rupturas del rango inicial con mayor probabilidad de continuacion (Crabel, Fisher ACD Method).",
+      "invalidation": "El precio retorna dentro del Rango de Apertura con cierre de una vela M5 nuevamente dentro del OR tras haberlo roto (fallo de ruptura), o el Z-Score de volatilidad diaria cae por debajo del umbral antes de la confirmacion de la señal."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.5,
+      "b2_stop_loss_atr": 0.5,
+      "b3_max_holding_bars": 75
+    },
+    "target_assets": [
+      "US500",
+      "NQ",
+      "XAUUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.0_specification.json",
+      "pine_script": null,
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.0.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260902-ORB_MOM-M5-v1.0.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.0_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.5
+    }
+  },
+  {
+    "strategy_id": "STRAT-20260902-ORB_MOM-M5-v1.1",
+    "timestamp": "2026-09-02T23:30:00Z",
+    "thesis_title": "Opening Range Breakout (ORB) Optimizado con Filtro de Régimen MTF en M5",
+    "hypothesis": {
+      "condition_x": "Se define el Rango de Apertura (OR) como el maximo y minimo de las primeras N_or=3 velas M5 (15 minutos) tras la apertura de la sesion regular de EEUU (13:30 UTC). En cada vela M5 posterior al OR, y unicamente hasta las 14:30 UTC (la 'hora dorada' post-apertura), se calcula ROC_i = (Close_i - Close_i-1) / Close_i-1. Si tres valores consecutivos de ROC son crecientes y del mismo signo (ROC_i > ROC_i-1 > ROC_i-2, con ROC_i > 0 para largos o ROC_i < 0 para cortos) Y el Close de la vela actual rompe el extremo del OR (Close > OR_high para largos, Close < OR_low para cortos), se genera la señal de entrada.",
+      "expected_outcome_y": "Continuacion direccional del precio con un objetivo de ganancia mas alcanzable dentro de una sola sesion (1.0x ATR Diario en vez de 1.5x), dado que el analisis del backtest v1.0 mostro que el 89.5% de las salidas ocurrian por cierre de sesion y no por Take Profit -evidencia de que el objetivo original era demasiado ambicioso para el marco temporal intradia.",
+      "structural_reason_z": "Fisher (ACD Method) y Crabel documentan que la mayor parte del rango direccional del dia se define en la primera hora posterior a la apertura; entradas tardias (verificadas en v1.0 hasta las 19:45 UTC) tienen estructuralmente menos tiempo para desarrollarse antes del cierre forzado de sesion, lo cual explica la alta proporcion de salidas por tiempo observada en el backtest inicial.",
+      "invalidation": "El precio retorna dentro del Rango de Apertura con cierre de una vela M5 nuevamente dentro del OR tras haberlo roto (fallo de ruptura), o el Z-Score de volatilidad diaria cae por debajo del umbral antes de la confirmacion de la señal."
+    },
+    "regime_filter": {
+      "model": "Lopez_de_Prado_Daily_ZScore",
+      "timeframe": "D1",
+      "fast_atr": 5,
+      "slow_atr": 14,
+      "min_zscore": -0.67
+    },
+    "triple_barriers": {
+      "b1_take_profit_atr": 1.0,
+      "b2_stop_loss_atr": 0.5,
+      "b3_max_holding_bars": 75
+    },
+    "target_assets": [
+      "US500",
+      "NQ",
+      "XAUUSD"
+    ],
+    "historical_depth_target": "5 a 10 Años D1",
+    "status": "RESEARCH_SOURCE_AVAILABLE",
+    "artifacts": {
+      "specification": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.1_specification.json",
+      "pine_script": null,
+      "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.1.mq5",
+      "mt5_ea": "MT5/estrategias/STRAT-20260902-ORB_MOM-M5-v1.1.mq5",
+      "mql5_binary": null,
+      "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.1_FACTSHEET.md"
+    },
+    "availability": {
+      "mql5_source": true,
+      "pine_source": false,
+      "contract_validation": "schema_v2",
+      "compilation": "not_verified",
+      "numerical_equivalence": "not_verified"
+    },
+    "profit_exit": {
+      "kind": "fixed_atr",
+      "atr_d1_multiplier": 1.0
+    }
+  }
+]

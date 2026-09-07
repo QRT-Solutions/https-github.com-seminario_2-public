@@ -1,0 +1,62 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0",
+  "timestamp": "2026-09-02T21:15:00Z",
+  "hypothesis": {
+    "condition_x": "En vela cerrada de M30 con alineacion de tendencia definida por la cascada de Fibonacci EMA 13 > EMA 34 > EMA 89 (para compras) o EMA 13 < EMA 34 < EMA 89 (para ventas), el precio genera un retroceso (pullback) hacia el soporte/resistencia dinamico entre EMA 13 y EMA 34, y la vela cierra confirmando el rechazo a favor del flujo principal (Close > EMA 13 en compra, Close < EMA 13 en venta).",
+    "expected_outcome_y": "Entrada asimetrica de alta probabilidad con bajo Drawdown inicial, evitando comprar en sobreextension y alcanzando un Payoff Ratio superior a 1.8x al capturar la continuacion del impulso tendencial en el oro.",
+    "structural_reason_z": "Fundamentado en Tushar Chande y Stanley Kroll (The New Technical Trader). Los participantes institucionales y creadores de mercado acumulan volumen en los retrocesos hacia la media de valor justo (zona entre EMA 13 y EMA 34) antes de desplegar la siguiente pierna expansiva del precio.",
+    "invalidation_criterion": "Cierre de vela M30 que perfore la EMA 34 en contra de la tendencia, o activacion de la Barrera 2 de Stop Loss anclada a ATR diario."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "M30",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.0,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      3,
+      5
+    ]
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "\\text{EMA}_{13}[1] > \\text{EMA}_{34}[1] > \\text{EMA}_{89}[1] \\;\\wedge\\; L[1] \\leq \\text{EMA}_{13}[1] \\;\\wedge\\; C[1] > \\text{EMA}_{13}[1] \\;\\wedge\\; C[1] > O[1]",
+      "pseudocode": "IF (ema13[1] > ema34[1] AND ema34[1] > ema89[1]) AND (Low[1] <= ema13[1]) AND (Close[1] > ema13[1] AND Close[1] > Open[1]) AND (Close[1] >= (High[1] + Low[1])/2.0) AND is_warmed_up AND flat THEN BuySignal = TRUE",
+      "canonical_citation": "Tushar Chande & Stanley Kroll (1994) - The New Technical Trader (Adaptive Trends and Retracement Entries); Perry J. Kaufman (2013) - Trading Systems and Methods (Pullback and Value Zone Systems)."
+    },
+    "entry_short": {
+      "trigger_formula_latex": "\\text{EMA}_{13}[1] < \\text{EMA}_{34}[1] < \\text{EMA}_{89}[1] \\;\\wedge\\; H[1] \\geq \\text{EMA}_{13}[1] \\;\\wedge\\; C[1] < \\text{EMA}_{13}[1] \\;\\wedge\\; C[1] < O[1]",
+      "pseudocode": "IF (ema13[1] < ema34[1] AND ema34[1] < ema89[1]) AND (High[1] >= ema13[1]) AND (Close[1] < ema13[1] AND Close[1] < Open[1]) AND (Close[1] <= (High[1] + Low[1])/2.0) AND is_warmed_up AND flat THEN SellSignal = TRUE",
+      "canonical_citation": "Tushar Chande & Stanley Kroll (1994) - The New Technical Trader (Adaptive Trends and Retracement Entries); Perry J. Kaufman (2013) - Trading Systems and Methods (Pullback and Value Zone Systems)."
+    },
+    "session_window_utc": {
+      "start_time": "07:00",
+      "end_time": "19:00"
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 1.5,
+    "barrier_2_stop_atr_multiplier": 0.75,
+    "barrier_3_time_stop_max_bars": 32
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 1.5
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0_specification.json",
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0.mq5",
+    "mql5_binary": null,
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-GOLD_PULLBACK_EMA-M30-v1.0_FACTSHEET.md"
+  }
+}

@@ -1,0 +1,26 @@
+//@version=6
+indicator("Mi Primer Indicador - SMA Simple", shorttitle="SMA Simple", overlay=true)
+
+// 1. Inputs (Entradas del Usuario)
+// Permite al usuario modificar la longitud de la media móvil desde la configuración
+length_input = input.int(title="Longitud SMA", defval=14, minval=1, maxval=200)
+
+// 2. Lógica y Cálculos (Uso de funciones built-in de Pine Script)
+// Calculamos la media móvil simple (SMA) usando el precio de cierre
+sma_value = ta.sma(close, length_input)
+
+// 3. Condiciones Visuales
+// Definimos el color de la línea: verde si el precio está por encima, rojo si está por debajo
+line_color = close > sma_value ? color.green : color.red
+
+// 4. Salida / Renderizado Visual
+// Dibujamos la línea en el gráfico
+plot(sma_value, title="SMA", color=line_color, linewidth=2)
+
+// 5. Señales Opcionales (Cruces)
+// Detectamos cruces para poder usar alertas después
+cruce_alcista = ta.crossover(close, sma_value)
+cruce_bajista = ta.crossunder(close, sma_value)
+
+plotshape(cruce_alcista, style=shape.triangleup, location=location.belowbar, color=color.green, size=size.small, title="Compra")
+plotshape(cruce_bajista, style=shape.triangledown, location=location.abovebar, color=color.red, size=size.small, title="Venta")

@@ -1,0 +1,186 @@
+//@version=6
+strategy("STRAT-20260902-USGAP_MOM-M15-v1.0", overlay=true, initial_capital=10000, default_qty_type=strategy.percent_of_equity, default_qty_value=100)
+
+// ==============================================================================
+// QUANT AGENTIC SWARM (QAS) — ESTRATEGIA GENERADA
+// Strategy ID: STRAT-20260902-USGAP_MOM-M15-v1.0
+// Tesis (Variante A - Aprobada): US_Gap_And_Go_Continuation
+// X: Gap de apertura US >= k_gap * ATR_D(14)[1] + confirmacion en la 1ra vela M15
+// Y: Aceleracion direccional sostenida durante la sesion regular
+// Z: Desequilibrio de order flow por catalizador overnight, explotado por volumen
+//    institucional al open (barrido de liquidez direccional)
+// Filtro de Regimen: Lopez de Prado Z-Score Diario (ATR5 vs ATR14)
+// Salidas: Triple Barrier Method (TP ATR D1, SL ATR Intradia, Time-Stop)
+// NOTA IMPORTANTE: El grafico debe estar configurado en "Regular Trading Hours"
+//   (RTH) para que el open de la sesion coincida con la apertura oficial 09:30 ET.
+// ==============================================================================
+
+// ------------------------------------------------------------------------------
+// 1. INPUTS DE USUARIO (CON SANITY CLAMPING)
+// ------------------------------------------------------------------------------
+grp_gap      = "1. Deteccion de Gap de Apertura"
+k_gap        = input.float(1.0, "Umbral de Gap (k_gap * ATR_D14)", minval=0.1, maxval=5.0, step=0.1, group=grp_gap)
+max_retrace  = input.float(0.5, "Retroceso Maximo Permitido (% del rango M15 de confirmacion)", minval=0.0, maxval=1.0, step=0.05, group=grp_gap)
+
+grp_regime   = "2. Regimen de Volatilidad MTF (D1)"
+fast_atr_len = input.int(5, "Periodo ATR Rapido (D1)", minval=1, maxval=50, group=grp_regime)
+slow_atr_len = input.int(14, "Periodo ATR Lento (D1)", minval=2, maxval=100, group=grp_regime)
+z_window_len = input.int(20, "Ventana Z-Score (Dias)", minval=5, maxval=200, group=grp_regime)
+z_threshold  = input.float(0.67, "Umbral Regimen Alto (Z-Score)", minval=0.0, maxval=3.0, step=0.05, group=grp_regime)
+
+grp_barriers = "3. Salidas: Triple Barrier Method"
+k1_profit    = input.float(2.0, "Multiplicador B1: Take Profit (+k1 * ATR D1)", minval=0.1, maxval=10.0, step=0.1, group=grp_barriers)
+k2_stop      = input.float(1.0, "Multiplicador B2: Stop Loss (-k2 * ATR Intradia)", minval=0.1, maxval=10.0, step=0.1, group=grp_barriers)
+k3_max_bars  = input.int(26, "Limite Temporal B3: Time-Stop (Barras M15)", minval=1, maxval=500, group=grp_barriers)
+
+grp_display  = "4. Diagnostico Visual en Pantalla"
+show_hud     = input.bool(true, "Mostrar HUD Neutro-Informativo", group=grp_display)
+show_plots   = input.bool(true, "Dibujar Niveles de Barreras", group=grp_display)
+
+// ------------------------------------------------------------------------------
+// 2. GUARDA DE CALENTAMIENTO & MEDIDOR DE HISTORIAL (5 A 10 ANOS D1)
+// ------------------------------------------------------------------------------
+d_bars_count = request.security(syminfo.tickerid, "D", bar_index + 1, barmerge.gaps_off, barmerge.lookahead_off)
+years_d1     = nz(d_bars_count, 0) / 252.0
+is_warmed_up = d_bars_count >= (slow_atr_len + z_window_len)
+
+// ------------------------------------------------------------------------------
+// 3. MOTOR DE REGIMEN DE VOLATILIDAD DIARIO (LOPEZ DE PRADO Z-SCORE)
+// ------------------------------------------------------------------------------
+d_atr5       = request.security(syminfo.tickerid, "D", ta.atr(fast_atr_len)[1],  barmerge.gaps_off, barmerge.lookahead_off)
+d_atr14      = request.security(syminfo.tickerid, "D", ta.atr(slow_atr_len)[1], barmerge.gaps_off, barmerge.lookahead_off)
+d_close_prev = request.security(syminfo.tickerid, "D", close[1], barmerge.gaps_off, barmerge.lookahead_off)
+d_diff       = d_atr5 - d_atr14
+
+d_diff_mean  = ta.sma(d_diff, z_window_len)
+d_diff_stdev = ta.stdev(d_diff, z_window_len)
+z_vol        = d_diff_stdev > 0.0 ? (d_diff - d_diff_mean) / d_diff_stdev : 0.0
+
+is_vol_high  = z_vol > z_threshold
+is_vol_low   = z_vol < -z_threshold
+is_vol_med   = not is_vol_high and not is_vol_low
+regime_text  = is_vol_high ? "ALTA (EXPANSION)" : is_vol_low ? "BAJA (COMPRESION)" : "MEDIA (ESTACIONARIA)"
+
+// ------------------------------------------------------------------------------
+// 4. LOGICA DE DISPARO: DETECCION DE GAP & CONFIRMACION EN 1RA VELA M15 (ALPHA ENGINE)
+// ------------------------------------------------------------------------------
+new_day = ta.change(time("D")) != 0
+
+var float session_open    = na
+var float gap_value       = na
+var int   gap_direction   = 0     // 1 = Gap Alcista, -1 = Gap Bajista, 0 = Sin Gap Valido
+var int   bars_since_open = 0
+
+if new_day
+    session_open   := open
+    gap_value       := session_open - d_close_prev
+    gap_direction   := gap_value >= (k_gap * d_atr14) ? 1 : gap_value <= -(k_gap * d_atr14) ? -1 : 0
+    bars_since_open := 0
+else
+    bars_since_open := bars_since_open + 1
+
+bar_range     = high - low
+confirm_long  = close > session_open and bar_range > 0 and close >= (low + max_retrace * bar_range)
+confirm_short = close < session_open and bar_range > 0 and close <= (high - max_retrace * bar_range)
+
+first_bar_confirmed = (bars_since_open == 0) and barstate.isconfirmed
+
+buy_condition  = is_warmed_up and is_vol_high and first_bar_confirmed and gap_direction == 1  and confirm_long  and strategy.position_size == 0
+sell_condition = is_warmed_up and is_vol_high and first_bar_confirmed and gap_direction == -1 and confirm_short and strategy.position_size == 0
+
+// ------------------------------------------------------------------------------
+// 5. GESTION DE LAS 3 BARRERAS & EJECUCION (B1 = k1 * ATR_D1_14)
+// ------------------------------------------------------------------------------
+intra_atr = ta.atr(14)
+
+var float entry_price = na
+var float tp_level    = na
+var float sl_level    = na
+var int   entry_bar   = na
+
+// Disparo de Entrada Long
+if (buy_condition)
+    entry_price := close
+    tp_level    := entry_price + (k1_profit * d_atr14)
+    sl_level    := entry_price - (k2_stop * intra_atr)
+    entry_bar   := bar_index
+    strategy.entry("Long", strategy.long, comment="ENTRY_BUY")
+    log.info('{"event":"ENTRY_BUY", "strategy_id":"STRAT-20260902-USGAP_MOM-M15-v1.0", "price":{0}, "gap":{1}, "z_vol":{2}, "tp_d1":{3}, "sl":{4}}', entry_price, gap_value, z_vol, tp_level, sl_level)
+
+// Disparo de Entrada Short
+if (sell_condition)
+    entry_price := close
+    tp_level    := entry_price - (k1_profit * d_atr14)
+    sl_level    := entry_price + (k2_stop * intra_atr)
+    entry_bar   := bar_index
+    strategy.entry("Short", strategy.short, comment="ENTRY_SELL")
+    log.info('{"event":"ENTRY_SELL", "strategy_id":"STRAT-20260902-USGAP_MOM-M15-v1.0", "price":{0}, "gap":{1}, "z_vol":{2}, "tp_d1":{3}, "sl":{4}}', entry_price, gap_value, z_vol, tp_level, sl_level)
+
+// Evaluacion de Salidas por Triple Barrera (Posicion Larga)
+if (strategy.position_size > 0)
+    bars_held = bar_index - entry_bar
+    if (high >= tp_level)
+        strategy.close("Long", comment="EXIT_B1_TP_D1")
+        log.info('{"event":"EXIT_B1_TP_D1", "price":{0}, "profit_pts":{1}}', high, high - entry_price)
+    else if (low <= sl_level)
+        strategy.close("Long", comment="EXIT_B2_SL")
+        log.info('{"event":"EXIT_B2_SL", "price":{0}, "loss_pts":{1}}', low, entry_price - low)
+    else if (bars_held >= k3_max_bars)
+        strategy.close("Long", comment="EXIT_B3_TIME")
+        log.info('{"event":"EXIT_B3_TIME", "price":{0}, "bars_held":{1}}', close, bars_held)
+
+// Evaluacion de Salidas por Triple Barrera (Posicion Corta)
+if (strategy.position_size < 0)
+    bars_held = bar_index - entry_bar
+    if (low <= tp_level)
+        strategy.close("Short", comment="EXIT_B1_TP_D1")
+        log.info('{"event":"EXIT_B1_TP_D1", "price":{0}, "profit_pts":{1}}', low, entry_price - low)
+    else if (high >= sl_level)
+        strategy.close("Short", comment="EXIT_B2_SL")
+        log.info('{"event":"EXIT_B2_SL", "price":{0}, "loss_pts":{1}}', high, high - entry_price)
+    else if (bars_held >= k3_max_bars)
+        strategy.close("Short", comment="EXIT_B3_TIME")
+        log.info('{"event":"EXIT_B3_TIME", "price":{0}, "bars_held":{1}}', close, bars_held)
+
+// Reset al cerrar posicion
+if (strategy.position_size == 0)
+    entry_price := na
+    tp_level    := na
+    sl_level    := na
+    entry_bar   := na
+
+// ------------------------------------------------------------------------------
+// 6. HUD NEUTRO-INFORMATIVO EN PANTALLA
+// ------------------------------------------------------------------------------
+var table hud = table.new(position.top_right, 2, 7, bgcolor=color.new(color.white, 10), border_color=color.new(color.gray, 60), border_width=1)
+
+if (barstate.islast and show_hud)
+    history_badge = years_d1 >= 5.0 ? str.tostring(years_d1, "#.#") + " Anos (" + str.tostring(d_bars_count) + " D1) [OK]" :
+                                      str.tostring(years_d1, "#.#") + " Anos [ALERTA: < 5 ANOS]"
+    gap_badge = gap_direction == 1 ? "ALCISTA" : gap_direction == -1 ? "BAJISTA" : "SIN GAP VALIDO"
+
+    table.cell(hud, 0, 0, "ID Estrategia", text_color=color.black, text_size=size.small, text_halign=align.left)
+    table.cell(hud, 1, 0, "USGAP_MOM-M15-v1.0", text_color=color.blue, text_size=size.small, text_halign=align.right)
+
+    table.cell(hud, 0, 1, "Historial D1", text_color=color.black, text_size=size.small, text_halign=align.left)
+    table.cell(hud, 1, 1, history_badge, text_color=color.black, text_size=size.small, text_halign=align.right)
+
+    table.cell(hud, 0, 2, "Regimen Volatilidad", text_color=color.black, text_size=size.small, text_halign=align.left)
+    table.cell(hud, 1, 2, regime_text + " (Z=" + str.tostring(z_vol, "#.##") + ")", text_color=is_vol_high ? color.red : color.black, text_size=size.small, text_halign=align.right)
+
+    table.cell(hud, 0, 3, "Gap de Hoy", text_color=color.black, text_size=size.small, text_halign=align.left)
+    table.cell(hud, 1, 3, gap_badge + " (" + str.tostring(gap_value, "#.####") + ")", text_color=color.black, text_size=size.small, text_halign=align.right)
+
+    table.cell(hud, 0, 4, "Valores ATR D1", text_color=color.black, text_size=size.small, text_halign=align.left)
+    table.cell(hud, 1, 4, "ATR5: " + str.tostring(d_atr5, "#.####") + " | ATR14: " + str.tostring(d_atr14, "#.####"), text_color=color.black, text_size=size.small, text_halign=align.right)
+
+    table.cell(hud, 0, 5, "Triple Barrera", text_color=color.black, text_size=size.small, text_halign=align.left)
+    table.cell(hud, 1, 5, "B1: +" + str.tostring(k1_profit) + "x ATR_D1 | B2: -" + str.tostring(k2_stop) + "x ATR | B3: " + str.tostring(k3_max_bars) + "b", text_color=color.black, text_size=size.small, text_halign=align.right)
+
+    table.cell(hud, 0, 6, "Estado Motor", text_color=color.black, text_size=size.small, text_halign=align.left)
+    table.cell(hud, 1, 6, is_warmed_up ? "OPERATIVO" : "CALENTANDO", text_color=is_warmed_up ? color.green : color.orange, text_size=size.small, text_halign=align.right)
+
+// Trazado de Barreras en el Grafico
+plot(show_plots and not na(tp_level) ? tp_level : na, "B1: Take Profit (ATR D1)", color=color.green, style=plot.style_linebr, linewidth=2)
+plot(show_plots and not na(sl_level) ? sl_level : na, "B2: Stop Loss", color=color.red, style=plot.style_linebr, linewidth=2)
+plot(show_plots and not na(session_open) ? session_open : na, "Apertura de Sesion", color=color.gray, style=plot.style_circles, linewidth=1)

@@ -1,0 +1,54 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260903-3WHITESOLDIERS-H4-v1.0",
+  "timestamp": "2026-09-03T15:00:00Z",
+  "hypothesis": {
+    "condition_x": "Se identifican 3 velas H4 consecutivas alcistas (Close > Open) con cierres crecientes (Close[1] > Close[2] > Close[3], siendo [1] la mas reciente). Cada vela abre dentro del cuerpo real de la vela anterior (Open[2] entre Open[3] y Close[3]; Open[1] entre Open[2] y Close[2]). Cada vela tiene cuerpo real >= 60% de su rango total (Close-Open >= 0.6*(High-Low)) y mecha superior pequeña (High-Close <= 0.25*(Close-Open)). El patron solo es valido si en las 5 velas H4 previas al primer soldado el precio cerraba consistentemente por debajo de la EMA 50 (tendencia bajista confirmada).",
+    "expected_outcome_y": "Reversion de la tendencia bajista previa hacia una fase alcista sostenida, con el precio extendiendose en la direccion de la ruptura hasta tocar la Barrera de Take Profit o el limite de tiempo.",
+    "structural_reason_z": "Tres cierres alcistas consecutivos con cuerpos reales dominantes y mechas superiores minimas evidencian que la presion compradora supero de forma sostenida a la vendedora sesion tras sesion, sin señales de agotamiento (Nison, Japanese Candlestick Charting Techniques). El filtro de tendencia previa es indispensable: el mismo patron geometrico en medio de un rally ya alcista no constituye una reversion genuina, solo continuacion (distincion explicita de Nison entre reversion y continuacion).",
+    "invalidation_criterion": "El precio cierra una vela H4 por debajo del minimo de la primera vela del patron (el 'primer soldado') antes de tocar el Take Profit, o la vela inmediatamente posterior al patron cierra bajista con un cuerpo mayor al 50% del rango combinado de los tres soldados (evidencia de absorcion inmediata de la demanda y fallo del patron)."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "H4",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.67,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      5,
+      10
+    ]
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "\\text{Alcista}_i: C_i > O_i; \\quad C_1 > C_2 > C_3; \\quad O_2 \\in [O_3, C_3]; \\; O_1 \\in [O_2, C_2]; \\quad (C_i - O_i) \\geq 0.6(H_i - L_i); \\quad (H_i - C_i) \\leq 0.25(C_i - O_i) \\;\\; \\forall i \\in \\{1,2,3\\}",
+      "pseudocode": "ON each H4 bar confirmed, WHILE flat: soldier1=bar[3], soldier2=bar[2], soldier3=bar[1]. IF all three bullish AND Close[1]>Close[2]>Close[3] AND Open[2] within body of soldier1 AND Open[1] within body of soldier2 AND real_body_ratio(i)>=0.6 for i in 1,2,3 AND upper_wick_ratio(i)<=0.25 for i in 1,2,3 AND Close[4..8] < EMA50[4..8] (tendencia bajista previa confirmada en las 5 velas anteriores) AND z_vol > zscore_threshold_high AND is_warmed_up THEN BuySignal = TRUE",
+      "canonical_citation": "Steve Nison - Japanese Candlestick Charting Techniques (patron Three White Soldiers, distincion reversion vs continuacion); Robert Fischer - Candlesticks Fibonacci and Chart Pattern Trading Tools; Bulkowski (estadisticas de fiabilidad de patrones de velas, referenciado en CMT2016); Marcos Lopez de Prado (2018) - Filtro de Regimen de Volatilidad Diaria (Z-Score)."
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 2.5,
+    "barrier_2_stop_atr_multiplier": 0.75,
+    "barrier_3_time_stop_max_bars": 24
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 2.5
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.0_specification.json",
+    "pine_script": null,
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.0.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260903-3WHITESOLDIERS-H4-v1.0.mq5",
+    "mql5_binary": null,
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-3WHITESOLDIERS-H4-v1.0_FACTSHEET.md"
+  }
+}

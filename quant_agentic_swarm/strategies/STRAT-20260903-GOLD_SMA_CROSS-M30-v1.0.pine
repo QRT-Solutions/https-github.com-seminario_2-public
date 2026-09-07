@@ -1,0 +1,129 @@
+//@version=6
+strategy("STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0", overlay = true, initial_capital = 10000, default_qty_type = strategy.percent_of_equity, default_qty_value = 10, currency = currency.USD, margin_long = 5.0, margin_short = 5.0)
+
+// ==============================================================================
+// BLOQUE 1: CABECERA INSTITUCIONAL Y METADATOS
+// Autor: QRT Solutions
+// Estrategia: Cruce Intermedio Direccional con Filtro Tendencial (SMA 20/50 + EMA 200)
+// UUID: STRAT-20260903-GOLD_SMA_CROSS-M30-v1.0
+// Citas: Perry J. Kaufman (2013) - Trading Systems and Methods; Alexander Elder (1993)
+// ==============================================================================
+
+// ==============================================================================
+// BLOQUE 2: PARAMETROS DE ENTRADA Y VARIABLES DE CONFIGURACION
+// ==============================================================================
+var string GRP_MA = "=== Medias Moviles de Cruce y Filtro ==="
+int  inp_fast_sma = input.int(20, "Periodo SMA Rapida", group = GRP_MA, minval = 5)
+int  inp_slow_sma = input.int(50, "Periodo SMA Lenta", group = GRP_MA, minval = 10)
+int  inp_macro_ema = input.int(200, "Periodo EMA Macro Filtro", group = GRP_MA, minval = 50)
+
+var string GRP_TRIPLE = "=== Triple Barrera de Lopez de Prado ==="
+float inp_tp_mult   = input.float(1.5, "Multiplicador Take Profit (ATR D1)", group = GRP_TRIPLE, step = 0.1)
+float inp_sl_mult   = input.float(0.75, "Multiplicador Stop Loss (ATR D1)", group = GRP_TRIPLE, step = 0.05)
+int   inp_max_bars  = input.int(48, "Barrera Temporal Maxima (Barras M30 = 24h)", group = GRP_TRIPLE, minval = 5)
+
+var string GRP_MTF = "=== Filtro de Regimen MTF Diario ==="
+int   inp_atr_d_fast = input.int(5, "ATR Rapido Diario", group = GRP_MTF)
+int   inp_atr_d_slow = input.int(14, "ATR Lento Diario", group = GRP_MTF)
+
+// ==============================================================================
+// BLOQUE 3: CALCULOS MTF Y LIBRES DE REPAINTING (SHIFT = 1)
+// ==============================================================================
+// Medias Moviles en marco temporal de ejecucion (M30)
+float sma_fast  = ta.sma(close, inp_fast_sma)
+float sma_slow  = ta.sma(close, inp_slow_sma)
+float ema_macro = ta.ema(close, inp_macro_ema)
+
+// ATR Diario cerrado (shift = 1) con lookahead off estricto
+float d_atr_slow = request.security(syminfo.tickerid, "D", ta.atr(inp_atr_d_slow)[1], lookahead = barmerge.lookahead_off)
+float d_atr_fast = request.security(syminfo.tickerid, "D", ta.atr(inp_atr_d_fast)[1], lookahead = barmerge.lookahead_off)
+
+// Normalizacion Z-Score de Lopez de Prado
+float d_atr_sma   = request.security(syminfo.tickerid, "D", ta.sma(ta.atr(inp_atr_d_fast), 14)[1], lookahead = barmerge.lookahead_off)
+float d_atr_stdev = request.security(syminfo.tickerid, "D", ta.stdev(ta.atr(inp_atr_d_fast), 14)[1], lookahead = barmerge.lookahead_off)
+float z_score_d1  = d_atr_stdev > 0 ? (d_atr_fast - d_atr_sma) / d_atr_stdev : 0.0
+
+// Guarda de calentamiento
+bool is_warmed_up = bar_index > (inp_macro_ema + 20) and not na(d_atr_slow)
+
+// ==============================================================================
+// BLOQUE 4: SENALES CUANTITATIVAS (EVALUADAS EN VELA CERRADA [1])
+// ==============================================================================
+// Cruce al cierre de vela anterior [1]
+bool cross_bull = (sma_fast[1] > sma_slow[1]) and (sma_fast[2] <= sma_slow[2])
+bool cross_bear = (sma_fast[1] < sma_slow[1]) and (sma_fast[2] >= sma_slow[2])
+
+// Filtro tendencial macro institucional
+bool filter_bull = close[1] > ema_macro[1]
+bool filter_bear = close[1] < ema_macro[1]
+
+bool long_signal  = is_warmed_up and cross_bull and filter_bull and (strategy.position_size == 0)
+bool short_signal = is_warmed_up and cross_bear and filter_bear and (strategy.position_size == 0)
+
+// ==============================================================================
+// BLOQUE 5: EJECUCION DE ORDENES Y CALCULO DE BARRERAS
+// ==============================================================================
+var float entry_price = 0.0
+var float tp_price    = 0.0
+var float sl_price    = 0.0
+var int   bars_in_pos = 0
+
+if (long_signal)
+    entry_price := close
+    tp_price    := close + (d_atr_slow * inp_tp_mult)
+    sl_price    := close - (d_atr_slow * inp_sl_mult)
+    bars_in_pos := 0
+    strategy.entry("Long_Cross", strategy.long)
+
+if (short_signal)
+    entry_price := close
+    tp_price    := close - (d_atr_slow * inp_tp_mult)
+    sl_price    := close + (d_atr_slow * inp_sl_mult)
+    bars_in_pos := 0
+    strategy.entry("Short_Cross", strategy.short)
+
+// ==============================================================================
+// BLOQUE 6: MOTOR DE SALIDA (TRIPLE BARRERA & INVALIDACION POR CRUCE OPUESTO)
+// ==============================================================================
+if (strategy.position_size != 0)
+    bars_in_pos += 1
+    
+    // Barrera 3: Limite temporal (Time Stop)
+    bool time_stop = bars_in_pos >= inp_max_bars
+    
+    // Invalidacion: Cruce opuesto de medias
+    bool invalidation_long  = (strategy.position_size > 0) and (sma_fast[1] < sma_slow[1])
+    bool invalidation_short = (strategy.position_size < 0) and (sma_fast[1] > sma_slow[1])
+    
+    if (time_stop)
+        strategy.close_position("Time_Stop")
+    else if (invalidation_long or invalidation_short)
+        strategy.close_position("Opposite_Cross")
+    else
+        strategy.exit("Exit_Long", from_entry = "Long_Cross", limit = tp_price, stop = sl_price)
+        strategy.exit("Exit_Short", from_entry = "Short_Cross", limit = tp_price, stop = sl_price)
+
+// ==============================================================================
+// BLOQUE 7: TELEMETRIA GRAFICA Y DASHBOARD VISUAL
+// ==============================================================================
+plot(sma_fast,  "SMA 20 Rapida", color = color.blue,  linewidth = 2)
+plot(sma_slow,  "SMA 50 Lenta",  color = color.orange, linewidth = 2)
+plot(ema_macro, "EMA 200 Macro", color = color.purple, linewidth = 3)
+
+plot(strategy.position_size != 0 ? tp_price : na, "Take Profit (1.5x ATR D1)", color = color.green, style = plot.style_linebr, linewidth = 1)
+plot(strategy.position_size != 0 ? sl_price : na, "Stop Loss (0.75x ATR D1)",   color = color.red,   style = plot.style_linebr, linewidth = 1)
+
+var table dash = table.new(position.top_right, 2, 6, bgcolor = color.new(color.black, 15), border_color = color.gray, border_width = 1)
+if (barstate.islast)
+    table.cell(dash, 0, 0, "ESTRATEGIA", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 0, "SMA 20/50 + EMA 200", text_color = color.yellow, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 1, "ATR D1 (14)", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 1, str.tostring(d_atr_slow, "#.##"), text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 2, "Z-Score D1", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 2, str.tostring(z_score_d1, "#.##"), text_color = z_score_d1 >= 0 ? color.green : color.red, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 3, "Posicion", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 3, strategy.position_size > 0 ? "LONG" : strategy.position_size < 0 ? "SHORT" : "FLAT", text_color = strategy.position_size > 0 ? color.green : strategy.position_size < 0 ? color.red : color.gray, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 4, "Barras en Pos", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 4, str.tostring(bars_in_pos) + " / " + str.tostring(inp_max_bars), text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 0, 5, "Autor", text_color = color.white, text_size = size.small, text_font = font.family_monospace)
+    table.cell(dash, 1, 5, "QRT Solutions", text_color = color.aqua, text_size = size.small, text_font = font.family_monospace)

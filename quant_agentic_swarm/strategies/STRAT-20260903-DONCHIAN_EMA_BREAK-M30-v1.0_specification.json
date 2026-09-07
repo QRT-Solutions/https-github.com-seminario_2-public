@@ -1,0 +1,58 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0",
+  "timestamp": "2026-09-03T16:15:00Z",
+  "hypothesis": {
+    "condition_x": "Ruptura de canal Donchian de N=20 periodos en M30 al cierre de vela (Close[1] > MAX(High[2..21]) para Long, o Close[1] < MIN(Low[2..21]) para Short) sincronizada con la direccion de la tendencia estructural mayor definida por la EMA de 200 periodos en M30 (Close[1] > EMA200[1] para Long, Close[1] < EMA200[1] para Short).",
+    "expected_outcome_y": "Expansion direccional sostenida y continuacion del impulso en favor de la tendencia dominante, alcanzando una relacion beneficio/riesgo de 2.0 a 1.",
+    "structural_reason_z": "La ruptura del extremo de 20 periodos senala superacion del rango de balance local de oferta/demanda (Richard Donchian). El filtro de la EMA 200 previene operar falsas rupturas en consolidaciones laterales o quiebres contra-tendencia que sufren alta tasa de fallo (Perry Kaufman, Alexander Elder). La volatilidad macro se valida mediante Z-Score diario de Lopez de Prado.",
+    "invalidation_criterion": "Cierre de vela M30 que cruce en direccion contraria a la EMA 200 o que retroceda mas alla de la media del canal antes de alcanzar la Barrera 1 (Take Profit)."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "M30",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.67,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      5,
+      10
+    ]
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "C_1 > \\max_{i=2}^{21}(H_i) \\quad \\land \\quad C_1 > \\text{EMA}_{200}(C_1) \\quad \\land \\quad Z_{\\text{vol}} \\ge -0.67",
+      "pseudocode": "ON bar confirmed (M30 shift 1), WHILE flat: donchian_high = MAX(High[2..21]); IF Close[1] > donchian_high AND Close[1] > EMA200[1] AND z_vol >= -0.67 AND is_warmed_up THEN BuySignal = TRUE",
+      "canonical_citation": "Richard Donchian (1970) - 20-period Price Channel Breakout; Perry Kaufman (2013) - Trading Systems and Methods; Marcos Lopez de Prado (2018) - Triple Barrier Method."
+    },
+    "entry_short": {
+      "trigger_formula_latex": "C_1 < \\min_{i=2}^{21}(L_i) \\quad \\land \\quad C_1 < \\text{EMA}_{200}(C_1) \\quad \\land \\quad Z_{\\text{vol}} \\ge -0.67",
+      "pseudocode": "ON bar confirmed (M30 shift 1), WHILE flat: donchian_low = MIN(Low[2..21]); IF Close[1] < donchian_low AND Close[1] < EMA200[1] AND z_vol >= -0.67 AND is_warmed_up THEN SellSignal = TRUE",
+      "canonical_citation": "Richard Donchian (1970) - 20-period Price Channel Breakout; Perry Kaufman (2013) - Trading Systems and Methods; Marcos Lopez de Prado (2018) - Triple Barrier Method."
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 1.5,
+    "barrier_2_stop_atr_multiplier": 0.75,
+    "barrier_3_time_stop_max_bars": 32
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 1.5
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0_specification.json",
+    "pine_script": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.pine",
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0.mq5",
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_EMA_BREAK-M30-v1.0_FACTSHEET.md"
+  }
+}

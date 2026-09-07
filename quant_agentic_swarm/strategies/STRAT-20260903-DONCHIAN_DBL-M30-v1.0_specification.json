@@ -1,0 +1,59 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260903-DONCHIAN_DBL-M30-v1.0",
+  "timestamp": "2026-09-03T16:30:00Z",
+  "hypothesis": {
+    "condition_x": "Se define un Canal de Donchian de N=20 velas M30, calculado con el maximo y minimo de las velas en shift 3 a shift 22 (excluyendo las 2 velas de confirmacion mas recientes). Señal larga: dos cierres consecutivos (shift 2 y shift 1) por encima del maximo del canal. Señal corta: dos cierres consecutivos por debajo del minimo del canal.",
+    "expected_outcome_y": "Continuacion direccional sostenida tras la ruptura confirmada, capturando el inicio de una tendencia nueva de mediano plazo.",
+    "structural_reason_z": "Las rupturas de un rango de N periodos señalan que la oferta y demanda que mantenian el precio contenido fueron superadas de forma decisiva (Donchian, sistema Turtle Trading de Dennis & Eckhardt). Exigir dos cierres consecutivos fuera del canal, en vez de uno solo, filtra rupturas de un unico pico de mecha sin sacrificar la simplicidad del sistema original.",
+    "invalidation_criterion": "El precio retorna dentro del canal con el cierre de una vela M30 nuevamente entre el maximo y el minimo del canal, antes de tocar la Barrera de Take Profit."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "M30",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.67,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      5,
+      10
+    ]
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "OR_{high} = \\max(H_3,\\ldots,H_{22}); \\quad C_2 > OR_{high} \\;\\wedge\\; C_1 > OR_{high}",
+      "pseudocode": "ON each M30 bar confirmed, WHILE flat: channel_high = MAX(High[3..22]); IF Close[2] > channel_high AND Close[1] > channel_high AND z_vol > zscore_threshold_high AND is_warmed_up THEN BuySignal = TRUE",
+      "canonical_citation": "Richard Donchian - Canal de Precio de N periodos; Richard Dennis & William Eckhardt - Turtle Trading System (documentado por Curtis Faith, Way of the Turtle); Marcos Lopez de Prado (2018) - Filtro de Regimen de Volatilidad Diaria (Z-Score)."
+    },
+    "entry_short": {
+      "trigger_formula_latex": "OR_{low} = \\min(L_3,\\ldots,L_{22}); \\quad C_2 < OR_{low} \\;\\wedge\\; C_1 < OR_{low}",
+      "pseudocode": "ON each M30 bar confirmed, WHILE flat: channel_low = MIN(Low[3..22]); IF Close[2] < channel_low AND Close[1] < channel_low AND z_vol > zscore_threshold_high AND is_warmed_up THEN SellSignal = TRUE",
+      "canonical_citation": "Richard Donchian - Canal de Precio de N periodos; Richard Dennis & William Eckhardt - Turtle Trading System (documentado por Curtis Faith, Way of the Turtle); Marcos Lopez de Prado (2018) - Filtro de Regimen de Volatilidad Diaria (Z-Score)."
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 2.0,
+    "barrier_2_stop_atr_multiplier": 1.0,
+    "barrier_3_time_stop_max_bars": 96
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 2.0
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.0_specification.json",
+    "pine_script": null,
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.0.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260903-DONCHIAN_DBL-M30-v1.0.mq5",
+    "mql5_binary": null,
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-DONCHIAN_DBL-M30-v1.0_FACTSHEET.md"
+  }
+}

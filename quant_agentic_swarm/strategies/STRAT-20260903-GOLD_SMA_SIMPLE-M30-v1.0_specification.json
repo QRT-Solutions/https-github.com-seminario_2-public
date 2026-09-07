@@ -1,0 +1,63 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0",
+  "timestamp": "2026-09-03T18:00:00Z",
+  "hypothesis": {
+    "condition_x": "En vela cerrada de M30 (shift = 1), la SMA rapida de 20 periodos cruza la SMA lenta de 50 periodos (cruce alcista o bajista), sin filtros de tendencia macro ni de regimen de volatilidad adicionales.",
+    "expected_outcome_y": "El precio acelera en la direccion del cruce inmediatamente despues de este, capturando el arranque de un nuevo impulso de corto/mediano plazo tanto en compras como en ventas.",
+    "structural_reason_z": "El cruce de SMA 20/50 senaliza un cambio de regimen en el momentum de precio de corto plazo; el flujo de ordenes se realinea con la nueva pendiente generando continuidad direccional en las barras siguientes al cruce.",
+    "invalidation_criterion": "Cierre de vela M30 con cruce opuesto de SMA 20/50, ejecucion del Stop Loss (0.75x ATR Diario) o expiracion de la Barrera 3 de tiempo (48 barras = 24 horas)."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "M30",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.67,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      5,
+      10
+    ],
+    "applied_as_entry_filter": false,
+    "note": "Documentado por estandar institucional del repositorio, pero deliberadamente NO se usa para filtrar entradas: la hipotesis exige un cruce de medias puro sin filtros adicionales (Principio de Pureza de Investigacion)."
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "\\text{SMA}_{20}[1] > \\text{SMA}_{50}[1] \\;\\wedge\\; \\text{SMA}_{20}[2] \\leq \\text{SMA}_{50}[2]",
+      "pseudocode": "IF (sma20[1] > sma50[1] AND sma20[2] <= sma50[2]) AND is_flat AND is_warmed_up THEN BuySignal = TRUE",
+      "canonical_citation": "Perry J. Kaufman (2013) - Trading Systems and Methods, Cap. Moving Average Crossover Systems."
+    },
+    "entry_short": {
+      "trigger_formula_latex": "\\text{SMA}_{20}[1] < \\text{SMA}_{50}[1] \\;\\wedge\\; \\text{SMA}_{20}[2] \\geq \\text{SMA}_{50}[2]",
+      "pseudocode": "IF (sma20[1] < sma50[1] AND sma20[2] >= sma50[2]) AND is_flat AND is_warmed_up THEN SellSignal = TRUE",
+      "canonical_citation": "Perry J. Kaufman (2013) - Trading Systems and Methods, Cap. Moving Average Crossover Systems."
+    },
+    "session_window_utc": {
+      "start_time": "00:00",
+      "end_time": "23:59"
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 1.5,
+    "barrier_2_stop_atr_multiplier": 0.75,
+    "barrier_3_time_stop_max_bars": 48
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 1.5
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0_specification.json",
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0.mq5",
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.0_FACTSHEET.md"
+  }
+}

@@ -1,0 +1,20 @@
+name: Error reproducible
+description: Reporta un fallo del laboratorio sin datos privados
+title: "[bug] "
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Pasos, resultado esperado y observado
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: SHA, sistema, Python y perfil
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidencia redactada (sin secretos, cuentas ni históricos)

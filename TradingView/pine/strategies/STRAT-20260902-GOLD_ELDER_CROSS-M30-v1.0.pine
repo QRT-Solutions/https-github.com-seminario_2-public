@@ -1,0 +1,187 @@
+//@version=6
+strategy("STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0", overlay=true, initial_capital=10000, default_qty_type=strategy.percent_of_equity, default_qty_value=10, commission_type=strategy.commission.cash_per_contract, commission_value=0.04)
+
+// ==============================================================================
+// QUANT AGENTIC SWARM (QAS) — ESTRATEGIA GENERADA
+// Autor Institucional: QRT Solutions
+// Strategy ID: STRAT-20260902-GOLD_ELDER_CROSS-M30-v1.0
+// Tesis (Variante B - Aprobada): Gold_Trend_Aligned_Pullback_Cross (Elder Triple Screen)
+// X: Cruce EMA 9 / 21 en M30 condicionado a que el precio este por encima (largos)
+//    o debajo (cortos) de la EMA 200 en M30 con pendiente favorable.
+// Y: Desplazamiento tendencial asimetrico en la direccion macro del oro (XAUUSD),
+//    eliminando los whipsaws y falsas rupturas de consolidacion.
+// Z: Flujo institucional macroeconomico que absorbe la oferta/demanda y produce
+//    expansiones direccionales sostenidas.
+// Salidas: Triple Barrier Method (Take Profit anclado a ATR D1 shift 1, Stop Loss ATR, Time-Stop 32 barras)
+// ==============================================================================
+
+// ------------------------------------------------------------------------------
+// BLOQUE 1: INPUTS DE USUARIO (CON SANITY CLAMPING)
+// ------------------------------------------------------------------------------
+grp_ma       = "1. Medias Moviles & Filtro Macro"
+fast_len     = input.int(9, "Periodo Media Rapida (EMA)", minval=2, maxval=50, group=grp_ma)
+slow_len     = input.int(21, "Periodo Media Lenta (EMA)", minval=5, maxval=100, group=grp_ma)
+filter_len   = input.int(200, "Periodo Media Filtro Macro (EMA)", minval=50, maxval=500, group=grp_ma)
+filter_slope = input.bool(true, "Exigir Pendiente en Media Filtro (d/dt >= 0)", group=grp_ma)
+
+grp_regime   = "2. Regimen de Volatilidad MTF (D1 - Lopez de Prado)"
+use_regime   = input.bool(true, "Activar Filtro Z-Score MTF", group=grp_regime)
+fast_atr_len = input.int(5, "Periodo ATR Rapido (D1)", minval=1, maxval=50, group=grp_regime)
+slow_atr_len = input.int(14, "Periodo ATR Lento (D1)", minval=2, maxval=100, group=grp_regime)
+z_window_len = input.int(20, "Ventana Z-Score (Dias)", minval=5, maxval=200, group=grp_regime)
+z_threshold  = input.float(-0.67, "Umbral Minimo Z-Score (Excluir Compresion Extrema)", minval=-3.0, maxval=3.0, step=0.05, group=grp_regime)
+
+grp_barriers = "3. Salidas: Triple Barrier Method"
+k1_profit    = input.float(1.5, "Barrera 1: Take Profit (+k1 * ATR D1)", minval=0.1, maxval=10.0, step=0.1, group=grp_barriers)
+k2_stop      = input.float(0.75, "Barrera 2: Stop Loss (-k2 * ATR D1)", minval=0.1, maxval=10.0, step=0.05, group=grp_barriers)
+k3_max_bars  = input.int(32, "Barrera 3: Time-Stop Maximo (Barras M30)", minval=1, maxval=500, group=grp_barriers)
+exit_on_cross= input.bool(true, "Cerrar por Cruce Inverso + Violacion de Filtro", group=grp_barriers)
+
+grp_display  = "4. Telemetria Visual en Pantalla"
+show_hud     = input.bool(true, "Mostrar HUD Institucional", group=grp_display)
+show_plots   = input.bool(true, "Dibujar Niveles de Barreras", group=grp_display)
+
+// ------------------------------------------------------------------------------
+// BLOQUE 2: GUARDA DE CALENTAMIENTO & HISTORIAL D1
+// ------------------------------------------------------------------------------
+d_bars_count = request.security(syminfo.tickerid, "D", bar_index + 1, barmerge.gaps_off, barmerge.lookahead_off)
+years_d1     = nz(d_bars_count, 0) / 252.0
+is_warmed_up = (bar_index >= filter_len) and (d_bars_count >= (slow_atr_len + z_window_len))
+
+// ------------------------------------------------------------------------------
+// BLOQUE 3: MOTOR DE REGIMEN MTF DIARIO (SIN REPAINTING: SHIFT 1)
+// ------------------------------------------------------------------------------
+d_atr5       = request.security(syminfo.tickerid, "D", ta.atr(fast_atr_len)[1],  barmerge.gaps_off, barmerge.lookahead_off)
+d_atr14      = request.security(syminfo.tickerid, "D", ta.atr(slow_atr_len)[1], barmerge.gaps_off, barmerge.lookahead_off)
+d_diff       = d_atr5 - d_atr14
+
+d_diff_mean  = ta.sma(d_diff, z_window_len)
+d_diff_stdev = ta.stdev(d_diff, z_window_len)
+z_vol        = d_diff_stdev > 0.0 ? (d_diff - d_diff_mean) / d_diff_stdev : 0.0
+regime_ok    = use_regime ? (z_vol >= z_threshold) : true
+regime_text  = z_vol > 0.67 ? "EXPANSION (ALTA)" : z_vol < -0.67 ? "COMPRESION (BAJA)" : "ESTACIONARIA (NORMAL)"
+
+// ------------------------------------------------------------------------------
+// BLOQUE 4: ALPHA ENGINE & FILTRO MACRO (ELDER TRIPLE SCREEN)
+// ------------------------------------------------------------------------------
+fast_ma   = ta.ema(close, fast_len)
+slow_ma   = ta.ema(close, slow_len)
+filter_ma = ta.ema(close, filter_len)
+
+// Pendiente de la media filtro (d/dt en barras cerradas)
+slope_up   = filter_ma[1] >= filter_ma[2]
+slope_down = filter_ma[1] <= filter_ma[2]
+
+// Cruces en barra cerrada [1] vs [2]
+cross_bull = (fast_ma[1] > slow_ma[1]) and (fast_ma[2] <= slow_ma[2])
+cross_bear = (fast_ma[1] < slow_ma[1]) and (fast_ma[2] >= slow_ma[2])
+
+// Condiciones con filtro macro
+macro_long_ok  = (close[1] > filter_ma[1]) and (filter_slope ? slope_up : true)
+macro_short_ok = (close[1] < filter_ma[1]) and (filter_slope ? slope_down : true)
+
+buy_signal  = is_warmed_up and regime_ok and cross_bull and macro_long_ok and barstate.isconfirmed and strategy.position_size == 0
+sell_signal = is_warmed_up and regime_ok and cross_bear and macro_short_ok and barstate.isconfirmed and strategy.position_size == 0
+
+// ------------------------------------------------------------------------------
+// BLOQUE 5: TRIPLE BARRIER METHOD & TELEMETRIA ESTRUCTURADA
+// ------------------------------------------------------------------------------
+var float entry_price = na
+var float tp_level    = na
+var float sl_level    = na
+var int   entry_bar   = na
+
+// Disparo de Entrada Long
+if buy_signal
+    entry_price := close
+    tp_level    := entry_price + (k1_profit * d_atr14)
+    sl_level    := entry_price - (k2_stop * d_atr14)
+    entry_bar   := bar_index
+    log_msg = str.format('{{"event":"ENTRY","side":"BUY","price":{0,number,#.##},"sl":{1,number,#.##},"tp":{2,number,#.##},"z_score":{3,number,#.##}}}', entry_price, sl_level, tp_level, z_vol)
+    strategy.entry("Long", strategy.long, alert_message=log_msg)
+
+// Disparo de Entrada Short
+if sell_signal
+    entry_price := close
+    tp_level    := entry_price - (k1_profit * d_atr14)
+    sl_level    := entry_price + (k2_stop * d_atr14)
+    entry_bar   := bar_index
+    log_msg = str.format('{{"event":"ENTRY","side":"SELL","price":{0,number,#.##},"sl":{1,number,#.##},"tp":{2,number,#.##},"z_score":{3,number,#.##}}}', entry_price, sl_level, tp_level, z_vol)
+    strategy.entry("Short", strategy.short, alert_message=log_msg)
+
+// Gestion de Salidas
+in_long  = strategy.position_size > 0
+in_short = strategy.position_size < 0
+bars_in_trade = in_long or in_short ? (bar_index - entry_bar) : 0
+
+if in_long
+    // B1: Take Profit
+    if high >= tp_level
+        log_exit = str.format('{{"event":"EXIT","reason":"B1_TAKE_PROFIT","exit_price":{0,number,#.##},"bars_held":{1}}}', tp_level, bars_in_trade)
+        strategy.exit("TP_Long", "Long", limit=tp_level, alert_message=log_exit)
+    // B2: Stop Loss
+    if low <= sl_level
+        log_exit = str.format('{{"event":"EXIT","reason":"B2_STOP_LOSS","exit_price":{0,number,#.##},"bars_held":{1}}}', sl_level, bars_in_trade)
+        strategy.exit("SL_Long", "Long", stop=sl_level, alert_message=log_exit)
+    // B3: Time Stop
+    if bars_in_trade >= k3_max_bars
+        log_exit = str.format('{{"event":"EXIT","reason":"B3_TIME_STOP","exit_price":{0,number,#.##},"bars_held":{1}}}', close, bars_in_trade)
+        strategy.close("Long", comment="Time_Stop_B3", alert_message=log_exit)
+    // Salida Preventiva por Reversion Fuerte
+    if exit_on_cross and cross_bear and close < filter_ma
+        strategy.close("Long", comment="Reversion_Macro", alert_message='{"event":"EXIT","reason":"MACRO_REVERSAL"}')
+
+if in_short
+    // B1: Take Profit
+    if low <= tp_level
+        log_exit = str.format('{{"event":"EXIT","reason":"B1_TAKE_PROFIT","exit_price":{0,number,#.##},"bars_held":{1}}}', tp_level, bars_in_trade)
+        strategy.exit("TP_Short", "Short", limit=tp_level, alert_message=log_exit)
+    // B2: Stop Loss
+    if high >= sl_level
+        log_exit = str.format('{{"event":"EXIT","reason":"B2_STOP_LOSS","exit_price":{0,number,#.##},"bars_held":{1}}}', sl_level, bars_in_trade)
+        strategy.exit("SL_Short", "Short", stop=sl_level, alert_message=log_exit)
+    // B3: Time Stop
+    if bars_in_trade >= k3_max_bars
+        log_exit = str.format('{{"event":"EXIT","reason":"B3_TIME_STOP","exit_price":{0,number,#.##},"bars_held":{1}}}', close, bars_in_trade)
+        strategy.close("Short", comment="Time_Stop_B3", alert_message=log_exit)
+    // Salida Preventiva por Reversion Fuerte
+    if exit_on_cross and cross_bull and close > filter_ma
+        strategy.close("Short", comment="Reversion_Macro", alert_message='{"event":"EXIT","reason":"MACRO_REVERSAL"}')
+
+if strategy.position_size == 0
+    entry_price := na
+    tp_level    := na
+    sl_level    := na
+    entry_bar   := na
+
+// ------------------------------------------------------------------------------
+// BLOQUE 6: HUD NEUTRO-INFORMATIVO Y TRAZADO VISUAL
+// ------------------------------------------------------------------------------
+plot(fast_ma, "EMA Rapida (9)", color=color.new(color.yellow, 0), linewidth=1)
+plot(slow_ma, "EMA Lenta (21)", color=color.new(color.orange, 0), linewidth=2)
+plot(filter_ma, "EMA Filtro Macro (200)", color=color.new(color.blue, 0), linewidth=2)
+
+plot(show_plots and in_long ? tp_level : na, "TP Level Long", color=color.green, style=plot.style_linebr, linewidth=2)
+plot(show_plots and in_long ? sl_level : na, "SL Level Long", color=color.red, style=plot.style_linebr, linewidth=2)
+plot(show_plots and in_short ? tp_level : na, "TP Level Short", color=color.green, style=plot.style_linebr, linewidth=2)
+plot(show_plots and in_short ? sl_level : na, "SL Level Short", color=color.red, style=plot.style_linebr, linewidth=2)
+
+var table hud = table.new(position.top_right, 2, 7, bgcolor=color.new(#18181b, 10), border_color=color.new(#3f3f46, 0), border_width=1)
+if show_hud and barstate.islast
+    hist_status = years_d1 >= 5.0 ? "VERDE (>=5 Años)" : "AMARILLO (<5 Años)"
+    hist_color  = years_d1 >= 5.0 ? color.green : color.orange
+    
+    table.cell(hud, 0, 0, "ESTRATEGIA", bgcolor=color.new(#27272a, 0), text_color=color.white, text_size=size.small)
+    table.cell(hud, 1, 0, "GOLD_ELDER_CROSS", bgcolor=color.new(#27272a, 0), text_color=color.yellow, text_size=size.small)
+    table.cell(hud, 0, 1, "HISTORIAL D1", text_color=color.white, text_size=size.small)
+    table.cell(hud, 1, 1, str.format("{0,number,#.##} Años [{1}]", years_d1, hist_status), text_color=hist_color, text_size=size.small)
+    table.cell(hud, 0, 2, "REGIMEN Z-VOL", text_color=color.white, text_size=size.small)
+    table.cell(hud, 1, 2, str.format("{0,number,#.##} [{1}]", z_vol, regime_text), text_color=color.white, text_size=size.small)
+    table.cell(hud, 0, 3, "EMA FILTRO (200)", text_color=color.white, text_size=size.small)
+    table.cell(hud, 1, 3, close > filter_ma ? "ALCISTA (Close > 200)" : "BAJISTA (Close < 200)", text_color=close > filter_ma ? color.green : color.red, text_size=size.small)
+    table.cell(hud, 0, 4, "ATR D1 (14) [1]", text_color=color.white, text_size=size.small)
+    table.cell(hud, 1, 4, str.format("${0,number,#.##} USD", d_atr14), text_color=color.white, text_size=size.small)
+    table.cell(hud, 0, 5, "BARRERAS (R:R)", text_color=color.white, text_size=size.small)
+    table.cell(hud, 1, 5, str.format("TP: 1.5x | SL: 0.75x (2.0:1)", k1_profit, k2_stop), text_color=color.white, text_size=size.small)
+    table.cell(hud, 0, 6, "AUTOR", text_color=color.white, text_size=size.small)
+    table.cell(hud, 1, 6, "QRT Solutions", text_color=color.aqua, text_size=size.small)

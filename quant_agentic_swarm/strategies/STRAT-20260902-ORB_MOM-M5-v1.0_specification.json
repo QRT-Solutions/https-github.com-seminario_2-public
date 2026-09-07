@@ -1,0 +1,63 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260902-ORB_MOM-M5-v1.0",
+  "timestamp": "2026-09-02T21:45:00Z",
+  "hypothesis": {
+    "condition_x": "Se define el Rango de Apertura (OR) como el maximo y minimo de las primeras N_or=3 velas M5 (15 minutos) tras la apertura de la sesion regular de EEUU (13:30 UTC). En cada vela M5 posterior al OR, se calcula ROC_i = (Close_i - Close_i-1) / Close_i-1. Si tres valores consecutivos de ROC son crecientes y del mismo signo (ROC_i > ROC_i-1 > ROC_i-2, con ROC_i > 0 para largos o ROC_i < 0 para cortos) Y el Close de la vela actual rompe el extremo del OR (Close > OR_high para largos, Close < OR_low para cortos), se genera la señal de entrada.",
+    "expected_outcome_y": "Continuacion direccional del precio durante el resto de la sesion regular, extendiendo el rango en la direccion de la ruptura hasta tocar la Barrera de Take Profit o el cierre de sesion.",
+    "structural_reason_z": "La subasta de apertura (opening auction) concentra el descubrimiento de precio institucional del dia. Una secuencia de ROC creciente en las barras iniciales evidencia agresion direccional sostenida de order flow -a diferencia de un simple gap aislado sin continuidad-, lo cual precede historicamente rupturas del rango inicial con mayor probabilidad de continuacion (Crabel, Fisher ACD Method).",
+    "invalidation_criterion": "El precio retorna dentro del Rango de Apertura con cierre de una vela M5 nuevamente dentro del OR tras haberlo roto (fallo de ruptura), o el Z-Score de volatilidad diaria cae por debajo del umbral antes de la confirmacion de la señal."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "M5",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.67,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      5,
+      10
+    ]
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "ROC_i = \\frac{C_i - C_{i-1}}{C_{i-1}}; \\quad OR_{high} = \\max(H_1,\\ldots,H_{N_{or}}); \\quad C_i > OR_{high} \\;\\wedge\\; ROC_i > ROC_{i-1} > ROC_{i-2} > 0",
+      "pseudocode": "ON new_session_day: N_or = 3; compute OR_high = MAX(High[1..N_or]), OR_low = MIN(Low[1..N_or]) usando las primeras N_or velas M5 tras session_open (13:30 UTC). ON each M5 bar confirmed AFTER the OR window, WHILE flat AND within session_window: roc = (Close - Close[1]) / Close[1]; IF roc > roc[1] AND roc[1] > roc[2] AND roc > 0 AND Close > OR_high AND z_vol > zscore_threshold_high AND is_warmed_up THEN BuySignal = TRUE",
+      "canonical_citation": "Toby Crabel (1990) - Opening Range y volatilidad de apertura; Mark Fisher - ACD Method (A-Range); Marcos Lopez de Prado (2018) - Filtro de Regimen de Volatilidad Diaria (Z-Score); Perry J. Kaufman - Rate of Change como medida de aceleracion direccional."
+    },
+    "entry_short": {
+      "trigger_formula_latex": "ROC_i = \\frac{C_i - C_{i-1}}{C_{i-1}}; \\quad OR_{low} = \\min(L_1,\\ldots,L_{N_{or}}); \\quad C_i < OR_{low} \\;\\wedge\\; ROC_i < ROC_{i-1} < ROC_{i-2} < 0",
+      "pseudocode": "ON new_session_day: N_or = 3; compute OR_high = MAX(High[1..N_or]), OR_low = MIN(Low[1..N_or]) usando las primeras N_or velas M5 tras session_open (13:30 UTC). ON each M5 bar confirmed AFTER the OR window, WHILE flat AND within session_window: roc = (Close - Close[1]) / Close[1]; IF roc < roc[1] AND roc[1] < roc[2] AND roc < 0 AND Close < OR_low AND z_vol > zscore_threshold_high AND is_warmed_up THEN SellSignal = TRUE",
+      "canonical_citation": "Toby Crabel (1990) - Opening Range y volatilidad de apertura; Mark Fisher - ACD Method (A-Range); Marcos Lopez de Prado (2018) - Filtro de Regimen de Volatilidad Diaria (Z-Score); Perry J. Kaufman - Rate of Change como medida de aceleracion direccional."
+    },
+    "session_window_utc": {
+      "start_time": "13:45",
+      "end_time": "19:45"
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 1.5,
+    "barrier_2_stop_atr_multiplier": 0.5,
+    "barrier_3_time_stop_max_bars": 75
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 1.5
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.0_specification.json",
+    "pine_script": null,
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.0.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260902-ORB_MOM-M5-v1.0.mq5",
+    "mql5_binary": null,
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-ORB_MOM-M5-v1.0_FACTSHEET.md"
+  }
+}

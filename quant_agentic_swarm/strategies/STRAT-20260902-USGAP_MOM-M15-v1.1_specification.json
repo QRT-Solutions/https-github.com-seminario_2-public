@@ -1,0 +1,64 @@
+{
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "strategy_id": "STRAT-20260902-USGAP_MOM-M15-v1.1",
+  "timestamp": "2026-09-03T11:50:00Z",
+  "hypothesis": {
+    "condition_x": "En la apertura de la sesion regular de EEUU (09:30 ET), el precio presenta un gap (Open_hoy - Close_dia_previo) >= 1.0x ATR_D(14)[shift 1] respecto al cierre previo, y la primera vela M15 de la sesion cierra confirmando la direccion del gap (Close > Open_sesion para largos, Close < Open_sesion para cortos) sin retroceder mas del 50% de su propio rango High-Low.",
+    "expected_outcome_y": "Aceleracion direccional sostenida durante la sesion regular de EEUU, capturando ganancias mediante Take Profit calibrado intradiario y protegiendo el capital con Breakeven dinamico.",
+    "structural_reason_z": "Un catalizador informativo overnight (earnings, datos macro, noticias) genera un desequilibrio de order flow. El volumen institucional que ejecuta al open continua explotando ese desequilibrio antes de que el mercado arbitre por completo la nueva informacion.",
+    "invalidation_criterion": "El precio retorna y una vela M15 cierra mas alla del 50% del gap dentro de los primeros 30 minutos, o se activa el Stop Loss tecnico / Breakeven."
+  },
+  "market_regime_mtf": {
+    "model": "Lopez_de_Prado_Daily_ZScore",
+    "regime_timeframe": "D1",
+    "execution_timeframe": "M15",
+    "fast_atr_period": 5,
+    "slow_atr_period": 14,
+    "zscore_threshold_high": 0.67,
+    "zscore_threshold_low": -0.67,
+    "target_history_years_range": [
+      5,
+      10
+    ]
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "\\text{Gap} = O_{\\text{sesion}} - C_{t-1} \\geq k_{gap} \\cdot \\text{ATR}_D(14)_{[1]} \\;\\wedge\\; C_{M15,1} > O_{\\text{sesion}} \\;\\wedge\\; C_{M15,1} \\geq L_{M15,1} + 0.5\\,(H_{M15,1}-L_{M15,1})",
+      "pseudocode": "ON new_session_day: gap = session_open - prev_daily_close; atr_d1 = ATR_D(14)[1]; IF gap >= k_gap * atr_d1 THEN gap_direction = LONG. ON first_M15_bar_confirmed OF session: IF gap_direction == LONG AND Close > session_open AND Close >= Low + 0.5*(High-Low) AND z_vol > 0.67 AND is_warmed_up AND NOT circuit_breaker_tripped AND flat THEN BuySignal = TRUE",
+      "canonical_citation": "Toby Crabel (1990) - Stretch/Opening Range Calculation; Marcos Lopez de Prado (2018) - Z-Score Daily Volatility."
+    },
+    "entry_short": {
+      "trigger_formula_latex": "\\text{Gap} = O_{\\text{sesion}} - C_{t-1} \\leq -k_{gap} \\cdot \\text{ATR}_D(14)_{[1]} \\;\\wedge\\; C_{M15,1} < O_{\\text{sesion}} \\;\\wedge\\; C_{M15,1} \\leq H_{M15,1} - 0.5\\,(H_{M15,1}-L_{M15,1})",
+      "pseudocode": "ON new_session_day: gap = session_open - prev_daily_close; atr_d1 = ATR_D(14)[1]; IF gap <= -k_gap * atr_d1 THEN gap_direction = SHORT. ON first_M15_bar_confirmed OF session: IF gap_direction == SHORT AND Close < session_open AND Close <= High - 0.5*(High-Low) AND z_vol > 0.67 AND is_warmed_up AND NOT circuit_breaker_tripped AND flat THEN SellSignal = TRUE",
+      "canonical_citation": "Toby Crabel (1990) - Stretch/Opening Range Calculation; Marcos Lopez de Prado (2018) - Z-Score Daily Volatility."
+    },
+    "session_window_utc": {
+      "start_time": "13:30",
+      "end_time": "14:30"
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 1.25,
+    "barrier_2_stop_atr_multiplier": 1.0,
+    "barrier_3_time_stop_max_bars": 26,
+    "breakeven_trigger_atr_m15": 0.75,
+    "breakeven_lock_points": 10,
+    "circuit_breaker_max_monthly_losses": 3
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "schema_version": 2,
+  "author": "QRT Solutions",
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 1.25
+  },
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1_specification.json",
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260902-USGAP_MOM-M15-v1.1.mq5",
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-USGAP_MOM-M15-v1.1_FACTSHEET.md"
+  }
+}

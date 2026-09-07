@@ -1,0 +1,71 @@
+{
+  "strategy_id": "STRAT-20260902-BTC_TREND_CROSS-M30-v1.0",
+  "timestamp": "2026-09-02T22:33:00Z",
+  "author": "QRT Solutions",
+  "target_asset": "BTCUSD",
+  "timeframe": "M30",
+  "thesis_title": "Bitcoin Macro Trend-Filtered EMA Cross with Daily ATR Triple Barrier",
+  "hypothesis": {
+    "condition_x": "Cruce alcista EMA 12 > 26 con precio de cierre estrictamente superior a EMA 200 en M30 (para largos), o cruce bajista EMA 12 < 26 con precio inferior a EMA 200 (para cortos), evaluado al cierre de barra (shift 1).",
+    "expected_outcome_y": "Hipótesis de continuación; TP 1.0 ATR D1 y SL 0.75 ATR D1 (relación nominal 4:3 antes de costes).",
+    "structural_reason_z": "Se estudia si el filtro de tendencia EMA200 y su pendiente evita cruces contra tendencia; eficacia no verificada.",
+    "invalidation": "Cruce inverso de EMA 12/26, toque de Stop Loss (0.75x ATR D1) o expiracion de 32 barras M30 (16 horas).",
+    "invalidation_criterion": "Stop Loss 0.75 ATR D1 o 32 barras M30; salida preventiva por cruce desactivada por defecto."
+  },
+  "parameters": {
+    "fast_ema": 12,
+    "slow_ema": 26,
+    "macro_ema_filter": 200,
+    "macro_slope_bars": 5,
+    "atr_daily_period": 14,
+    "tp_atr_multiplier": 1.0,
+    "sl_atr_multiplier": 0.75,
+    "time_stop_bars": 32,
+    "preventive_exit_on_cross": false,
+    "default_lot_size": 0.01
+  },
+  "triple_barriers": {
+    "b1_take_profit_atr": 1.0,
+    "b2_stop_loss_atr": 0.75,
+    "b3_max_holding_bars": 32
+  },
+  "status": "RESEARCH_CODE_READY",
+  "artifacts": {
+    "specification": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0_specification.json",
+    "mql5_ea": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0.mq5",
+    "mt5_ea": "MT5/estrategias/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0.mq5",
+    "mql5_binary": null,
+    "factsheet": "quant_agentic_swarm/strategies/STRAT-20260902-BTC_TREND_CROSS-M30-v1.0_FACTSHEET.md"
+  },
+  "schema_version": 2,
+  "$schema": "../schemas/strategy_specification.schema.json",
+  "market_regime_mtf": {
+    "model": "EMA_Trend",
+    "execution_timeframe": "M30",
+    "ema_period": 200,
+    "slope_bars": 5
+  },
+  "execution_rules": {
+    "entry_long": {
+      "trigger_formula_latex": "EMA12_2 <= EMA26_2; EMA12_1 > EMA26_1; C_1 > EMA200_1; EMA200_1 > EMA200_6",
+      "pseudocode": "Evaluate closed M30 bars: bullish EMA12/26 crossover with close above rising EMA200. Daily ATR14 from prior completed D1 bar.",
+      "canonical_citation": "Implemented source in this strategy; effectiveness remains a testable hypothesis."
+    },
+    "entry_short": {
+      "pseudocode": "Symmetric bearish EMA12/26 crossover, close below falling EMA200."
+    }
+  },
+  "triple_barrier_exits": {
+    "barrier_1_profit_atr_d1_multiplier": 1.0,
+    "barrier_2_stop_atr_multiplier": 0.75,
+    "barrier_3_time_stop_max_bars": 32
+  },
+  "research_purity_declaration": {
+    "live_execution_filters_omitted": true,
+    "unrequested_passive_protections": false
+  },
+  "profit_exit": {
+    "kind": "fixed_atr",
+    "atr_d1_multiplier": 1.0
+  }
+}

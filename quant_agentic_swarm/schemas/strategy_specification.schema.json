@@ -1,0 +1,320 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StrategySpecification v2",
+  "description": "Contrato formal de especificacion cuantitativa entre el enjambre de investigacion y los desarrolladores (PineScript/MQL5)",
+  "type": "object",
+  "required": [
+    "strategy_id",
+    "timestamp",
+    "hypothesis",
+    "market_regime_mtf",
+    "execution_rules",
+    "triple_barrier_exits",
+    "research_purity_declaration",
+    "schema_version",
+    "profit_exit"
+  ],
+  "properties": {
+    "strategy_id": {
+      "type": "string",
+      "pattern": "^STRAT-[0-9]{8}-[A-Za-z0-9_]+-[A-Za-z0-9]+-v[0-9]+(\\.[0-9]+)?$",
+      "description": "Identificador unico de estrategia. Ejemplo: STRAT-20260901-ORB_D1Z-M15-v1.0"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Fecha y hora ISO 8601 de creacion del contrato"
+    },
+    "hypothesis": {
+      "type": "object",
+      "required": [
+        "condition_x",
+        "expected_outcome_y",
+        "structural_reason_z",
+        "invalidation_criterion"
+      ],
+      "properties": {
+        "condition_x": {
+          "type": "string"
+        },
+        "expected_outcome_y": {
+          "type": "string"
+        },
+        "structural_reason_z": {
+          "type": "string"
+        },
+        "invalidation_criterion": {
+          "type": "string"
+        }
+      }
+    },
+    "market_regime_mtf": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "model",
+            "regime_timeframe",
+            "execution_timeframe",
+            "fast_atr_period",
+            "slow_atr_period",
+            "zscore_threshold_high"
+          ],
+          "properties": {
+            "model": {
+              "type": "string",
+              "enum": [
+                "Lopez_de_Prado_Daily_ZScore",
+                "Kaufman_Volatility_Ratio"
+              ]
+            },
+            "regime_timeframe": {
+              "type": "string",
+              "default": "D1"
+            },
+            "execution_timeframe": {
+              "type": "string",
+              "enum": [
+                "M5",
+                "M15",
+                "M30",
+                "H1",
+                "H4"
+              ]
+            },
+            "fast_atr_period": {
+              "type": "integer",
+              "default": 5
+            },
+            "slow_atr_period": {
+              "type": "integer",
+              "default": 14
+            },
+            "zscore_threshold_high": {
+              "type": "number",
+              "default": 0.67
+            },
+            "zscore_threshold_low": {
+              "type": "number",
+              "default": -0.67
+            },
+            "target_history_years_range": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 2,
+              "maxItems": 2,
+              "default": [
+                5,
+                10
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "model",
+            "execution_timeframe",
+            "ema_period",
+            "slope_bars"
+          ],
+          "properties": {
+            "model": {
+              "const": "EMA_Trend"
+            },
+            "execution_timeframe": {
+              "const": "M30"
+            },
+            "ema_period": {
+              "const": 200
+            },
+            "slope_bars": {
+              "const": 5
+            }
+          }
+        }
+      ]
+    },
+    "execution_rules": {
+      "type": "object",
+      "required": [
+        "entry_long"
+      ],
+      "properties": {
+        "entry_long": {
+          "type": "object",
+          "required": [
+            "trigger_formula_latex",
+            "pseudocode",
+            "canonical_citation"
+          ],
+          "properties": {
+            "trigger_formula_latex": {
+              "type": "string"
+            },
+            "pseudocode": {
+              "type": "string"
+            },
+            "canonical_citation": {
+              "type": "string"
+            }
+          }
+        },
+        "entry_short": {
+          "type": "object",
+          "properties": {
+            "trigger_formula_latex": {
+              "type": "string"
+            },
+            "pseudocode": {
+              "type": "string"
+            },
+            "canonical_citation": {
+              "type": "string"
+            }
+          }
+        },
+        "session_window_utc": {
+          "type": "object",
+          "properties": {
+            "start_time": {
+              "type": "string",
+              "pattern": "^[0-2][0-9]:[0-5][0-9]$"
+            },
+            "end_time": {
+              "type": "string",
+              "pattern": "^[0-2][0-9]:[0-5][0-9]$"
+            }
+          }
+        }
+      }
+    },
+    "triple_barrier_exits": {
+      "type": "object",
+      "required": [
+        "barrier_1_profit_atr_d1_multiplier",
+        "barrier_2_stop_atr_multiplier",
+        "barrier_3_time_stop_max_bars"
+      ],
+      "properties": {
+        "barrier_1_profit_atr_d1_multiplier": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.1,
+          "maximum": 10.0,
+          "description": "Multiplicador de Take Profit aplicado al ATR Diario D1 de 14 periodos"
+        },
+        "barrier_2_stop_atr_multiplier": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 10.0
+        },
+        "barrier_3_time_stop_max_bars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        }
+      }
+    },
+    "research_purity_declaration": {
+      "type": "object",
+      "required": [
+        "live_execution_filters_omitted",
+        "unrequested_passive_protections"
+      ],
+      "properties": {
+        "live_execution_filters_omitted": {
+          "type": "boolean",
+          "const": true
+        },
+        "unrequested_passive_protections": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "schema_version": {
+      "const": 2
+    },
+    "profit_exit": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "atr_d1_multiplier"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "fixed_atr"
+            },
+            "atr_d1_multiplier": {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 10
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "channel_period"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "donchian_trailing"
+            },
+            "channel_period": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "profit_exit": {
+            "properties": {
+              "kind": {
+                "const": "donchian_trailing"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "triple_barrier_exits": {
+            "properties": {
+              "barrier_1_profit_atr_d1_multiplier": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "triple_barrier_exits": {
+            "properties": {
+              "barrier_1_profit_atr_d1_multiplier": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

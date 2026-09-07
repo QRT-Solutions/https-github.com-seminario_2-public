@@ -1,0 +1,158 @@
+//@version=6
+strategy("STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1", overlay = true, initial_capital = 1000000, default_qty_type = strategy.fixed, default_qty_value = 0.01, currency = currency.USD, margin_long = 5.0, margin_short = 5.0)
+
+// ==============================================================================
+// BLOQUE 1: CABECERA INSTITUCIONAL Y METADATOS
+// Autor: QRT Solutions
+// Estrategia: Cruce SMA 20/50 con Filtro de Tendencia Macro EMA 200, Breakeven y Circuit Breaker
+// UUID: STRAT-20260903-GOLD_SMA_SIMPLE-M30-v1.1
+// Timeframe de Ejecucion: M30 | Activo: XAUUSD (Oro Spot)
+// Citas: Perry J. Kaufman (2013), Alexander Elder (1993, 2014), Marcos Lopez de Prado (2018)
+// ==============================================================================
+
+// ==============================================================================
+// BLOQUE 2: PARAMETROS DE ENTRADA (INPUTS)
+// ==============================================================================
+var string GRP_DIR = "=== Direccionalidad ==="
+string inp_trade_mode = input.string("Ambas Direcciones", "Modo Direccional", options = ["Ambas Direcciones", "Solo Compras (Longs)", "Solo Ventas (Shorts)"], group = GRP_DIR)
+
+var string GRP_MA = "=== Medias Moviles de Cruce y Filtro ==="
+int  inp_fast_sma   = input.int(20, "Periodo SMA Rapida", group = GRP_MA, minval = 5)
+int  inp_slow_sma   = input.int(50, "Periodo SMA Lenta", group = GRP_MA, minval = 10)
+int  inp_macro_ema  = input.int(200, "Periodo EMA Macro de Tendencia", group = GRP_MA, minval = 50)
+
+var string GRP_TRIPLE = "=== Triple Barrera de Lopez de Prado ==="
+float inp_tp_mult   = input.float(1.50, "Multiplicador Take Profit (ATR D1)", group = GRP_TRIPLE, step = 0.05)
+float inp_sl_mult   = input.float(0.75, "Multiplicador Stop Loss (ATR D1)", group = GRP_TRIPLE, step = 0.05)
+int   inp_max_bars  = input.int(48, "Barrera Temporal Maxima (Barras M30 = 24h)", group = GRP_TRIPLE, minval = 5)
+int   inp_atr_d_per = input.int(14, "Periodo ATR Diario (Base de Barreras)", group = GRP_TRIPLE)
+
+var string GRP_PROT = "=== Capa Dinamica de Proteccion de Capital ==="
+bool  inp_use_be     = input.bool(true, "Activar Breakeven Dinamico", group = GRP_PROT)
+float inp_be_trigger = input.float(0.75, "Gatillo Breakeven (ATR D1)", group = GRP_PROT, step = 0.05)
+bool  inp_use_cb     = input.bool(true, "Activar Circuit Breaker Mensual", group = GRP_PROT)
+int   inp_max_consec_loss = input.int(4, "Maximas Perdidas Consecutivas en el Mes", group = GRP_PROT, minval = 1)
+
+// ==============================================================================
+// BLOQUE 3: CALCULOS MTF Y LIBRES DE REPAINTING (SHIFT = 1)
+// ==============================================================================
+float sma_fast  = ta.sma(close, inp_fast_sma)
+float sma_slow  = ta.sma(close, inp_slow_sma)
+float ema_macro = ta.ema(close, inp_macro_ema)
+
+float d_atr = request.security(syminfo.tickerid, "D", ta.atr(inp_atr_d_per)[1], lookahead = barmerge.lookahead_off)
+bool is_warmed_up = bar_index > (inp_macro_ema + 20) and not na(d_atr)
+
+// Monitoreo del Circuit Breaker Mensual
+var int current_month = 0
+var int monthly_consec_losses = 0
+var bool circuit_breaker_active = false
+
+if (month(time) != current_month)
+    current_month := month(time)
+    monthly_consec_losses := 0
+    circuit_breaker_active := false
+
+if (ta.change(strategy.closedtrades) > 0)
+    int last_trade_idx = strategy.closedtrades - 1
+    if (strategy.closedtrades.profit(last_trade_idx) < 0)
+        monthly_consec_losses += 1
+        if (inp_use_cb and monthly_consec_losses >= inp_max_consec_loss)
+            circuit_breaker_active := true
+    else
+        monthly_consec_losses := 0
+
+// ==============================================================================
+// BLOQUE 4: CONDICIONES DE ENTRADA AL CIERRE DE VELA (SHIFT = 1)
+// ==============================================================================
+bool cross_bull = (sma_fast[1] > sma_slow[1]) and (sma_fast[2] <= sma_slow[2])
+bool cross_bear = (sma_fast[1] < sma_slow[1]) and (sma_fast[2] >= sma_slow[2])
+
+bool filter_bull = (close[1] > ema_macro[1])
+bool filter_bear = (close[1] < ema_macro[1])
+
+bool allow_long  = (inp_trade_mode == "Solo Compras (Longs)" or inp_trade_mode == "Ambas Direcciones")
+bool allow_short = (inp_trade_mode == "Solo Ventas (Shorts)" or inp_trade_mode == "Ambas Direcciones")
+
+bool can_trade = is_warmed_up and not circuit_breaker_active
+
+// ==============================================================================
+// BLOQUE 5 & 6: EJECUCION DE ORDENES Y GESTION DE TRIPLE BARRERA
+// ==============================================================================
+var float entry_price_long = na
+var float sl_price_long = na
+var float tp_price_long = na
+var float be_price_long = na
+var int   entry_bar_long = 0
+var bool  be_active_long = false
+
+var float entry_price_short = na
+var float sl_price_short = na
+var float tp_price_short = na
+var float be_price_short = na
+var int   entry_bar_short = 0
+var bool  be_active_short = false
+
+// ENTRADAS
+if (strategy.position_size == 0 and can_trade)
+    if (allow_long and cross_bull and filter_bull)
+        strategy.entry("Long", strategy.long)
+        entry_price_long := close
+        sl_price_long    := close - (d_atr * inp_sl_mult)
+        tp_price_long    := close + (d_atr * inp_tp_mult)
+        be_price_long    := close + (d_atr * 0.05)
+        entry_bar_long   := bar_index
+        be_active_long   := false
+
+    else if (allow_short and cross_bear and filter_bear)
+        strategy.entry("Short", strategy.short)
+        entry_price_short := close
+        sl_price_short    := close + (d_atr * inp_sl_mult)
+        tp_price_short    := close - (d_atr * inp_tp_mult)
+        be_price_short    := close - (d_atr * 0.05)
+        entry_bar_short   := bar_index
+        be_active_short   := false
+
+// GESTION DE BREAKEVEN INTRADIA
+if (strategy.position_size > 0 and inp_use_be and not be_active_long)
+    if (high >= (entry_price_long + d_atr * inp_be_trigger))
+        sl_price_long  := be_price_long
+        be_active_long := true
+
+if (strategy.position_size < 0 and inp_use_be and not be_active_short)
+    if (low <= (entry_price_short - d_atr * inp_be_trigger))
+        sl_price_short  := be_price_short
+        be_active_short := true
+
+// SALIDAS DE BARRERAS
+if (strategy.position_size > 0)
+    // Barrera 3 de Tiempo (48 barras = 24h)
+    if (bar_index - entry_bar_long >= inp_max_bars)
+        strategy.close("Long", comment = "TIME_STOP_B3")
+    // Salida por Cruce Opuesto
+    else if (sma_fast[1] < sma_slow[1])
+        strategy.close("Long", comment = "OPPOSITE_CROSS")
+    else
+        strategy.exit("Exit_Long", "Long", stop = sl_price_long, limit = tp_price_long)
+
+if (strategy.position_size < 0)
+    // Barrera 3 de Tiempo (48 barras = 24h)
+    if (bar_index - entry_bar_short >= inp_max_bars)
+        strategy.close("Short", comment = "TIME_STOP_B3")
+    // Salida por Cruce Opuesto
+    else if (sma_fast[1] > sma_slow[1])
+        strategy.close("Short", comment = "OPPOSITE_CROSS")
+    else
+        strategy.exit("Exit_Short", "Short", stop = sl_price_short, limit = tp_price_short)
+
+// ==============================================================================
+// BLOQUE 7: VISUALIZACION Y TELEMETRIA
+// ==============================================================================
+plot(sma_fast,  "SMA Rapida 20", color = color.yellow, linewidth = 2)
+plot(sma_slow,  "SMA Lenta 50",  color = color.blue,   linewidth = 2)
+plot(ema_macro, "EMA Macro 200", color = color.white,  linewidth = 2)
+
+plotshape(cross_bull and filter_bull and can_trade and strategy.position_size == 0, title = "Senal Compra", style = shape.triangleup,   location = location.belowbar, color = color.green, size = size.small)
+plotshape(cross_bear and filter_bear and can_trade and strategy.position_size == 0, title = "Senal Venta",  style = shape.triangledown, location = location.abovebar, color = color.red,   size = size.small)
+
+bgcolor(circuit_breaker_active ? color.new(color.maroon, 85) : na, title = "Fondo Circuit Breaker Activo")

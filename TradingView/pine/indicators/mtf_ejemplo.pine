@@ -1,0 +1,19 @@
+//@version=6
+indicator("MTF - SMA Diaria en Intradía", shorttitle="MTF SMA", overlay=true)
+
+// 1. Inputs
+length_input = input.int(title="Longitud SMA (Diaria)", defval=20)
+
+// 2. Cálculo base (lo que queremos calcular en el marco temporal superior)
+// Definimos una función o variable que calculará la SMA
+sma_diaria_raw = ta.sma(close, length_input)
+
+// 3. Magia Multi-Timeframe (MTF)
+// Usamos request.security para pedirle a TradingView que calcule la variable 'sma_diaria_raw'
+// usando datos "D" (Diarios), sin importar en qué marco temporal esté abierto el gráfico actual.
+// lookahead=barmerge.lookahead_off evita que el indicador "vea el futuro" en el backtesting.
+sma_diaria = request.security(syminfo.tickerid, "D", sma_diaria_raw, lookahead=barmerge.lookahead_off)
+
+// 4. Renderizado
+// Dibujamos la SMA diaria sobre nuestro gráfico intradía (ej. 15 min, 1 hora)
+plot(sma_diaria, title="SMA Diaria", color=color.orange, linewidth=2, style=plot.style_linebr)
