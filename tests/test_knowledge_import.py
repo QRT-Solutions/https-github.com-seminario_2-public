@@ -35,12 +35,12 @@ def test_imported_reference_baseline_invalidates_on_edits(tmp_path, monkeypatch)
     monkeypatch.setattr(sys, 'argv', ['check_links.py'])
     corpus = tmp_path / 'base_de_conocimientos'
     corpus.mkdir()
-    document = corpus / 'fixture.md'
+    document = corpus / 'cafe\u0301.md'
     document.write_text('![Legacy figure](assets/missing.png)', encoding='utf-8')
     digest = hashlib.sha256(document.read_bytes()).hexdigest()
     (tmp_path / 'docs').mkdir()
     (tmp_path / 'docs/knowledge-import.json').write_text(json.dumps({'files': [{
-        'path': 'base_de_conocimientos/fixture.md',
+        'path': 'base_de_conocimientos/caf\u00e9.md',
         'source_sha256': digest, 'published_sha256': digest,
     }]}), encoding='utf-8')
     assert checker.main() == 0

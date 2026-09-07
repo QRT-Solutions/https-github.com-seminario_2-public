@@ -222,9 +222,9 @@
     },
     {
       "path": "base_de_conocimientos/LLM_INDEX.md",
-      "bytes": 27756,
+      "bytes": 27755,
       "source_sha256": "2ae514ee2e58ac460e12c79718e8659edb4f29b72847242453ed4e523952577e",
-      "published_sha256": "2294b320e9df2de499fe0f1b7b9c9112126e920da227acd5e3a1d9a51a6e0114"
+      "published_sha256": "78ab062cfe0d73c094a89ba5b9fe44cf34e08380e6d1dba210743daefb1bf1d2"
     },
     {
       "path": "base_de_conocimientos/Mark Minervini - Think & Trade Like a Champion-Access Publishing Group (2017).md",
@@ -275,7 +275,7 @@
       "published_sha256": "829e28c1b00ec087d96cd66a46c8eeb131afcfac0d172cf9a3238bb178d3427e"
     },
     {
-      "path": "base_de_conocimientos/Springer Texts in Statistics) René Carmona (auth.) - Statistical Analysis of Financial Data in R-Springer-Verlag New York (2014).md",
+      "path": "base_de_conocimientos/Springer Texts in Statistics) René Carmona (auth.) - Statistical Analysis of Financial Data in R-Springer-Verlag New York (2014).md",
       "bytes": 1519802,
       "source_sha256": "6e7dca7988400ca672a9ed65ee932b3d58dda92769de0f1ee64b7312804fb92f",
       "published_sha256": "6e7dca7988400ca672a9ed65ee932b3d58dda92769de0f1ee64b7312804fb92f"

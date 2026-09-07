@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import re
+import unicodedata
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -43,7 +44,9 @@ def main() -> int:
         if source.suffix not in {".md", ".html"}:
             continue
         text = source.read_text(encoding="utf-8")
-        imported_unchanged = baseline.get(source.relative_to(ROOT).as_posix()) == (
+        imported_unchanged = baseline.get(
+            unicodedata.normalize("NFC", source.relative_to(ROOT).as_posix())
+        ) == (
             hashlib.sha256(source.read_bytes()).hexdigest()
         )
         if source.suffix == ".md":

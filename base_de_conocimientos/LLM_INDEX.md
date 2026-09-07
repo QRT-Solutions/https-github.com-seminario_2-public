@@ -123,7 +123,7 @@ Usa esta tabla para ir directamente al libro correcto según el tema de consulta
 - **Autor:** Andrew Coles & David Hawkins (Bloomberg Press) | **Idioma:** EN | **Tamaño:** 915 KB (140.049 palabras).
 - **Core Edge:** Tratado exhaustivo de la metodología MIDAS (Market Interpretation/Data Analysis System) y VWAP Anclado (Anchored VWAP) desde eventos clave.
 
-#### 21. [`Springer Texts in Statistics) René Carmona (auth.) - Statistical Analysis of Financial Data in R...md`](./Springer%20Texts%20in%20Statistics%29%20Rene%CC%81%20Carmona%20%28auth.%29%20-%20Statistical%20Analysis%20of%20Financial%20Data%20in%20R-Springer-Verlag%20New%20York%20%282014%29.md)
+#### 21. [`Springer Texts in Statistics) René Carmona (auth.) - Statistical Analysis of Financial Data in R...md`](./Springer%20Texts%20in%20Statistics%29%20Ren%C3%A9%20Carmona%20%28auth.%29%20-%20Statistical%20Analysis%20of%20Financial%20Data%20in%20R-Springer-Verlag%20New%20York%20%282014%29.md)
 - **Autor:** René Carmona (Springer) | **Idioma:** EN | **Tamaño:** 1.484 KB (218.684 palabras).
 - **Core Edge:** Modelado econométrico y estadístico en R: series temporales GARCH, cópulas, colas pesadas (fat tails), análisis de componentes principales (PCA) y optimización de portafolios.
 
