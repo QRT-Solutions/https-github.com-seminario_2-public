@@ -1,5 +1,16 @@
 # Changelog — QRT Solutions
 
+## 2026-09-07 — Base de conocimientos compartida
+
+- Incorporados 50 documentos, README, índice semántico y archivo de exclusiones
+  de `base_de_conocimientos`, por solicitud y confirmación del mantenedor.
+- Conservados byte a byte los 50 documentos; corregidos enlaces y disponibilidad
+  de recursos en los índices. No se incluyen imágenes ausentes en el origen.
+- Corregidos falsos positivos de autenticación Basic en prosa y una URL pública
+  bibliográfica, con regresiones para conservar la detección de credenciales.
+- Registrados hashes y referencias históricas; el verificador mantiene controles
+  estrictos para índices, nuevos archivos y textos modificados.
+
 ## 2026-09-07 — Repositorio público independiente
 
 - Publicado el código del candidato en `felipemillar/seminario_2-public`, por

@@ -1,0 +1,326 @@
+{
+  "author": "QRT Solutions",
+  "date": "2026-09-07",
+  "authorization": "Maintainer explicitly requested public distribution and confirmed shared use. Existing authorship and notices are preserved; project MIT does not relicense third-party works.",
+  "scope": "50 corpus documents preserved byte for byte, two editorial indexes updated, and the original ignore file. Missing figures and historical references are documented, not reconstructed. The link checker reports legacy missing references only while source hashes remain unchanged; edited or new files and both indexes remain strict. Secret scanning includes every file.",
+  "files": [
+    {
+      "path": "base_de_conocimientos/.gitignore",
+      "bytes": 80,
+      "source_sha256": "ec5c2995b204c525d873791b8318459bcc77403af9c728a47cdbbb9ec0182a21",
+      "published_sha256": "ec5c2995b204c525d873791b8318459bcc77403af9c728a47cdbbb9ec0182a21"
+    },
+    {
+      "path": "base_de_conocimientos/10-Building_Winning_Trading_Systems.md",
+      "bytes": 773957,
+      "source_sha256": "17823ea1f9e8f2c93e7442e5e9ac4fbf710cabc7d46ed879cda0076832a4a7ed",
+      "published_sha256": "17823ea1f9e8f2c93e7442e5e9ac4fbf710cabc7d46ed879cda0076832a4a7ed"
+    },
+    {
+      "path": "base_de_conocimientos/11-Algorithmic Trading Systems Data Mining to Live Trading.md",
+      "bytes": 490954,
+      "source_sha256": "e7a05cd44a953296c8eef17e6e6fd973136afcc4b027778f80751885d83069a5",
+      "published_sha256": "e7a05cd44a953296c8eef17e6e6fd973136afcc4b027778f80751885d83069a5"
+    },
+    {
+      "path": "base_de_conocimientos/12-Robert Fischer - Candlesticks Fibonacci and Chart Pattern Trading Tools.md",
+      "bytes": 367723,
+      "source_sha256": "c8b083b1cce417f89c336043d0eba2650627a46623883161b9e19975ea9d8d76",
+      "published_sha256": "c8b083b1cce417f89c336043d0eba2650627a46623883161b9e19975ea9d8d76"
+    },
+    {
+      "path": "base_de_conocimientos/13-Trade Mindfully Psychology for Trading Performance.md",
+      "bytes": 819901,
+      "source_sha256": "6833b4311d2d8ba7f713630dabf41bb4ee6f857dbafb0af89dccb079bfffdfe9",
+      "published_sha256": "6833b4311d2d8ba7f713630dabf41bb4ee6f857dbafb0af89dccb079bfffdfe9"
+    },
+    {
+      "path": "base_de_conocimientos/14-High Probability Trading Steps to Become a Successful Trader.md",
+      "bytes": 796416,
+      "source_sha256": "d4bb3c3933c0f2ec15696dc5be655d88cd8e6fd1c8bffef623aa1744d6586d10",
+      "published_sha256": "d4bb3c3933c0f2ec15696dc5be655d88cd8e6fd1c8bffef623aa1744d6586d10"
+    },
+    {
+      "path": "base_de_conocimientos/15-Richard L. Weissman - Mechanical Trading Systems.md",
+      "bytes": 436208,
+      "source_sha256": "cf265df73d8422582d9bd10d1a7fb5b7982fe608e01edd3fd8c0360c4e03f8c7",
+      "published_sha256": "cf265df73d8422582d9bd10d1a7fb5b7982fe608e01edd3fd8c0360c4e03f8c7"
+    },
+    {
+      "path": "base_de_conocimientos/16-EasyLanguage Essentials.md",
+      "bytes": 249309,
+      "source_sha256": "91a29b09ef4731642a902650815c62ee8b1b9d4cd308b5e4a05704bf03430918",
+      "published_sha256": "91a29b09ef4731642a902650815c62ee8b1b9d4cd308b5e4a05704bf03430918"
+    },
+    {
+      "path": "base_de_conocimientos/1A_technical_tutorial_de (1).md",
+      "bytes": 74506,
+      "source_sha256": "5d1a4a1573ac5d7eacda31ed9c1c920f72a6da8be57f4bdb47d5ef07a0a800ea",
+      "published_sha256": "5d1a4a1573ac5d7eacda31ed9c1c920f72a6da8be57f4bdb47d5ef07a0a800ea"
+    },
+    {
+      "path": "base_de_conocimientos/3-Reading Price Charts Technical Analysis for Traders.md",
+      "bytes": 840050,
+      "source_sha256": "2e8efafd14d2449c291dd623c87d3f37ee4d13431eacab8ee37c473fd85d4f58",
+      "published_sha256": "2e8efafd14d2449c291dd623c87d3f37ee4d13431eacab8ee37c473fd85d4f58"
+    },
+    {
+      "path": "base_de_conocimientos/4-Short_Term_Trading_Strategies_That_Work_Larry_Connors,_Cesar_Alvarez.md",
+      "bytes": 148065,
+      "source_sha256": "f22e0e300df491b139374f42d417aae2a50199beda59acd7df91a4b814c64836",
+      "published_sha256": "f22e0e300df491b139374f42d417aae2a50199beda59acd7df91a4b814c64836"
+    },
+    {
+      "path": "base_de_conocimientos/5-Day Trading Beat the System & Make Money.md",
+      "bytes": 369851,
+      "source_sha256": "dc1380ce337169078dea1a7270b6033ba15dbc0d400c3ff0c101e850614efe41",
+      "published_sha256": "dc1380ce337169078dea1a7270b6033ba15dbc0d400c3ff0c101e850614efe41"
+    },
+    {
+      "path": "base_de_conocimientos/7-Trading Systems and Methods Technical Analysis & Strategies.md",
+      "bytes": 2245988,
+      "source_sha256": "57b863e08d8afec413cdbee97426edcdc0ea066bccfc8cd252423d2748deb6de",
+      "published_sha256": "57b863e08d8afec413cdbee97426edcdc0ea066bccfc8cd252423d2748deb6de"
+    },
+    {
+      "path": "base_de_conocimientos/8-Mark Douglas - Trading en la Zona.md",
+      "bytes": 478469,
+      "source_sha256": "9af075a4ae8e004399245160b94cf0bdeab4b8f468d9edd77a02a841674e0161",
+      "published_sha256": "9af075a4ae8e004399245160b94cf0bdeab4b8f468d9edd77a02a841674e0161"
+    },
+    {
+      "path": "base_de_conocimientos/9-Smart Money Concept.md",
+      "bytes": 87197,
+      "source_sha256": "2b4069c8d3bcc9fc38ecb90dd2c4e1ab66a0ce757bf3fa9a13b7799d197537ca",
+      "published_sha256": "2b4069c8d3bcc9fc38ecb90dd2c4e1ab66a0ce757bf3fa9a13b7799d197537ca"
+    },
+    {
+      "path": "base_de_conocimientos/Alexander Elder - El Nuevo Vivir del Trading.md",
+      "bytes": 817642,
+      "source_sha256": "8544f152e7b791556b095827e6b44ce05af53b8277c479ae1b8ee186ce633393",
+      "published_sha256": "8544f152e7b791556b095827e6b44ce05af53b8277c479ae1b8ee186ce633393"
+    },
+    {
+      "path": "base_de_conocimientos/Analysis Stock Trends - Robert D. Edwards & John Magee Tomo I.md",
+      "bytes": 292700,
+      "source_sha256": "5cc2c88e957ebcaa1a5331707c59bf3164f78dad24c83992b92e55a48c2a4760",
+      "published_sha256": "5cc2c88e957ebcaa1a5331707c59bf3164f78dad24c83992b92e55a48c2a4760"
+    },
+    {
+      "path": "base_de_conocimientos/Analysis Stock Trends - Robert D. Edwards & John Magee Tomo II.md",
+      "bytes": 272930,
+      "source_sha256": "c49137b0fff94c487a9d7319eb2cfdf0caf2e954cb79ad150dace9ee7a058cbe",
+      "published_sha256": "c49137b0fff94c487a9d7319eb2cfdf0caf2e954cb79ad150dace9ee7a058cbe"
+    },
+    {
+      "path": "base_de_conocimientos/Analysis Stock Trends - Robert D. Edwards & John Magee Tomo III.md",
+      "bytes": 427216,
+      "source_sha256": "285dfa0861313a0e15fdc17f6d9ca78059e38a9c8a23af7de789a3a1505f1a2c",
+      "published_sha256": "285dfa0861313a0e15fdc17f6d9ca78059e38a9c8a23af7de789a3a1505f1a2c"
+    },
+    {
+      "path": "base_de_conocimientos/Bloomberg - Fixed Income Securities And Derivatives Handbook Analysis And Valuation (Choudry, Cfa Level 2)-Bloomberg.md",
+      "bytes": 711526,
+      "source_sha256": "61347af48031bdff755f23885d92c8e70b844da740faf74c605077c3c239cb3c",
+      "published_sha256": "61347af48031bdff755f23885d92c8e70b844da740faf74c605077c3c239cb3c"
+    },
+    {
+      "path": "base_de_conocimientos/Bloomberg Financial) Andrew Coles, David Hawkins - MIDAS Technical Analysis_ A VWAP Approach to Trading and Investing in Today's Markets-Bloomberg Press (2012).md",
+      "bytes": 937606,
+      "source_sha256": "77e943865b2ad2b4a89a63e7de0332b74aac8f0ccd8f684ed41bf389f0ed16a9",
+      "published_sha256": "77e943865b2ad2b4a89a63e7de0332b74aac8f0ccd8f684ed41bf389f0ed16a9"
+    },
+    {
+      "path": "base_de_conocimientos/Bloomberg Financial) Constance Brown - Fibonacci Analysis -Bloomberg Press (2008).md",
+      "bytes": 245607,
+      "source_sha256": "c05d8dc14dc9df0ff29ef38724bb76b05a9c25f10c9f8f05eaa9b7dbc8743606",
+      "published_sha256": "c05d8dc14dc9df0ff29ef38724bb76b05a9c25f10c9f8f05eaa9b7dbc8743606"
+    },
+    {
+      "path": "base_de_conocimientos/Bloomberg Financial) R. Stafford Johnson - Derivatives Markets and Analysis-Bloomberg Press (2017).md",
+      "bytes": 2253688,
+      "source_sha256": "50f457b73a446b6e0ef107e60cdd82ab423fe0a08c69d48c4c1a02905f512a62",
+      "published_sha256": "50f457b73a446b6e0ef107e60cdd82ab423fe0a08c69d48c4c1a02905f512a62"
+    },
+    {
+      "path": "base_de_conocimientos/CMT2016.md",
+      "bytes": 1955178,
+      "source_sha256": "545084a258e1405b03a86e5002fdbe410745ef4250c3a676e1d3d354efd2d966",
+      "published_sha256": "545084a258e1405b03a86e5002fdbe410745ef4250c3a676e1d3d354efd2d966"
+    },
+    {
+      "path": "base_de_conocimientos/Dr CS_Mastering the trade_Carter.md",
+      "bytes": 1068794,
+      "source_sha256": "3ea05f4cb02c0a8c81df1a0f1cb12732986d3098aa2e74307cfe75935c752ba9",
+      "published_sha256": "3ea05f4cb02c0a8c81df1a0f1cb12732986d3098aa2e74307cfe75935c752ba9"
+    },
+    {
+      "path": "base_de_conocimientos/Dr CS_Mkt Tech Assoc - CMT Level I 2016_ An Introduction to Technical Analysis-John Wiley & Sons (2015).md",
+      "bytes": 1993530,
+      "source_sha256": "e5716571399b8c333eecc5e2c7e66a30beb7e40857598d9d24a628e51b7a5c69",
+      "published_sha256": "e5716571399b8c333eecc5e2c7e66a30beb7e40857598d9d24a628e51b7a5c69"
+    },
+    {
+      "path": "base_de_conocimientos/Dr CS_The Golden Ratio_ The Divine Beauty of Mathematics-Race Point Publishing (2018).md",
+      "bytes": 301819,
+      "source_sha256": "99dd815d42f4ca9d65cd68bb85a78bccf904453062540cba90dde9b243b8a728",
+      "published_sha256": "99dd815d42f4ca9d65cd68bb85a78bccf904453062540cba90dde9b243b8a728"
+    },
+    {
+      "path": "base_de_conocimientos/George MacLean - Fibonacci and Gann Applications in Financial Markets_ Practical Applications of Natural and Synthetic Ratios in Technical Analysis-Wiley (2005).md",
+      "bytes": 525828,
+      "source_sha256": "ef0c62fc781073be0001307973d4e3f960f6919da15cbfd8ee824446a635d3bc",
+      "published_sha256": "ef0c62fc781073be0001307973d4e3f960f6919da15cbfd8ee824446a635d3bc"
+    },
+    {
+      "path": "base_de_conocimientos/How to Make Money in Stocks Spanish.md",
+      "bytes": 996439,
+      "source_sha256": "b02ed1d137d6395039ec1cce5d6e6ab298f74b66b649ca4522b9876aa23bfefa",
+      "published_sha256": "b02ed1d137d6395039ec1cce5d6e6ab298f74b66b649ca4522b9876aa23bfefa"
+    },
+    {
+      "path": "base_de_conocimientos/How to make Money Stocks.md",
+      "bytes": 980941,
+      "source_sha256": "c9519952ea17062d9defaeda707cce9cb87493c7e64f03ce535bbb36effa3ed0",
+      "published_sha256": "c9519952ea17062d9defaeda707cce9cb87493c7e64f03ce535bbb36effa3ed0"
+    },
+    {
+      "path": "base_de_conocimientos/How_to_Listen_When_Markets_Speak_-_Lawrence_G_McDonald (1).md",
+      "bytes": 546538,
+      "source_sha256": "c95052e0bf6d205452aa5a25245ad8017af168a134c01952402d95137ae82c90",
+      "published_sha256": "c95052e0bf6d205452aa5a25245ad8017af168a134c01952402d95137ae82c90"
+    },
+    {
+      "path": "base_de_conocimientos/Jack D. Schwager - Stock Market Wizards_ Interviews with America's Top Stock Traders-HarperBusiness (2001).md",
+      "bytes": 777345,
+      "source_sha256": "062185a4ecaeac3e8a9d1c188b3497ff9fca259643624d2787fbc297e06ecd0b",
+      "published_sha256": "062185a4ecaeac3e8a9d1c188b3497ff9fca259643624d2787fbc297e06ecd0b"
+    },
+    {
+      "path": "base_de_conocimientos/Jack D. Schwager, Ed Seykota - Hedge Fund Market Wizards-Wiley (2012).md",
+      "bytes": 1061412,
+      "source_sha256": "b71990d2a2d97b8356dd59698ffb24c7213350bd6bafa4ca32c21dda805d3670",
+      "published_sha256": "b71990d2a2d97b8356dd59698ffb24c7213350bd6bafa4ca32c21dda805d3670"
+    },
+    {
+      "path": "base_de_conocimientos/Jeffrey A. Hirsch - Stock Trader's Almanac 2024 (Almanac Investor Series)-Wiley (2023).md",
+      "bytes": 1233822,
+      "source_sha256": "9d8221f9e1fa5a607f18127d9c0ed286c4c57b14a0debc6bb5c816d32cd44eeb",
+      "published_sha256": "9d8221f9e1fa5a607f18127d9c0ed286c4c57b14a0debc6bb5c816d32cd44eeb"
+    },
+    {
+      "path": "base_de_conocimientos/John F Carter - Mastering the Trade, Third Edition_ Proven Techniques for Profiting from Intraday and Swing Trading Setups-McGraw-Hill Education (2018).md",
+      "bytes": 1095926,
+      "source_sha256": "7cd98db32225d5846a96629d0fb0807a323dba9370f2c5b6460279277b5eba97",
+      "published_sha256": "7cd98db32225d5846a96629d0fb0807a323dba9370f2c5b6460279277b5eba97"
+    },
+    {
+      "path": "base_de_conocimientos/Kacher, Chris_Morales, Gil_O'Neil, William J - Short selling with the O'Neil disciples_ turn to the dark side of trading-Wiley (2015).md",
+      "bytes": 609475,
+      "source_sha256": "f2dafdd8029165bea200d247cf439e0a9ffcd86b087652519cb553839c5cbf7f",
+      "published_sha256": "f2dafdd8029165bea200d247cf439e0a9ffcd86b087652519cb553839c5cbf7f"
+    },
+    {
+      "path": "base_de_conocimientos/LLM_INDEX.md",
+      "bytes": 27756,
+      "source_sha256": "2ae514ee2e58ac460e12c79718e8659edb4f29b72847242453ed4e523952577e",
+      "published_sha256": "2294b320e9df2de499fe0f1b7b9c9112126e920da227acd5e3a1d9a51a6e0114"
+    },
+    {
+      "path": "base_de_conocimientos/Mark Minervini - Think & Trade Like a Champion-Access Publishing Group (2017).md",
+      "bytes": 424812,
+      "source_sha256": "899d36134ed93c2c9e6effd7e7ba8b3be3f591d35727be48c57846b0e70014b2",
+      "published_sha256": "899d36134ed93c2c9e6effd7e7ba8b3be3f591d35727be48c57846b0e70014b2"
+    },
+    {
+      "path": "base_de_conocimientos/Minervini Mindset Secrets.md",
+      "bytes": 475553,
+      "source_sha256": "9ed099aeb2331e7986bd335ee269666931f5422f115e55711077d994fe020aa3",
+      "published_sha256": "9ed099aeb2331e7986bd335ee269666931f5422f115e55711077d994fe020aa3"
+    },
+    {
+      "path": "base_de_conocimientos/Momentum Masters.md",
+      "bytes": 282558,
+      "source_sha256": "e27d020aa5c5954760622a9d4837bd22f528e084648c4a9187d1637cb16c6885",
+      "published_sha256": "e27d020aa5c5954760622a9d4837bd22f528e084648c4a9187d1637cb16c6885"
+    },
+    {
+      "path": "base_de_conocimientos/New York Institute of Finance) John J. Murphy - Technical Analysis of the Financial Markets_ A Comprehensive Guide to Trading Methods and Applications (New York Institute of Finance)-New York Institu.md",
+      "bytes": 973197,
+      "source_sha256": "278f7575fc5da5d06b5c4a68ab2b1f1bd86da5b5a62b75baa0b625e5b287d47b",
+      "published_sha256": "278f7575fc5da5d06b5c4a68ab2b1f1bd86da5b5a62b75baa0b625e5b287d47b"
+    },
+    {
+      "path": "base_de_conocimientos/README.md",
+      "bytes": 9376,
+      "source_sha256": "30ebd7e31d6bacb9416e9c3eb73311b93b745fdd9bf6958ee40190a64a98a7d4",
+      "published_sha256": "5b5c343d17c2dcd28b3aa573e8f0a4fc70d8e4795a53dfedf38236c454d2ba70"
+    },
+    {
+      "path": "base_de_conocimientos/Robert A. Schwartz, John Aidan Byrne, Antoinette Colaninno - Coping With Institutional Order Flow (Zicklin School of Business Financial Markets Series) (2005).md",
+      "bytes": 476845,
+      "source_sha256": "eb8867e93d9c20e1fb215c7e3399320646c1bf83010b21bb797ca7c31507e405",
+      "published_sha256": "eb8867e93d9c20e1fb215c7e3399320646c1bf83010b21bb797ca7c31507e405"
+    },
+    {
+      "path": "base_de_conocimientos/Sincere]Understanding Options(rasabourse.com).md",
+      "bytes": 542679,
+      "source_sha256": "01cdaf811f61a9dfd6c4464f7fd8681abd03f2116b6847ea7c8174204c162d6a",
+      "published_sha256": "01cdaf811f61a9dfd6c4464f7fd8681abd03f2116b6847ea7c8174204c162d6a"
+    },
+    {
+      "path": "base_de_conocimientos/Springer Texts in Education) Opher Liba, Bat-Sheva Ilany - From the Golden Rectangle to the Fibonacci Sequences-Springer (2023).md",
+      "bytes": 291376,
+      "source_sha256": "829e28c1b00ec087d96cd66a46c8eeb131afcfac0d172cf9a3238bb178d3427e",
+      "published_sha256": "829e28c1b00ec087d96cd66a46c8eeb131afcfac0d172cf9a3238bb178d3427e"
+    },
+    {
+      "path": "base_de_conocimientos/Springer Texts in Statistics) René Carmona (auth.) - Statistical Analysis of Financial Data in R-Springer-Verlag New York (2014).md",
+      "bytes": 1519802,
+      "source_sha256": "6e7dca7988400ca672a9ed65ee932b3d58dda92769de0f1ee64b7312804fb92f",
+      "published_sha256": "6e7dca7988400ca672a9ed65ee932b3d58dda92769de0f1ee64b7312804fb92f"
+    },
+    {
+      "path": "base_de_conocimientos/The art and science of technical analysis _ market structure, price action, and trading strategies-J. Wiley  &  Sons  (2012).md",
+      "bytes": 1178802,
+      "source_sha256": "3dc04582323bcd36a4ec2d0f4178c5248930d2b02a2239efb92b09feb32b2518",
+      "published_sha256": "3dc04582323bcd36a4ec2d0f4178c5248930d2b02a2239efb92b09feb32b2518"
+    },
+    {
+      "path": "base_de_conocimientos/Trader Almanc.md",
+      "bytes": 1228493,
+      "source_sha256": "69d830358b154d4dcfad809aa14b654c34d602c441857452da41a952d818c224",
+      "published_sha256": "69d830358b154d4dcfad809aa14b654c34d602c441857452da41a952d818c224"
+    },
+    {
+      "path": "base_de_conocimientos/William J.  O'Neil, Gil Morales - How to Make Money Selling Stocks Short-Wiley (2004).md",
+      "bytes": 185851,
+      "source_sha256": "f8dddad48b863514120548cd8299170ecfb726bebbee801bad8d640b291b309a",
+      "published_sha256": "f8dddad48b863514120548cd8299170ecfb726bebbee801bad8d640b291b309a"
+    },
+    {
+      "path": "base_de_conocimientos/Wyckoff 2 ESP PDF.md",
+      "bytes": 381290,
+      "source_sha256": "2bb99c31326a6c6ea5ca91fdc986ff62d2431ae0d6366a4f8e5fd882d27595e5",
+      "published_sha256": "2bb99c31326a6c6ea5ca91fdc986ff62d2431ae0d6366a4f8e5fd882d27595e5"
+    },
+    {
+      "path": "base_de_conocimientos/Wyckoff-Method_Wyckoff-Analytics_Spanish-V2.md",
+      "bytes": 52543,
+      "source_sha256": "542650eb072b6c686a906ac18c14a6449a25d53b619ba6d8d559d9124ad974bc",
+      "published_sha256": "542650eb072b6c686a906ac18c14a6449a25d53b619ba6d8d559d9124ad974bc"
+    },
+    {
+      "path": "base_de_conocimientos/_ CMT Level I 2020 – An Introduction to Technical Analysis_Wiley (2020) (1)_compressed.md",
+      "bytes": 1715578,
+      "source_sha256": "0a0fd6e3e9b1aa06bb1a682c4165e03078d19db34ee129257af80afa6e700621",
+      "published_sha256": "0a0fd6e3e9b1aa06bb1a682c4165e03078d19db34ee129257af80afa6e700621"
+    },
+    {
+      "path": "base_de_conocimientos/technica analysisos stocks trends.md",
+      "bytes": 1796336,
+      "source_sha256": "d750230d3590dfb6b50705cf84915675d0e7176e9f99f82f5776defc3f6ea00a",
+      "published_sha256": "d750230d3590dfb6b50705cf84915675d0e7176e9f99f82f5776defc3f6ea00a"
+    }
+  ]
+}

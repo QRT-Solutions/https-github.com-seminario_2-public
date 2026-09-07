@@ -58,3 +58,10 @@ del catálogo no constituyen evidencia de rentabilidad.
 Autoría: **QRT Solutions**. Material original bajo [MIT](LICENSE).
 [Licencias de terceros](THIRD_PARTY_NOTICES.md) · [Seguridad](SECURITY.md) ·
 [Cambios](CHANGELOG.md) · [Cómo citar](CITATION.cff)
+
+## Base de conocimientos para agentes
+
+La [base de conocimientos](https://github.com/felipemillar/seminario_2-public/tree/main/base_de_conocimientos) incluye 50 documentos en Markdown, un catálogo
+y un índice semántico para orientar las consultas de agentes. Consulta primero
+[LLM_INDEX.md](https://github.com/felipemillar/seminario_2-public/tree/main/base_de_conocimientos/LLM_INDEX.md). Las imágenes referenciadas no están incluidas
+en la carpeta de origen. Se conservan las atribuciones de cada obra.

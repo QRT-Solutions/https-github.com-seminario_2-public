@@ -1,6 +1,8 @@
 """QRT Solutions: fail-closed publication checks; never display matching content."""
 
 import argparse
+import base64
+import binascii
 import gzip
 import io
 import json
@@ -31,6 +33,10 @@ RULES = {
     ),
 }
 MAX_BYTES = 512 * 1024 * 1024
+# Public bibliography URL whose path resembles a Linux home directory.
+PUBLIC_BIBLIOGRAPHY_URL = (
+    b"https://sites.google.com/site/einavloondon/" + b"home/act/gold2/gold3"
+)
 SKIP = {
     ".git",
     ".venv",
@@ -46,13 +52,31 @@ SKIP = {
 }
 
 
+def rule_matches(key: str, rule: re.Pattern[bytes], view: bytes) -> bool:
+    if key == "personal-home":
+        view = view.replace(PUBLIC_BIBLIOGRAPHY_URL, b"<public-bibliography-url>")
+    for match in rule.finditer(view):
+        if key == "literal-authorization" and match.group().lower().startswith(b"basic"):
+            # Basic authentication encodes user:password, unlike prose such as
+            # "basic principles". Detection of bearer tokens remains unchanged.
+            token = match.group().split()[1]
+            try:
+                decoded = base64.b64decode(token + b"=" * (-len(token) % 4), validate=True)
+            except binascii.Error:
+                continue
+            if b":" not in decoded:
+                continue
+        return True
+    return False
+
+
 def inspect(data: bytes, label: str, depth: int = 0) -> list[str]:
     if len(data) > MAX_BYTES or depth > 4:
         raise LabError("El artefacto excede el límite de inspección.")
     findings = [
         f"{key}: {label}"
         for key, rule in RULES.items()
-        if any(rule.search(view) for view in (data, data.replace(b"\0", b"")))
+        if any(rule_matches(key, rule, view) for view in (data, data.replace(b"\0", b"")))
     ]
     if data.startswith(b"\x1f\x8b"):
         with gzip.GzipFile(fileobj=io.BytesIO(data)) as source:

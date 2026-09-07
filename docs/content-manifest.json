@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "author": "QRT Solutions",
-  "scope": "Selection from the pre-migration inventory. Deferred masterclass tracks are preserved privately; all canonical platform sources remain byte-identical. Newly authored files are listed by the release manifest.",
+  "scope": "Selection from the pre-migration inventory. Deferred masterclass tracks are preserved privately; all canonical platform sources remain byte-identical. Newly authored files are listed by the release manifest. Historical inventory; the subsequent authorized knowledge import is recorded in docs/knowledge-import.json.",
   "retained_original_files": 83,
   "original_entries_kept_private": 274,
   "canonical_platform_sources_unchanged": 25,
@@ -511,6 +511,14 @@
       "original_sha256": "3305922569956fb5e1f1731e4743993d158666c3b5fdfc4d9cd681340498f54b",
       "candidate_sha256": "3305922569956fb5e1f1731e4743993d158666c3b5fdfc4d9cd681340498f54b",
       "decision": "retained"
+    }
+  ],
+  "subsequent_imports": [
+    {
+      "date": "2026-09-07",
+      "path": "base_de_conocimientos",
+      "manifest": "docs/knowledge-import.json",
+      "reason": "Maintainer authorized public distribution and confirmed shared use."
     }
   ]
 }

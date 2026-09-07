@@ -2,6 +2,11 @@
 
 Autoría: QRT Solutions.
 
+**Ampliación 2026-09-07:** el mantenedor solicitó compartir `base_de_conocimientos`
+y confirmó su uso compartido. El [manifiesto](knowledge-import.json) registra esta
+incorporación posterior y sus límites; la exclusión bibliográfica del registro
+histórico inferior queda sustituida para esta carpeta.
+
 El 2026-09-07 el mantenedor autorizó publicar el código en el repositorio nuevo
 [seminario_2-public](https://github.com/felipemillar/seminario_2-public) y confirmó
 haber cambiado las credenciales anteriores. El repositorio es público y su canal

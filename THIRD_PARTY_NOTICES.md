@@ -20,4 +20,7 @@ sus respectivas licencias. Gitleaks es una herramienta opcional de validación
 y hash fijados, sin redistribuir su binario dentro del repositorio.
 
 La bibliografía pertinente se cita en [referencias](docs/references.md).
-No se distribuyen transcripciones completas de libros ni se reclasifican bajo MIT.
+La carpeta `base_de_conocimientos/` se incorpora por solicitud expresa y confirmación
+de uso compartido del mantenedor el 2026-09-07. Se conservan las atribuciones y avisos
+de sus 50 documentos. Las obras de terceros no se reclasifican bajo MIT. El
+[manifiesto de importación](docs/knowledge-import.json) registra archivos y hashes.

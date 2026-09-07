@@ -29,3 +29,9 @@ are separate claims. The project does not certify strategy profitability.
 
 Original material: **QRT Solutions**, [MIT](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md),
 [contributing](CONTRIBUTING.md), [security](SECURITY.md) and [release conditions](docs/release.md).
+
+## Agent knowledge base
+
+The [knowledge base](https://github.com/felipemillar/seminario_2-public/tree/main/base_de_conocimientos) contains 50 Markdown documents, a catalog and an agent
+routing index. Start with [LLM_INDEX.md](https://github.com/felipemillar/seminario_2-public/tree/main/base_de_conocimientos/LLM_INDEX.md). Referenced images
+are not present in the source folder. Original attribution is preserved.
