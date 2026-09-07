@@ -27,6 +27,7 @@ def on_pre_build(config, **kwargs):
         "CODE_OF_CONDUCT.md",
         "THIRD_PARTY_NOTICES.md",
         "CHANGELOG.md",
+        "CITATION.cff",
     ):
         shutil.copyfile(ROOT / name, destination / name)
     (destination / "README.md").rename(destination / "index.md")
