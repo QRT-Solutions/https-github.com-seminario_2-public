@@ -24,13 +24,13 @@ Necesitas Git, [uv](https://docs.astral.sh/uv/getting-started/installation/) y C
 3.12; uv puede instalar el intérprete. Desde PowerShell, bash o zsh:
 
 ```sh
-git clone https://github.com/felipemillar/seminario_2.git
-uv run --directory seminario_2 --locked --no-dev seminario doctor
-uv run --directory seminario_2 --locked --no-dev seminario quickstart
+git clone https://github.com/felipemillar/seminario_2-public.git
+uv run --directory seminario_2-public --locked --no-dev seminario doctor
+uv run --directory seminario_2-public --locked --no-dev seminario quickstart
 ```
 
 La instalación y la verificación no requieren datos de mercado, credenciales ni
-cuentas. Abre `seminario_2/masterclass/index.html` para ver la presentación sin
+cuentas. Abre `seminario_2-public/masterclass/index.html` para ver la presentación sin
 servidor y sin fuentes externas obligatorias.
 
 ## Qué puedes comprobar

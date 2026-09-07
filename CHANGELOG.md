@@ -1,5 +1,11 @@
 # Changelog — QRT Solutions
 
+## 2026-09-07 — Destino independiente
+
+- Enlaces de clonación, documentación, citación y seguridad dirigidos al nuevo
+  repositorio `felipemillar/seminario_2-public`.
+- El repositorio original conserva sus ramas, historial y remoto.
+
 ## 1.0.0rc1 — 2026-09-06 (candidato local, no publicado)
 
 - Distribución independiente e historia nueva, con archivo privado verificado.

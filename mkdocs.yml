@@ -1,8 +1,8 @@
 site_name: QRT Quantitative Seminar
 site_description: Diseño y validación de estrategias con experimentos reproducibles
 site_author: QRT Solutions
-site_url: https://felipemillar.github.io/seminario_2/
-repo_url: https://github.com/felipemillar/seminario_2
+site_url: https://felipemillar.github.io/seminario_2-public/
+repo_url: https://github.com/felipemillar/seminario_2-public
 edit_uri: ''
 docs_dir: docs
 site_dir: site

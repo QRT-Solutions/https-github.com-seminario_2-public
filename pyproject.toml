@@ -21,7 +21,7 @@ dev = ["pytest>=8,<10", "ruff>=0.12,<1", "mypy>=1.15,<2",
 seminario = "seminario_lab.cli:main"
 
 [project.urls]
-Repository = "https://github.com/felipemillar/seminario_2"
+Repository = "https://github.com/felipemillar/seminario_2-public"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/seminario_lab"]

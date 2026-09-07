@@ -13,13 +13,13 @@ Requirements: Git, [uv](https://docs.astral.sh/uv/getting-started/installation/)
 CPython 3.12, which uv can install.
 
 ```sh
-git clone https://github.com/felipemillar/seminario_2.git
-uv run --directory seminario_2 --locked --no-dev seminario doctor
-uv run --directory seminario_2 --locked --no-dev seminario quickstart
+git clone https://github.com/felipemillar/seminario_2-public.git
+uv run --directory seminario_2-public --locked --no-dev seminario doctor
+uv run --directory seminario_2-public --locked --no-dev seminario quickstart
 ```
 
 No market data, credentials or accounts are required for installation and catalog
-verification. Open `seminario_2/masterclass/index.html` to view the offline
+verification. Open `seminario_2-public/masterclass/index.html` to view the offline
 presentation. `seminario verify` checks schemas, IDs, paths, artifacts and copies.
 Use `seminario --project "PROJECT PATH" verify` outside the project tree.
 
