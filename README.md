@@ -24,7 +24,7 @@ Necesitas Git, [uv](https://docs.astral.sh/uv/getting-started/installation/) y C
 3.12; uv puede instalar el intérprete. Desde PowerShell, bash o zsh:
 
 ```sh
-git clone --config core.longpaths=true https://github.com/felipemillar/seminario_2-public.git
+git clone --config core.longpaths=true https://github.com/QRT-Solutions/seminario_2-public.git
 uv run --directory seminario_2-public --locked --no-dev seminario doctor
 uv run --directory seminario_2-public --locked --no-dev seminario quickstart
 ```
@@ -61,7 +61,7 @@ Autoría: **QRT Solutions**. Material original bajo [MIT](LICENSE).
 
 ## Base de conocimientos para agentes
 
-La [base de conocimientos](https://github.com/felipemillar/seminario_2-public/tree/main/base_de_conocimientos) incluye 50 documentos en Markdown, un catálogo
+La [base de conocimientos](https://github.com/QRT-Solutions/seminario_2-public/tree/main/base_de_conocimientos) incluye 50 documentos en Markdown, un catálogo
 y un índice semántico para orientar las consultas de agentes. Consulta primero
-[LLM_INDEX.md](https://github.com/felipemillar/seminario_2-public/tree/main/base_de_conocimientos/LLM_INDEX.md). Las imágenes referenciadas no están incluidas
+[LLM_INDEX.md](https://github.com/QRT-Solutions/seminario_2-public/tree/main/base_de_conocimientos/LLM_INDEX.md). Las imágenes referenciadas no están incluidas
 en la carpeta de origen. Se conservan las atribuciones de cada obra.

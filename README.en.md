@@ -13,7 +13,7 @@ Requirements: Git, [uv](https://docs.astral.sh/uv/getting-started/installation/)
 CPython 3.12, which uv can install.
 
 ```sh
-git clone --config core.longpaths=true https://github.com/felipemillar/seminario_2-public.git
+git clone --config core.longpaths=true https://github.com/QRT-Solutions/seminario_2-public.git
 uv run --directory seminario_2-public --locked --no-dev seminario doctor
 uv run --directory seminario_2-public --locked --no-dev seminario quickstart
 ```
@@ -32,6 +32,6 @@ Original material: **QRT Solutions**, [MIT](LICENSE). See [third-party notices](
 
 ## Agent knowledge base
 
-The [knowledge base](https://github.com/felipemillar/seminario_2-public/tree/main/base_de_conocimientos) contains 50 Markdown documents, a catalog and an agent
-routing index. Start with [LLM_INDEX.md](https://github.com/felipemillar/seminario_2-public/tree/main/base_de_conocimientos/LLM_INDEX.md). Referenced images
+The [knowledge base](https://github.com/QRT-Solutions/seminario_2-public/tree/main/base_de_conocimientos) contains 50 Markdown documents, a catalog and an agent
+routing index. Start with [LLM_INDEX.md](https://github.com/QRT-Solutions/seminario_2-public/tree/main/base_de_conocimientos/LLM_INDEX.md). Referenced images
 are not present in the source folder. Original attribution is preserved.

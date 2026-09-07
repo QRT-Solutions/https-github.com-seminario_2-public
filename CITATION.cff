@@ -6,7 +6,7 @@ authors:
 version: "1.0.0rc1"
 date-released: "2026-09-06"
 license: MIT
-repository-code: "https://github.com/felipemillar/seminario_2-public"
+repository-code: "https://github.com/QRT-Solutions/seminario_2-public"
 keywords:
   - quantitative research
   - reproducibility

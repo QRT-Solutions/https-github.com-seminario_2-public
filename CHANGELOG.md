@@ -1,5 +1,13 @@
 # Changelog — QRT Solutions
 
+## 2026-09-07 — Repositorio de la empresa
+
+- Publicada la distribución completa, incluida `base_de_conocimientos`, en
+  `QRT-Solutions/seminario_2-public`. Se conserva su historial público.
+- Actualizados los enlaces de clonación, base de conocimientos, citación, metadatos
+  y seguridad para la organización QRT-Solutions.
+- El repositorio personal permanece disponible en su ubicación original.
+
 ## 2026-09-07 — Base de conocimientos compartida
 
 - Incorporados 50 documentos, README, índice semántico y archivo de exclusiones

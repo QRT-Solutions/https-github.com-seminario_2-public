@@ -2,13 +2,13 @@
 
 El seminario contiene fuentes de investigación y herramientas de validación, sin
 servicio de ejecución operativa. QRT Solutions mantiene la política; la administración
-del repositorio corresponde a la cuenta `felipemillar`. Las correcciones se aplicarán
+del repositorio corresponde a la organización `QRT-Solutions`. Las correcciones se aplicarán
 a la última versión 1.x publicada. El candidato actual todavía no es una release.
 
 ## Reportar una vulnerabilidad
 
 El reporte privado de vulnerabilidades está habilitado y fue verificado mediante
-la API de GitHub el 2026-09-07. Entra en [Security](https://github.com/felipemillar/seminario_2-public/security)
+la API de GitHub el 2026-09-07. Entra en [Security](https://github.com/QRT-Solutions/seminario_2-public/security)
 y selecciona **Report a vulnerability**. GitHub puede pedirte iniciar sesión.
 La comprobación corresponde a este repositorio; no se envió un reporte de prueba.
 

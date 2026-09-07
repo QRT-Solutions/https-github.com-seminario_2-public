@@ -2,6 +2,13 @@
 
 Autoría: QRT Solutions.
 
+**Destino de empresa, 2026-09-07:** la distribución completa se encuentra en
+[QRT-Solutions/seminario_2-public](https://github.com/QRT-Solutions/seminario_2-public),
+incluida la base de conocimientos. Se conserva el historial del repositorio público
+de origen. Sus evidencias históricas se mantienen con sus enlaces originales; el
+[CI de la organización](https://github.com/QRT-Solutions/seminario_2-public/actions/workflows/ci.yml)
+verifica esta copia. El repositorio personal sigue disponible.
+
 **Ampliación 2026-09-07:** el mantenedor solicitó compartir `base_de_conocimientos`
 y confirmó su uso compartido. El [manifiesto](knowledge-import.json) registra esta
 incorporación posterior y sus límites; la exclusión bibliográfica del registro
