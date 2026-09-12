@@ -27,6 +27,15 @@ nav:
   - Agentes: docs/agents.md
   - Glosario: docs/glossary.md
   - Publicación: docs/release.md
+  - Formación Cuantitativa:
+      - 100 Preguntas Esenciales: MT5/GUIA_100_PREGUNTAS_TRADING_CUANTITATIVO.md
+      - Pilar 1 (Entorno y Datos): MT5/docs_educativos/PILAR_1_ENTORNO_Y_DATOS.md
+      - Pilar 2 (Hipótesis y Lógica): MT5/docs_educativos/PILAR_2_HIPOTESIS_Y_LOGICA.md
+      - Pilar 3 (Código y Paridad): MT5/docs_educativos/PILAR_3_CODIGO_Y_PARIDAD.md
+      - Pilar 4 (Backtesting y Auditoría): MT5/docs_educativos/PILAR_4_BACKTESTING_Y_AUDITORIA.md
+      - Auditoría de Backtesting (3 Módulos): MT5/BACKTEST_AUDIT_MANUAL.md
+      - Inyección de Datos M1: MT5/DATA_INJECTION_GUIDE.md
+      - Instrucciones Creador de Bots IA: INSTRUCCIONES_SISTEMA_CREADOR_BOTS_IA.md
 markdown_extensions:
   - tables
   - fenced_code

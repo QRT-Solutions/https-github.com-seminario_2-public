@@ -1,0 +1,6 @@
+# GEMINI.md — Puntero Canónico Maestro QRT Solutions
+
+Consulte las reglas maestras vinculantes del repositorio y del Agente Educador en:
+AGENTS.md
+
+Todos los desarrollos deben respetar el protocolo de 4 fases (3 variantes A, B, C en ATR Diario), métricas de retorno porcentual puro en MT5 y autoría canónica: QRT Solutions.

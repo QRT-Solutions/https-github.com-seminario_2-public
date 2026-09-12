@@ -1,5 +1,15 @@
 # Changelog — QRT Solutions
 
+## 2026-09-11 — Agente Educador, Gobernanza Multi-Agente, Inyección de Datos y Métricas Porcentuales
+
+- **Agente Educador Cuantitativo (`QuantEducatorAgent`):** Incorporada directiva pedagógica de 3 capas didácticas (Metáfora -> Matemática -> Decisión) en `AGENTS.md` para guiar al alumno paso a paso.
+- **Protocolo de 4 Fases con Matriz Sintética (3 Variantes A, B, C):** Estandarizada la co-creación HITL con Stop Loss y Take Profit formulados estrictamente en múltiplos limpios de ATR Diario cerrado shift 1.
+- **Shims Multi-Agente:** Desplegados `.cursorrules`, `CLAUDE.md`, `.agents/AGENTS.md` y `GEMINI.md` para garantizar interoperabilidad agéntica en Cursor, Google Antigravity, Claude Code y Gemini.
+- **Módulo de Plataforma & Inyección de Datos:** Incorporadas herramientas para eliminar el error `10018: Market closed` (`Script_Unlock_Custom_Symbols_Sessions.mq5`) y permitir la inyección de series históricas de 20+ años M1 (`Script_Universal_Rates_Injector.mq5`).
+- **Módulo de Métricas Porcentuales Puras:** Documentado el selector `ENUM_TESTER_CRITERION` para visualizar el Retorno % Acumulado en la columna nativa "Resultado" de MT5 y provisto el manual canónico `MT5/BACKTEST_AUDIT_MANUAL.md` con el Pool de 3 Módulos de Diagnóstico.
+- **Documento Maestro para Alumnos:** Añadido `INSTRUCCIONES_SISTEMA_CREADOR_BOTS_IA.md` para usuarios de ChatGPT Web, Claude Web, Antigravity y Cursor.
+- **Base de Formación Cuantitativa Canónica (100 Preguntas Científicas):** Publicada la `MT5/GUIA_100_PREGUNTAS_TRADING_CUANTITATIVO.md` y sus 4 pilares temáticos modulares (`MT5/docs_educativos/`) bajo la matriz de 5 dimensiones científicas para resolver integralmente las dudas técnicas, algorítmicas y operativas de los alumnos.
+
 ## 2026-09-07 — Repositorio de la empresa
 
 - Publicada la distribución completa, incluida `base_de_conocimientos`, en

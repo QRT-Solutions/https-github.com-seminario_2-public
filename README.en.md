@@ -1,7 +1,11 @@
 # QRT Quantitative Seminar — Strategy design and validation
 
 Turn a market idea into an explicit hypothesis, a reviewable contract and source
-code that others can inspect. [Español](README.md) · [English quickstart](docs/quickstart.en.md)
+code that others can inspect. [Español](README.md) · [Start here](docs/quickstart.en.md) · [Catalog](docs/strategies.md) · [Contribute](CONTRIBUTING.md)
+
+> 🚀 **Institutional Update v2.0 (Pepperstone Latam & QRT Solutions):**  
+> Introducing the **Quantitative Educator Agent (`QuantEducatorAgent`)**, the [**Canonical Guide of 100 Scientific Questions**](MT5/GUIA_100_PREGUNTAS_TRADING_CUANTITATIVO.md) across 4 pillars, [**20+ Year M1 Data Injection & 24/7 Session Unlock**](MT5/DATA_INJECTION_GUIDE.md) tools (resolving error 10018), and the [**3-Module Backtest Audit Manual**](MT5/BACKTEST_AUDIT_MANUAL.md).  
+> 👉 Web chat & IDE students: see the [**AI System Instructions**](INSTRUCCIONES_SISTEMA_CREADOR_BOTS_IA.md).
 
 The Spanish presentation explains hypotheses, entries, exits, sizing and evaluation.
 The **17-strategy Pine/MQL5 catalog remains complete**, with canonical sources,

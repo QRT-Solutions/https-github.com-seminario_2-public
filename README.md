@@ -5,6 +5,10 @@ contrato revisable y una implementación que otras personas puedan comprobar.
 
 [English](README.en.md) · [Empieza aquí](docs/start.md) · [Catálogo](docs/strategies.md) · [Contribuir](CONTRIBUTING.md)
 
+> 🚀 **Actualización Institucional v2.0 (Pepperstone Latam & QRT Solutions):**  
+> Incorporamos el **Agente Educador Cuantitativo (`QuantEducatorAgent`)**, la [**Guía Canónica de 100 Preguntas Científicas**](MT5/GUIA_100_PREGUNTAS_TRADING_CUANTITATIVO.md) en 4 pilares, herramientas para [**Inyección de 20+ Años M1 y Desbloqueo 24/7**](MT5/DATA_INJECTION_GUIDE.md) (solución a error 10018), y el manual de [**Auditoría de Backtesting en 3 Módulos**](MT5/BACKTEST_AUDIT_MANUAL.md).  
+> 👉 Alumnos con ChatGPT/Claude Web o IDEs: consulta las [**Instrucciones del Sistema de IA**](INSTRUCCIONES_SISTEMA_CREADOR_BOTS_IA.md).
+
 ## Qué aprenderás
 
 - Separar hipótesis, reglas de entrada, salidas y dimensionamiento.

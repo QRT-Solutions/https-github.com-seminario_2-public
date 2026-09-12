@@ -28,8 +28,10 @@ def on_pre_build(config, **kwargs):
         "THIRD_PARTY_NOTICES.md",
         "CHANGELOG.md",
         "CITATION.cff",
+        "INSTRUCCIONES_SISTEMA_CREADOR_BOTS_IA.md",
     ):
-        shutil.copyfile(ROOT / name, destination / name)
+        if (ROOT / name).exists():
+            shutil.copyfile(ROOT / name, destination / name)
     (destination / "README.md").rename(destination / "index.md")
     for name in ("docs", "licenses", "quant_agentic_swarm", "TradingView", "MT5"):
         shutil.copytree(
